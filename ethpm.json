@@ -1,0 +1,16 @@
+{
+  "package_name": "cryptogift",
+  "version": "1.0.0",
+  "description": "An ERC721 token and Crowdsale to buy and give away an Ethereum based Collectible Gift",
+  "authors": [
+    "Vittorio Minacori (@vittominacori)"
+  ],
+  "keywords": [
+    "solidity",
+    "ethereum",
+    "smart",
+    "contracts",
+    "erc721"
+  ],
+  "license": "MIT"
+}

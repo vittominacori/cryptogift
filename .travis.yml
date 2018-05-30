@@ -1,0 +1,24 @@
+dist: trusty
+sudo: required
+group: beta
+language: node_js
+node_js:
+  - "8"
+cache:
+  directories:
+    - node_modules
+env:
+  -
+  - SOLIDITY_COVERAGE=true
+  - SOLC_NIGHTLY=true
+matrix:
+  fast_finish: true
+  allow_failures:
+    - env: SOLIDITY_COVERAGE=true
+    - env: SOLC_NIGHTLY=true
+before_script:
+  - truffle version
+script:
+  - npm run lint
+  - npm run lint:sol
+  - npm run test
