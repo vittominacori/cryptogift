@@ -42,7 +42,7 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
   returns (uint256)
   {
     uint256 tokenId = generatedTokens.add(1);
-    mint(_purchaser, tokenId);
+    _mint(_purchaser, tokenId);
     structureIndex[tokenId] = GiftStructure(
       _sender,
       _receiver,
