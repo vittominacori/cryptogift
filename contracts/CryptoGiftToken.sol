@@ -10,6 +10,8 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
     string message;
     string youtube;
     uint256 date;
+    uint256 style;
+    bool visible;
   }
 
   uint256 public generatedTokens = 0;
@@ -35,7 +37,8 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
     string _receiver,
     string _message,
     string _youtube,
-    uint256 _date
+    uint256 _date,
+    uint256 _style
   )
   canGenerate
   public
@@ -48,7 +51,9 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
       _receiver,
       _message,
       _youtube,
-      _date
+      _date,
+      _style,
+      true
     );
     generatedTokens = tokenId;
     return tokenId;
@@ -58,7 +63,7 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
     GiftStructure storage gift = structureIndex[tokenId];
 
     // solium-disable-next-line security/no-block-members
-    visible = block.timestamp >= gift.date;
+    visible = block.timestamp >= gift.date && gift.visible;
     date = gift.date;
   }
 
@@ -70,18 +75,29 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
     string receiver,
     string message,
     string youtube,
-    uint256 date
+    uint256 date,
+    uint256 style
   )
   {
     GiftStructure storage gift = structureIndex[tokenId];
 
     // solium-disable-next-line security/no-block-members
-    require(block.timestamp >= gift.date);
+    require(block.timestamp >= gift.date && gift.visible);
 
     sender = gift.sender;
     receiver = gift.receiver;
     message = gift.message;
     youtube = gift.youtube;
     date = gift.date;
+    style = gift.style;
+  }
+
+  /**
+   * @dev Only contract owner or token owner can burn
+   */
+  function burn(uint256 _tokenId) public {
+    address tokenOwner = msg.sender == owner ? ownerOf(_tokenId) : msg.sender;
+    super._burn(tokenOwner, _tokenId);
+    structureIndex[_tokenId].visible = false;
   }
 }

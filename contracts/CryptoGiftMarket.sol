@@ -58,7 +58,8 @@ contract CryptoGiftMarket {
     string _receiver,
     string _message,
     string _youtube,
-    uint256 _date
+    uint256 _date,
+    uint256 _style
   )
   public
   payable
@@ -75,7 +76,8 @@ contract CryptoGiftMarket {
       _receiver,
       _message,
       _youtube,
-      _date
+      _date,
+      _style
     );
 
     emit TokenPurchase(
@@ -117,7 +119,8 @@ contract CryptoGiftMarket {
     string _receiver,
     string _message,
     string _youtube,
-    uint256 _date
+    uint256 _date,
+    uint256 _style
   )
   internal
   returns (uint256)
@@ -128,7 +131,8 @@ contract CryptoGiftMarket {
       _receiver,
       _message,
       _youtube,
-      _date
+      _date,
+      _style
     );
   }
 

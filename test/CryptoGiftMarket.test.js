@@ -13,7 +13,7 @@ const CryptoGiftToken = artifacts.require('CryptoGiftToken.sol');
 
 const ROLE_MINTER = 'minter';
 
-contract('Crowdsale', function ([_, wallet, purchaser, beneficiary]) {
+contract('CryptoGiftMarket', function ([_, wallet, purchaser, beneficiary]) {
   const name = 'CryptoGiftToken';
   const symbol = 'CGT';
   const maxSupply = new BigNumber(3);
@@ -24,6 +24,7 @@ contract('Crowdsale', function ([_, wallet, purchaser, beneficiary]) {
     message: 'Happy Birthday!',
     youtube: 'ABCD-123',
     date: Date.now(),
+    style: 1,
   };
 
   const price = ether(0.01);
@@ -51,6 +52,7 @@ contract('Crowdsale', function ([_, wallet, purchaser, beneficiary]) {
         tokenDetails.message,
         tokenDetails.youtube,
         tokenDetails.date,
+        tokenDetails.style,
         { value: value, from: purchaser }
       ).should.be.fulfilled;
     });
@@ -78,6 +80,7 @@ contract('Crowdsale', function ([_, wallet, purchaser, beneficiary]) {
         tokenDetails.message,
         tokenDetails.youtube,
         tokenDetails.date,
+        tokenDetails.style,
         { value: value, from: purchaser }
       );
       const event = logs.find(e => e.event === 'TokenPurchase');
@@ -96,6 +99,7 @@ contract('Crowdsale', function ([_, wallet, purchaser, beneficiary]) {
         tokenDetails.message,
         tokenDetails.youtube,
         tokenDetails.date,
+        tokenDetails.style,
         { value: value, from: purchaser }
       );
       const balance = await this.token.balanceOf(beneficiary);
@@ -111,6 +115,7 @@ contract('Crowdsale', function ([_, wallet, purchaser, beneficiary]) {
         tokenDetails.message,
         tokenDetails.youtube,
         tokenDetails.date,
+        tokenDetails.style,
         { value: value, from: purchaser }
       );
       const post = web3.eth.getBalance(wallet);

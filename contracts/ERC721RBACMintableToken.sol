@@ -59,14 +59,6 @@ contract ERC721RBACMintableToken is ERC721Token, Ownable, RBAC {
   }
 
   /**
-   * @dev Only contract owner or token owner can burn
-   */
-  function burn(uint256 _tokenId) public {
-    address tokenOwner = msg.sender == owner ? ownerOf(_tokenId) : msg.sender;
-    super._burn(tokenOwner, _tokenId);
-  }
-
-  /**
    * @dev Override to add the can mint check
    */
   function _mint(address _to, uint256 _tokenId) canMint hasMintPermission internal {

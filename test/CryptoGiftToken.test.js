@@ -36,12 +36,13 @@ contract('CryptoGiftToken', function (accounts) {
       message: 'Lorem Ipsum',
       youtube: 'ABCD-123',
       date: latestTime() - duration.weeks(1),
+      style: 1,
     };
 
     this.token = await CryptoGiftToken.new(name, symbol, maxSupply, { from: creator });
   });
 
-  describe('creating new token', function () {
+  context('creating new token', function () {
     beforeEach(async function () {
       await this.token.addMinter(minter, { from: creator });
       await this.token.newToken(
@@ -51,6 +52,7 @@ contract('CryptoGiftToken', function (accounts) {
         this.structure.message,
         this.structure.youtube,
         this.structure.date,
+        this.structure.style,
         { from: minter }
       );
 
@@ -98,6 +100,11 @@ contract('CryptoGiftToken', function (accounts) {
             const tokenDate = tokenStructure[4];
             tokenDate.should.be.bignumber.equal(this.structure.date);
           });
+
+          it('has a style', async function () {
+            const tokenStyle = tokenStructure[5];
+            tokenStyle.should.be.bignumber.equal(this.structure.style);
+          });
         });
       });
 
@@ -113,10 +120,31 @@ contract('CryptoGiftToken', function (accounts) {
             this.structure.message,
             this.structure.youtube,
             giftTime,
+            this.structure.style,
             { from: minter }
           );
 
           tokenId = await this.token.generatedTokens();
+          tokenVisibility = await this.token.isVisible(tokenId);
+        });
+
+        it('should not be visible', async function () {
+          const visible = tokenVisibility[0];
+          visible.should.be.equal(false);
+        });
+
+        describe('check metadata', function () {
+          it('reverts', async function () {
+            await assertRevert(this.token.getGift(tokenId));
+          });
+        });
+      });
+
+      describe('when token is burnt', function () {
+        let tokenVisibility;
+
+        beforeEach(async function () {
+          await this.token.burn(tokenId);
           tokenVisibility = await this.token.isVisible(tokenId);
         });
 
@@ -144,6 +172,7 @@ contract('CryptoGiftToken', function (accounts) {
           this.structure.message,
           this.structure.youtube,
           this.structure.date,
+          this.structure.style,
           { from: minter }
         );
         const newGeneratedToken = await this.token.generatedTokens();
@@ -164,6 +193,7 @@ contract('CryptoGiftToken', function (accounts) {
             this.structure.message,
             this.structure.youtube,
             this.structure.date,
+            this.structure.style,
             { from: minter }
           );
         }
@@ -179,6 +209,7 @@ contract('CryptoGiftToken', function (accounts) {
             this.structure.message,
             this.structure.youtube,
             this.structure.date,
+            this.structure.style,
             { from: minter }
           )
         );
