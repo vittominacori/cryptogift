@@ -12,6 +12,7 @@ const CryptoGiftMarket = artifacts.require('CryptoGiftMarket.sol');
 const CryptoGiftToken = artifacts.require('CryptoGiftToken.sol');
 
 const ROLE_MINTER = 'minter';
+const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
 contract('CryptoGiftMarket', function ([_, wallet, purchaser, beneficiary]) {
   const name = 'CryptoGiftToken';
@@ -36,6 +37,32 @@ contract('CryptoGiftMarket', function ([_, wallet, purchaser, beneficiary]) {
     await this.token.addMinter(this.crowdsale.address);
   });
 
+  context('creating a valid market', function () {
+    describe('if price is zero', function () {
+      it('reverts ', async function () {
+        await assertRevert(
+          CryptoGiftMarket.new(0, wallet, this.token.address)
+        );
+      });
+    });
+
+    describe('if wallet is the zero address', function () {
+      it('reverts ', async function () {
+        await assertRevert(
+          CryptoGiftMarket.new(price, ZERO_ADDRESS, this.token.address)
+        );
+      });
+    });
+
+    describe('if token is the zero address', function () {
+      it('reverts ', async function () {
+        await assertRevert(
+          CryptoGiftMarket.new(price, wallet, ZERO_ADDRESS)
+        );
+      });
+    });
+  });
+
   describe('after creation', function () {
     it('should have minter role on token', async function () {
       const isMinter = await this.token.hasRole(this.crowdsale.address, ROLE_MINTER);
@@ -57,9 +84,33 @@ contract('CryptoGiftMarket', function ([_, wallet, purchaser, beneficiary]) {
       ).should.be.fulfilled;
     });
 
-    it('should reject payments through with an invalid price', async function () {
+    it('should reject payments if beneficiary is zero address', async function () {
       await assertRevert(
-        this.crowdsale.send(value.mul(2))
+        this.crowdsale.buyToken(
+          ZERO_ADDRESS,
+          tokenDetails.sender,
+          tokenDetails.receiver,
+          tokenDetails.message,
+          tokenDetails.youtube,
+          tokenDetails.date,
+          tokenDetails.style,
+          { value: value, from: purchaser }
+        )
+      );
+    });
+
+    it('should reject payments with an invalid price', async function () {
+      await assertRevert(
+        this.crowdsale.buyToken(
+          beneficiary,
+          tokenDetails.sender,
+          tokenDetails.receiver,
+          tokenDetails.message,
+          tokenDetails.youtube,
+          tokenDetails.date,
+          tokenDetails.style,
+          { value: value.mul(2), from: purchaser }
+        )
       );
     });
 
