@@ -181,8 +181,25 @@ contract('CryptoGiftToken', function (accounts) {
       });
     });
 
+    describe('date is equal to zero', function () {
+      it('reverts', async function () {
+        await assertRevert(
+          this.token.newToken(
+            minter,
+            this.structure.sender,
+            this.structure.receiver,
+            this.structure.message,
+            this.structure.youtube,
+            0,
+            this.structure.style,
+            { from: minter }
+          )
+        );
+      });
+    });
+
     describe('if max supply has been already reached', function () {
-      it('revert', async function () {
+      it('reverts', async function () {
         const oldGeneratedToken = await this.token.generatedTokens();
         const tokenMaxSupply = await this.token.maxSupply();
         for (let i = oldGeneratedToken; i < tokenMaxSupply.valueOf(); i++) {

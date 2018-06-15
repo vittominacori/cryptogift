@@ -11,7 +11,6 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
     string youtube;
     uint256 date;
     uint256 style;
-    bool visible;
   }
 
   uint256 public generatedTokens = 0;
@@ -44,6 +43,7 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
   public
   returns (uint256)
   {
+    require(_date > 0);
     uint256 tokenId = generatedTokens.add(1);
     _mint(_purchaser, tokenId);
     structureIndex[tokenId] = GiftStructure(
@@ -52,19 +52,23 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
       _message,
       _youtube,
       _date,
-      _style,
-      true
+      _style
     );
     generatedTokens = tokenId;
     return tokenId;
   }
 
   function isVisible (uint256 tokenId) public view returns (bool visible, uint256 date) {
-    GiftStructure storage gift = structureIndex[tokenId];
+    if (exists(tokenId)) {
+      GiftStructure storage gift = structureIndex[tokenId];
 
-    // solium-disable-next-line security/no-block-members
-    visible = block.timestamp >= gift.date && gift.visible;
-    date = gift.date;
+      // solium-disable-next-line security/no-block-members
+      visible = block.timestamp >= gift.date;
+      date = gift.date;
+    } else {
+      visible = false;
+      date = 0;
+    }
   }
 
   function getGift (uint256 tokenId)
@@ -79,10 +83,12 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
     uint256 style
   )
   {
+    require(exists(tokenId));
+
     GiftStructure storage gift = structureIndex[tokenId];
 
     // solium-disable-next-line security/no-block-members
-    require(block.timestamp >= gift.date && gift.visible);
+    require(block.timestamp >= gift.date);
 
     sender = gift.sender;
     receiver = gift.receiver;
@@ -95,9 +101,9 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
   /**
    * @dev Only contract owner or token owner can burn
    */
-  function burn(uint256 _tokenId) public {
-    address tokenOwner = msg.sender == owner ? ownerOf(_tokenId) : msg.sender;
-    super._burn(tokenOwner, _tokenId);
-    structureIndex[_tokenId].visible = false;
+  function burn(uint256 tokenId) public {
+    address tokenOwner = msg.sender == owner ? ownerOf(tokenId) : msg.sender;
+    super._burn(tokenOwner, tokenId);
+    delete structureIndex[tokenId];
   }
 }
