@@ -10,7 +10,6 @@ export default function shouldRBACMintableERC721Token (accounts, creator, minter
   const tokenIds = [1, 2, 3];
 
   beforeEach(async function () {
-    await this.token.addMinter(minter, { from: creator });
     await this.token.mint(creator, tokenIds[0], { from: minter });
     await this.token.mint(creator, tokenIds[1], { from: minter });
   });

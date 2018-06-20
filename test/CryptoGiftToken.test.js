@@ -5,6 +5,8 @@ import latestTime from './helpers/latestTime';
 // import expectThrow from './helpers/expectThrow';
 import assertRevert from './helpers/assertRevert';
 
+import shouldBeAnERC721RBACMintableToken from './ERC721/ERC721RBACMintableToken.behaviour';
+
 const BigNumber = web3.BigNumber;
 
 require('chai')
@@ -12,7 +14,7 @@ require('chai')
   .use(require('chai-bignumber')(BigNumber))
   .should();
 
-const CryptoGiftToken = artifacts.require('CryptoGiftToken.sol');
+const CryptoGiftToken = artifacts.require('CryptoGiftTokenMock.sol');
 
 contract('CryptoGiftToken', function (accounts) {
   const name = 'CryptoGiftToken';
@@ -232,5 +234,13 @@ contract('CryptoGiftToken', function (accounts) {
         );
       });
     });
+  });
+
+  context('like an ERC721RBACMintableToken', function () {
+    beforeEach(async function () {
+      await this.token.addMinter(minter, { from: creator });
+    });
+
+    shouldBeAnERC721RBACMintableToken(accounts, creator, minter, name, symbol);
   });
 });
