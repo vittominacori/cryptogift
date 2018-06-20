@@ -5,6 +5,7 @@ import "./ERC721RBACMintableToken.sol";
 
 contract CryptoGiftToken is ERC721RBACMintableToken {
   struct GiftStructure {
+    address purchaser;
     string sender;
     string receiver;
     string message;
@@ -32,6 +33,7 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
 
   function newToken(
     address _purchaser,
+    address _beneficiary,
     string _sender,
     string _receiver,
     string _message,
@@ -45,8 +47,9 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
   {
     require(_date > 0);
     uint256 tokenId = progressiveId.add(1);
-    _mint(_purchaser, tokenId);
+    _mint(_beneficiary, tokenId);
     structureIndex[tokenId] = GiftStructure(
+      _purchaser,
       _sender,
       _receiver,
       _message,
@@ -75,6 +78,8 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
   public
   view
   returns (
+    address purchaser,
+    address beneficiary,
     string sender,
     string receiver,
     string message,
@@ -90,6 +95,8 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
     // solium-disable-next-line security/no-block-members
     require(block.timestamp >= gift.date);
 
+    purchaser = gift.purchaser;
+    beneficiary = ownerOf(tokenId);
     sender = gift.sender;
     receiver = gift.receiver;
     message = gift.message;

@@ -16,11 +16,15 @@ require('chai')
 
 const CryptoGiftToken = artifacts.require('CryptoGiftTokenMock.sol');
 
+const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
+
 contract('CryptoGiftToken', function (accounts) {
   const name = 'CryptoGiftToken';
   const symbol = 'CGT';
   const creator = accounts[0];
   const minter = accounts[1];
+  const beneficiary = accounts[2];
+  const anotherAccount = accounts[3];
   const maxSupply = new BigNumber(3);
   // const anotherAccount = accounts[3];
 
@@ -49,6 +53,7 @@ contract('CryptoGiftToken', function (accounts) {
       await this.token.addMinter(minter, { from: creator });
       await this.token.newToken(
         minter,
+        beneficiary,
         this.structure.sender,
         this.structure.receiver,
         this.structure.message,
@@ -78,33 +83,43 @@ contract('CryptoGiftToken', function (accounts) {
         });
 
         describe('check metadata', function () {
+          it('has a purchaser', async function () {
+            const tokenPurchaser = tokenStructure[0];
+            tokenPurchaser.should.be.equal(minter);
+          });
+
+          it('has a beneficiary', async function () {
+            const tokenBeneficiary = tokenStructure[1];
+            tokenBeneficiary.should.be.equal(beneficiary);
+          });
+
           it('has a sender', async function () {
-            const tokenSender = tokenStructure[0];
+            const tokenSender = tokenStructure[2];
             tokenSender.should.be.equal(this.structure.sender);
           });
 
           it('has a receiver', async function () {
-            const tokenReceiver = tokenStructure[1];
+            const tokenReceiver = tokenStructure[3];
             tokenReceiver.should.be.equal(this.structure.receiver);
           });
 
           it('has a message', async function () {
-            const tokenMessage = tokenStructure[2];
+            const tokenMessage = tokenStructure[4];
             tokenMessage.should.be.equal(this.structure.message);
           });
 
           it('has a youtube', async function () {
-            const tokenYoutube = tokenStructure[3];
+            const tokenYoutube = tokenStructure[5];
             tokenYoutube.should.be.equal(this.structure.youtube);
           });
 
           it('has a date', async function () {
-            const tokenDate = tokenStructure[4];
+            const tokenDate = tokenStructure[6];
             tokenDate.should.be.bignumber.equal(this.structure.date);
           });
 
           it('has a style', async function () {
-            const tokenStyle = tokenStructure[5];
+            const tokenStyle = tokenStructure[7];
             tokenStyle.should.be.bignumber.equal(this.structure.style);
           });
         });
@@ -117,6 +132,7 @@ contract('CryptoGiftToken', function (accounts) {
         beforeEach(async function () {
           await this.token.newToken(
             minter,
+            beneficiary,
             this.structure.sender,
             this.structure.receiver,
             this.structure.message,
@@ -169,6 +185,7 @@ contract('CryptoGiftToken', function (accounts) {
 
         await this.token.newToken(
           minter,
+          beneficiary,
           this.structure.sender,
           this.structure.receiver,
           this.structure.message,
@@ -188,6 +205,7 @@ contract('CryptoGiftToken', function (accounts) {
         await assertRevert(
           this.token.newToken(
             minter,
+            beneficiary,
             this.structure.sender,
             this.structure.receiver,
             this.structure.message,
@@ -207,6 +225,7 @@ contract('CryptoGiftToken', function (accounts) {
         for (let i = oldProgressiveId; i < tokenMaxSupply.valueOf(); i++) {
           await this.token.newToken(
             minter,
+            beneficiary,
             this.structure.sender,
             this.structure.receiver,
             this.structure.message,
@@ -223,6 +242,7 @@ contract('CryptoGiftToken', function (accounts) {
         await assertRevert(
           this.token.newToken(
             minter,
+            beneficiary,
             this.structure.sender,
             this.structure.receiver,
             this.structure.message,
@@ -230,6 +250,42 @@ contract('CryptoGiftToken', function (accounts) {
             this.structure.date,
             this.structure.style,
             { from: minter }
+          )
+        );
+      });
+    });
+
+    describe('if beneficiary is the zero address', function () {
+      it('reverts', async function () {
+        await assertRevert(
+          this.token.newToken(
+            minter,
+            ZERO_ADDRESS,
+            this.structure.sender,
+            this.structure.receiver,
+            this.structure.message,
+            this.structure.youtube,
+            this.structure.date,
+            this.structure.style,
+            { from: minter }
+          )
+        );
+      });
+    });
+
+    describe('if caller has not minter permission', function () {
+      it('reverts', async function () {
+        await assertRevert(
+          this.token.newToken(
+            minter,
+            beneficiary,
+            this.structure.sender,
+            this.structure.receiver,
+            this.structure.message,
+            this.structure.youtube,
+            this.structure.date,
+            this.structure.style,
+            { from: anotherAccount }
           )
         );
       });

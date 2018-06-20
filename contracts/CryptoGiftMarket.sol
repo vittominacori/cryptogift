@@ -126,6 +126,7 @@ contract CryptoGiftMarket {
   returns (uint256)
   {
     return token.newToken(
+      msg.sender,
       _beneficiary,
       _sender,
       _receiver,
