@@ -123,7 +123,7 @@ contract('CryptoGiftMarket', function ([_, wallet, purchaser, beneficiary]) {
 
   describe('token purchase', function () {
     it('should log purchase', async function () {
-      const tokenId = await this.token.generatedTokens();
+      const tokenId = await this.token.progressiveId();
       const { logs } = await this.crowdsale.buyToken(
         beneficiary,
         tokenDetails.sender,

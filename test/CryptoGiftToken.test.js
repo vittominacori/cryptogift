@@ -56,7 +56,7 @@ contract('CryptoGiftToken', function (accounts) {
         { from: minter }
       );
 
-      tokenId = await this.token.generatedTokens();
+      tokenId = await this.token.progressiveId();
     });
 
     context('metadata', function () {
@@ -124,7 +124,7 @@ contract('CryptoGiftToken', function (accounts) {
             { from: minter }
           );
 
-          tokenId = await this.token.generatedTokens();
+          tokenId = await this.token.progressiveId();
           tokenVisibility = await this.token.isVisible(tokenId);
         });
 
@@ -161,9 +161,9 @@ contract('CryptoGiftToken', function (accounts) {
       });
     });
 
-    describe('generated tokens', function () {
+    describe('progressive id', function () {
       it('should increase', async function () {
-        const oldGeneratedToken = await this.token.generatedTokens();
+        const oldProgressiveId = await this.token.progressiveId();
 
         await this.token.newToken(
           minter,
@@ -175,9 +175,9 @@ contract('CryptoGiftToken', function (accounts) {
           this.structure.style,
           { from: minter }
         );
-        const newGeneratedToken = await this.token.generatedTokens();
+        const newProgressiveId = await this.token.progressiveId();
 
-        newGeneratedToken.should.be.bignumber.equal(oldGeneratedToken.add(1));
+        newProgressiveId.should.be.bignumber.equal(oldProgressiveId.add(1));
       });
     });
 
@@ -200,9 +200,9 @@ contract('CryptoGiftToken', function (accounts) {
 
     describe('if max supply has been already reached', function () {
       it('reverts', async function () {
-        const oldGeneratedToken = await this.token.generatedTokens();
+        const oldProgressiveId = await this.token.progressiveId();
         const tokenMaxSupply = await this.token.maxSupply();
-        for (let i = oldGeneratedToken; i < tokenMaxSupply.valueOf(); i++) {
+        for (let i = oldProgressiveId; i < tokenMaxSupply.valueOf(); i++) {
           await this.token.newToken(
             minter,
             this.structure.sender,
@@ -215,8 +215,8 @@ contract('CryptoGiftToken', function (accounts) {
           );
         }
 
-        const newGeneratedToken = await this.token.generatedTokens();
-        newGeneratedToken.should.be.bignumber.equal(tokenMaxSupply);
+        const newProgressiveId = await this.token.progressiveId();
+        newProgressiveId.should.be.bignumber.equal(tokenMaxSupply);
 
         await assertRevert(
           this.token.newToken(
