@@ -2,11 +2,9 @@ App = {
   web3Provider: null,
   contracts: {},
   instances: {},
-
   init: function () {
     return App.initWeb3();
   },
-
   initWeb3: function () {
     // Initialize web3 and set the provider to the testRPC.
     if (typeof web3 !== 'undefined') {
@@ -20,7 +18,6 @@ App = {
 
     return App.initContract();
   },
-
   initContract: function () {
     $.getJSON('CryptoGiftToken.json', function(data) {
       // Get the necessary contract artifact file and instantiate it with truffle-contract.
@@ -37,7 +34,6 @@ App = {
       App.contracts.CryptoGiftMarket.setProvider(App.web3Provider);
     });
   },
-
   deployToken: async function () {
     const name = 'CryptoGiftToken';
     const symbol = 'GIFT';
@@ -47,7 +43,6 @@ App = {
 
     console.log(logs);
   },
-
 };
 
 $(function() {

@@ -16,7 +16,7 @@ contract ERC721RBACMintableToken is ERC721Token, Ownable, RBAC {
   string public constant ROLE_MINTER = "minter";
 
   modifier canMint() {
-    require(!mintingFinished);
+    require(!mintingFinished, "Minting is finished");
     _;
   }
 
@@ -36,7 +36,7 @@ contract ERC721RBACMintableToken is ERC721Token, Ownable, RBAC {
    * @dev add a minter role to an address
    * @param minter address
    */
-  function addMinter(address minter) onlyOwner public {
+  function addMinter(address minter) public onlyOwner {
     addRole(minter, ROLE_MINTER);
   }
 
@@ -44,7 +44,7 @@ contract ERC721RBACMintableToken is ERC721Token, Ownable, RBAC {
    * @dev remove a minter role from an address
    * @param minter address
    */
-  function removeMinter(address minter) onlyOwner public {
+  function removeMinter(address minter) public onlyOwner {
     removeRole(minter, ROLE_MINTER);
   }
 
@@ -52,7 +52,7 @@ contract ERC721RBACMintableToken is ERC721Token, Ownable, RBAC {
    * @dev Function to stop minting new tokens.
    * @return True if the operation was successful.
    */
-  function finishMinting() onlyOwner canMint public returns (bool) {
+  function finishMinting() public onlyOwner canMint returns (bool) {
     mintingFinished = true;
     emit MintFinished();
     return true;
@@ -61,7 +61,7 @@ contract ERC721RBACMintableToken is ERC721Token, Ownable, RBAC {
   /**
    * @dev Override to add the can mint check
    */
-  function _mint(address _to, uint256 _tokenId) canMint hasMintPermission internal {
+  function _mint(address _to, uint256 _tokenId) internal canMint hasMintPermission {
     super._mint(_to, _tokenId);
   }
 }

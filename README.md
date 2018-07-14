@@ -26,8 +26,8 @@ Code created using [Open Zeppelin (openzeppelin-solidity)](https://github.com/Op
 Install truffle, compiler and linter.
 
 ```bash
-npm install -g truffle      // Version 4.1.11+ required.
-npm install -g solium       // Version 1.1.7+ required.
+npm install -g truffle      // Version 4.1.13+ required.
+npm install -g solium       // Version 1.1.8+ required.
 ```
 
 
@@ -105,7 +105,7 @@ npm install -g truffle-flattener
 Usage 
 
 ```bash
-truffle-flattener contracts/Migrations.sol >> dist/Migrations.sol
+truffle-flattener contracts/CryptoGiftToken.sol >> dist/CryptoGiftToken.sol
 ```
  
 

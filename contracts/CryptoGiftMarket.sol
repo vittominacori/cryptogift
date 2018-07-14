@@ -39,9 +39,9 @@ contract CryptoGiftMarket {
    * @param _token Address of the token being sold
    */
   constructor(uint256 _price, address _wallet, CryptoGiftToken _token) public {
-    require(_price > 0);
-    require(_wallet != address(0));
-    require(_token != address(0));
+    require(_price > 0, "Price must be greater than zero");
+    require(_wallet != address(0), "Wallet can't be the zero address");
+    require(_token != address(0), "Token can't be the zero address");
 
     price = _price;
     wallet = _wallet;
@@ -106,8 +106,8 @@ contract CryptoGiftMarket {
   internal
   view
   {
-    require(_beneficiary != address(0));
-    require(_weiAmount == price);
+    require(_beneficiary != address(0), "Beneficiary can't be the zero address");
+    require(_weiAmount == price, "Sent ETH must be equal to token price");
   }
 
   /**

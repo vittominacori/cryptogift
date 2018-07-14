@@ -21,7 +21,7 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
   mapping(uint256 => GiftStructure) structureIndex;
 
   modifier canGenerate() {
-    require(progressiveId < maxSupply);
+    require(progressiveId < maxSupply, "Max token supply reached");
     _;
   }
 
@@ -41,11 +41,11 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
     uint256 _date,
     uint256 _style
   )
-  canGenerate
   public
+  canGenerate
   returns (uint256)
   {
-    require(_date > 0);
+    require(_date > 0, "Date must be greater than zero");
     uint256 tokenId = progressiveId.add(1);
     _mint(_beneficiary, tokenId);
     structureIndex[tokenId] = GiftStructure(
@@ -88,12 +88,12 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
     uint256 style
   )
   {
-    require(exists(tokenId));
+    require(exists(tokenId), "Token must exists");
 
     GiftStructure storage gift = structureIndex[tokenId];
 
     // solium-disable-next-line security/no-block-members
-    require(block.timestamp >= gift.date);
+    require(block.timestamp >= gift.date, "Now should be greater than gift date");
 
     purchaser = gift.purchaser;
     beneficiary = ownerOf(tokenId);
