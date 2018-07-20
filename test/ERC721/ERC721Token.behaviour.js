@@ -1,6 +1,7 @@
 import assertRevert from '../helpers/assertRevert';
 import shouldBehaveLikeERC721BasicToken from './ERC721BasicToken.behaviour';
 import shouldMintAndBurnERC721Token from './ERC721MintBurn.behaviour';
+import shouldSupportInterfaces from '../introspection/SupportsInterface.behavior';
 import _ from 'lodash';
 
 const BigNumber = web3.BigNumber;
@@ -18,6 +19,11 @@ export default function shouldBeAnERC721Token (accounts, creator, minter, name, 
   shouldMintAndBurnERC721Token(accounts, tokenIds);
 
   describe('like a full ERC721', function () {
+    beforeEach(async function () {
+      await this.token.mint(creator, firstTokenId, { from: minter });
+      await this.token.mint(creator, secondTokenId, { from: minter });
+    });
+
     describe('mint', function () {
       const to = accounts[1];
       const tokenId = 3;
@@ -183,4 +189,12 @@ export default function shouldBeAnERC721Token (accounts, creator, minter, name, 
       });
     });
   });
+
+  shouldSupportInterfaces([
+    'ERC165',
+    'ERC721',
+    'ERC721Exists',
+    'ERC721Enumerable',
+    'ERC721Metadata',
+  ]);
 }

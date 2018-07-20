@@ -28,8 +28,8 @@ contract('CryptoGiftMarket', function ([_, wallet, purchaser, beneficiary]) {
     style: 1,
   };
 
-  const price = ether(0.01);
-  const value = ether(0.01);
+  const price = ether(0.0001);
+  const value = ether(0.0001);
 
   beforeEach(async function () {
     this.token = await CryptoGiftToken.new(name, symbol, maxSupply);

@@ -4,15 +4,10 @@ import assertRevert from '../helpers/assertRevert';
 
 const ROLE_MINTER = 'minter';
 
-export default function shouldRBACMintableERC721Token (accounts, creator, minter, name, symbol) {
+export default function shouldBehaveLikeRBACMintableERC721Token (accounts, creator, minter, name, symbol) {
   const anotherAccount = accounts[3];
 
   const tokenIds = [1, 2, 3];
-
-  beforeEach(async function () {
-    await this.token.mint(creator, tokenIds[0], { from: minter });
-    await this.token.mint(creator, tokenIds[1], { from: minter });
-  });
 
   describe('handle roles', function () {
     it('owner can add and remove a minter role', async function () {
@@ -132,4 +127,4 @@ export default function shouldRBACMintableERC721Token (accounts, creator, minter
       });
     });
   });
-};
+}

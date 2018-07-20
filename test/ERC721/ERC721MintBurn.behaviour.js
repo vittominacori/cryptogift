@@ -8,6 +8,7 @@ require('chai')
 
 export default function shouldMintAndBurnERC721Token (accounts, tokenIds) {
   const firstTokenId = tokenIds[0];
+  const secondTokenId = tokenIds[1];
   const unknownTokenId = 3;
   const creator = accounts[0];
   const minter = accounts[1];
@@ -15,6 +16,11 @@ export default function shouldMintAndBurnERC721Token (accounts, tokenIds) {
   const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
   describe('like a mintable and burnable ERC721Token', function () {
+    beforeEach(async function () {
+      await this.token.mint(creator, firstTokenId, { from: minter });
+      await this.token.mint(creator, secondTokenId, { from: minter });
+    });
+
     describe('mint', function () {
       const to = accounts[1];
       const tokenId = unknownTokenId;
@@ -95,17 +101,6 @@ export default function shouldMintAndBurnERC721Token (accounts, tokenIds) {
           const approvedAccount = await this.token.getApproved(tokenId);
           approvedAccount.should.be.equal(ZERO_ADDRESS);
         });
-
-        it('emits an approval event', async function () {
-          logs.length.should.be.equal(2);
-
-          logs[0].event.should.be.eq('Approval');
-          logs[0].args._owner.should.be.equal(sender);
-          logs[0].args._approved.should.be.equal(ZERO_ADDRESS);
-          logs[0].args._tokenId.should.be.bignumber.equal(tokenId);
-
-          logs[1].event.should.be.eq('Transfer');
-        });
       });
 
       describe('when sender is not the contract owner', function () {
@@ -131,4 +126,4 @@ export default function shouldMintAndBurnERC721Token (accounts, tokenIds) {
       });
     });
   });
-};
+}
