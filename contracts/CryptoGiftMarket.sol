@@ -38,14 +38,14 @@ contract CryptoGiftMarket {
    * @param _wallet Address where collected funds will be forwarded to
    * @param _token Address of the token being sold
    */
-  constructor(uint256 _price, address _wallet, CryptoGiftToken _token) public {
+  constructor(uint256 _price, address _wallet, address _token) public {
     require(_price > 0, "Price must be greater than zero");
     require(_wallet != address(0), "Wallet can't be the zero address");
     require(_token != address(0), "Token can't be the zero address");
 
     price = _price;
     wallet = _wallet;
-    token = _token;
+    token = CryptoGiftToken(_token);
   }
 
   /**
