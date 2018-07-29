@@ -14,7 +14,8 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
     uint256 style;
   }
 
-  uint256 public progressiveId = 0;
+  uint256 public styles;
+  uint256 public progressiveId;
   uint256 public maxSupply;
 
   // Mapping from token ID to the structures
@@ -46,6 +47,7 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
   returns (uint256)
   {
     require(_date > 0, "Date must be greater than zero");
+    require(_style <= styles, "Style is not available");
     uint256 tokenId = progressiveId.add(1);
     _mint(_beneficiary, tokenId);
     structureIndex[tokenId] = GiftStructure(
@@ -112,5 +114,13 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
     address tokenOwner = msg.sender == owner ? ownerOf(tokenId) : msg.sender;
     super._burn(tokenOwner, tokenId);
     delete structureIndex[tokenId];
+  }
+
+  /**
+   * @dev Set the max amount of styles available
+   */
+  function setStyles(uint256 _styles) public hasMintPermission {
+    require(_styles > styles, "Styles cannot be decreased");
+    styles = _styles;
   }
 }

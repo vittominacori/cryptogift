@@ -42,10 +42,48 @@ contract('CryptoGiftToken', function (accounts) {
       message: 'Lorem Ipsum',
       youtube: 'ABCD-123',
       date: latestTime() - duration.weeks(1),
-      style: 1,
+      style: 0,
     };
 
     this.token = await CryptoGiftToken.new(name, symbol, maxSupply, { from: creator });
+  });
+
+  context('check initial values', function () {
+    beforeEach(async function () {
+      await this.token.addMinter(minter, { from: creator });
+    });
+
+    describe('styles', function () {
+      it('should be zero', async function () {
+        (await this.token.styles()).should.be.bignumber.equal(0);
+      });
+
+      it('minter should be able to update', async function () {
+        const newStyle = new BigNumber(3);
+        await this.token.setStyles(newStyle, { from: minter });
+        (await this.token.styles()).should.be.bignumber.equal(newStyle);
+      });
+
+      it('minter should fail to update if less than actual value', async function () {
+        const newStyle = new BigNumber(3);
+        await this.token.setStyles(newStyle, { from: minter });
+        (await this.token.styles()).should.be.bignumber.equal(newStyle);
+
+        const invalidValue = new BigNumber(3);
+        await assertRevert(
+          this.token.setStyles(invalidValue, { from: minter })
+        );
+        (await this.token.styles()).should.be.bignumber.equal(newStyle);
+      });
+
+      it('another account should fail to update', async function () {
+        const newStyle = new BigNumber(3);
+        await assertRevert(
+          this.token.setStyles(newStyle, { from: anotherAccount })
+        );
+        (await this.token.styles()).should.be.bignumber.equal(0);
+      });
+    });
   });
 
   context('creating new token', function () {
@@ -212,6 +250,24 @@ contract('CryptoGiftToken', function (accounts) {
             this.structure.youtube,
             0,
             this.structure.style,
+            { from: minter }
+          )
+        );
+      });
+    });
+
+    describe('style is not available', function () {
+      it('reverts', async function () {
+        await assertRevert(
+          this.token.newToken(
+            minter,
+            beneficiary,
+            this.structure.sender,
+            this.structure.receiver,
+            this.structure.message,
+            this.structure.youtube,
+            this.structure.date,
+            999,
             { from: minter }
           )
         );

@@ -25,7 +25,7 @@ contract('CryptoGiftMarket', function ([_, wallet, purchaser, beneficiary]) {
     message: 'Happy Birthday!',
     youtube: 'ABCD-123',
     date: Date.now(),
-    style: 1,
+    style: 0,
   };
 
   const price = ether(0.0001);
@@ -109,7 +109,7 @@ contract('CryptoGiftMarket', function ([_, wallet, purchaser, beneficiary]) {
           tokenDetails.youtube,
           tokenDetails.date,
           tokenDetails.style,
-          { value: value.mul(2), from: purchaser }
+          { value: value.div(2), from: purchaser }
         )
       );
     });

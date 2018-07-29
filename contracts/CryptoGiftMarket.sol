@@ -16,9 +16,6 @@ contract CryptoGiftMarket {
   // The price for a token
   uint256 public price;
 
-  // Amount of wei raised
-  uint256 public weiRaised;
-
   /**
    * Event for token purchase logging
    * @param purchaser who paid for the tokens
@@ -67,9 +64,6 @@ contract CryptoGiftMarket {
     uint256 weiAmount = msg.value;
     _preValidatePurchase(_beneficiary, weiAmount);
 
-    // update state
-    weiRaised = weiRaised.add(weiAmount);
-
     uint256 lastTokenId = _processPurchase(
       _beneficiary,
       _sender,
@@ -107,7 +101,7 @@ contract CryptoGiftMarket {
   view
   {
     require(_beneficiary != address(0), "Beneficiary can't be the zero address");
-    require(_weiAmount == price, "Sent ETH must be equal to token price");
+    require(_weiAmount >= price, "Sent ETH must be greater than or equal to token price");
   }
 
   /**
