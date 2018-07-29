@@ -167,7 +167,8 @@ contract('CryptoGiftMarket', function ([_, wallet, purchaser, beneficiary, anoth
     });
 
     it('should forward funds to wallet', async function () {
-      const pre = web3.eth.getBalance(wallet);
+      const preWallet = web3.eth.getBalance(wallet);
+      const preBeneficiary = web3.eth.getBalance(beneficiary);
       await this.crowdsale.buyToken(
         beneficiary,
         tokenDetails.sender,
@@ -176,10 +177,12 @@ contract('CryptoGiftMarket', function ([_, wallet, purchaser, beneficiary, anoth
         tokenDetails.youtube,
         tokenDetails.date,
         tokenDetails.style,
-        { value: value, from: purchaser }
+        { value: price.mul(3), from: purchaser }
       );
-      const post = web3.eth.getBalance(wallet);
-      post.minus(pre).should.be.bignumber.equal(value);
+      const postWallet = web3.eth.getBalance(wallet);
+      postWallet.minus(preWallet).should.be.bignumber.equal(price);
+      const postBeneficiary = web3.eth.getBalance(beneficiary);
+      postBeneficiary.minus(preBeneficiary).should.be.bignumber.equal(price.mul(2));
     });
   });
 });

@@ -63,6 +63,8 @@ contract CryptoGiftMarket is Ownable {
     uint256 weiAmount = msg.value;
     _preValidatePurchase(_beneficiary, weiAmount);
 
+    uint256 giftValue = msg.value.sub(price);
+
     uint256 lastTokenId = _processPurchase(
       _beneficiary,
       _sender,
@@ -80,7 +82,7 @@ contract CryptoGiftMarket is Ownable {
       lastTokenId
     );
 
-    _forwardFunds();
+    _forwardFunds(giftValue, _beneficiary);
   }
 
   function setPrice(uint256 _price) public onlyOwner {
@@ -137,7 +139,13 @@ contract CryptoGiftMarket is Ownable {
   /**
    * @dev Determines how ETH is stored/forwarded on purchases.
    */
-  function _forwardFunds() internal {
-    wallet.transfer(msg.value);
+  function _forwardFunds(uint256 _giftValue, address _beneficiary) internal {
+    if (price > 0) {
+      wallet.transfer(price);
+    }
+
+    if (_giftValue > 0) {
+      _beneficiary.transfer(_giftValue);
+    }
   }
 }
