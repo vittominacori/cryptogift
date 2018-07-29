@@ -4,7 +4,7 @@ import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "./CryptoGiftToken.sol";
 
 
-contract CryptoGiftMarket {
+contract CryptoGiftMarket is Ownable {
   using SafeMath for uint256;
 
   // The token being sold
@@ -36,7 +36,6 @@ contract CryptoGiftMarket {
    * @param _token Address of the token being sold
    */
   constructor(uint256 _price, address _wallet, address _token) public {
-    require(_price > 0, "Price must be greater than zero");
     require(_wallet != address(0), "Wallet can't be the zero address");
     require(_token != address(0), "Token can't be the zero address");
 
@@ -82,6 +81,10 @@ contract CryptoGiftMarket {
     );
 
     _forwardFunds();
+  }
+
+  function setPrice(uint256 _price) public onlyOwner {
+    price = _price;
   }
 
   // -----------------------------------------

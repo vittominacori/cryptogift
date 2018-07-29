@@ -14,7 +14,7 @@ const CryptoGiftToken = artifacts.require('CryptoGiftToken.sol');
 const ROLE_MINTER = 'minter';
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
-contract('CryptoGiftMarket', function ([_, wallet, purchaser, beneficiary]) {
+contract('CryptoGiftMarket', function ([_, wallet, purchaser, beneficiary, anotherAccount]) {
   const name = 'CryptoGiftToken';
   const symbol = 'CGT';
   const maxSupply = new BigNumber(3);
@@ -38,14 +38,6 @@ contract('CryptoGiftMarket', function ([_, wallet, purchaser, beneficiary]) {
   });
 
   context('creating a valid market', function () {
-    describe('if price is zero', function () {
-      it('reverts ', async function () {
-        await assertRevert(
-          CryptoGiftMarket.new(0, wallet, this.token.address)
-        );
-      });
-    });
-
     describe('if wallet is the zero address', function () {
       it('reverts ', async function () {
         await assertRevert(
@@ -67,6 +59,23 @@ contract('CryptoGiftMarket', function ([_, wallet, purchaser, beneficiary]) {
     it('should have minter role on token', async function () {
       const isMinter = await this.token.hasRole(this.crowdsale.address, ROLE_MINTER);
       isMinter.should.equal(true);
+    });
+
+    it('price should be right set', async function () {
+      (await this.crowdsale.price()).should.be.bignumber.equal(price);
+    });
+
+    describe('change price', function () {
+      it('owner can change price', async function () {
+        await this.crowdsale.setPrice(price.mul(2));
+        (await this.crowdsale.price()).should.be.bignumber.equal(price.mul(2));
+      });
+
+      it('others can\'t change price', async function () {
+        await assertRevert(
+          this.crowdsale.setPrice(price.mul(2), { from: anotherAccount })
+        );
+      });
     });
   });
 
