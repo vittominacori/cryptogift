@@ -4,6 +4,7 @@ import { duration } from './helpers/increaseTime';
 import latestTime from './helpers/latestTime';
 // import expectThrow from './helpers/expectThrow';
 import assertRevert from './helpers/assertRevert';
+import ether from './helpers/ether';
 
 import shouldBehaveLikeRBACMintableERC721Token from './ERC721/ERC721RBACMintableToken.behaviour';
 
@@ -37,6 +38,7 @@ contract('CryptoGiftToken', function (accounts) {
 
   beforeEach(async function () {
     this.structure = {
+      amount: ether(0.1),
       sender: 'Paperino',
       receiver: 'Topolino',
       message: 'Lorem Ipsum',
@@ -90,6 +92,7 @@ contract('CryptoGiftToken', function (accounts) {
     beforeEach(async function () {
       await this.token.addMinter(minter, { from: creator });
       await this.token.newToken(
+        this.structure.amount,
         minter,
         beneficiary,
         this.structure.sender,
@@ -121,43 +124,48 @@ contract('CryptoGiftToken', function (accounts) {
         });
 
         describe('check metadata', function () {
+          it('has an amount', async function () {
+            const tokenAmount = tokenStructure[0];
+            tokenAmount.should.be.bignumber.equal(this.structure.amount);
+          });
+
           it('has a purchaser', async function () {
-            const tokenPurchaser = tokenStructure[0];
+            const tokenPurchaser = tokenStructure[1];
             tokenPurchaser.should.be.equal(minter);
           });
 
           it('has a beneficiary', async function () {
-            const tokenBeneficiary = tokenStructure[1];
+            const tokenBeneficiary = tokenStructure[2];
             tokenBeneficiary.should.be.equal(beneficiary);
           });
 
           it('has a sender', async function () {
-            const tokenSender = tokenStructure[2];
+            const tokenSender = tokenStructure[3];
             tokenSender.should.be.equal(this.structure.sender);
           });
 
           it('has a receiver', async function () {
-            const tokenReceiver = tokenStructure[3];
+            const tokenReceiver = tokenStructure[4];
             tokenReceiver.should.be.equal(this.structure.receiver);
           });
 
           it('has a message', async function () {
-            const tokenMessage = tokenStructure[4];
+            const tokenMessage = tokenStructure[5];
             tokenMessage.should.be.equal(this.structure.message);
           });
 
           it('has a youtube', async function () {
-            const tokenYoutube = tokenStructure[5];
+            const tokenYoutube = tokenStructure[6];
             tokenYoutube.should.be.equal(this.structure.youtube);
           });
 
           it('has a date', async function () {
-            const tokenDate = tokenStructure[6];
+            const tokenDate = tokenStructure[7];
             tokenDate.should.be.bignumber.equal(this.structure.date);
           });
 
           it('has a style', async function () {
-            const tokenStyle = tokenStructure[7];
+            const tokenStyle = tokenStructure[8];
             tokenStyle.should.be.bignumber.equal(this.structure.style);
           });
         });
@@ -169,6 +177,7 @@ contract('CryptoGiftToken', function (accounts) {
 
         beforeEach(async function () {
           await this.token.newToken(
+            this.structure.amount,
             minter,
             beneficiary,
             this.structure.sender,
@@ -222,6 +231,7 @@ contract('CryptoGiftToken', function (accounts) {
         const oldProgressiveId = await this.token.progressiveId();
 
         await this.token.newToken(
+          this.structure.amount,
           minter,
           beneficiary,
           this.structure.sender,
@@ -242,6 +252,7 @@ contract('CryptoGiftToken', function (accounts) {
       it('reverts', async function () {
         await assertRevert(
           this.token.newToken(
+            this.structure.amount,
             minter,
             beneficiary,
             this.structure.sender,
@@ -260,6 +271,7 @@ contract('CryptoGiftToken', function (accounts) {
       it('reverts', async function () {
         await assertRevert(
           this.token.newToken(
+            this.structure.amount,
             minter,
             beneficiary,
             this.structure.sender,
@@ -280,6 +292,7 @@ contract('CryptoGiftToken', function (accounts) {
         const tokenMaxSupply = await this.token.maxSupply();
         for (let i = oldProgressiveId; i < tokenMaxSupply.valueOf(); i++) {
           await this.token.newToken(
+            this.structure.amount,
             minter,
             beneficiary,
             this.structure.sender,
@@ -297,6 +310,7 @@ contract('CryptoGiftToken', function (accounts) {
 
         await assertRevert(
           this.token.newToken(
+            this.structure.amount,
             minter,
             beneficiary,
             this.structure.sender,
@@ -315,6 +329,7 @@ contract('CryptoGiftToken', function (accounts) {
       it('reverts', async function () {
         await assertRevert(
           this.token.newToken(
+            this.structure.amount,
             minter,
             ZERO_ADDRESS,
             this.structure.sender,
@@ -333,6 +348,7 @@ contract('CryptoGiftToken', function (accounts) {
       it('reverts', async function () {
         await assertRevert(
           this.token.newToken(
+            this.structure.amount,
             minter,
             beneficiary,
             this.structure.sender,

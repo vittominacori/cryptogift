@@ -1,7 +1,7 @@
 {
   "package_name": "cryptogift",
   "version": "1.0.0",
-  "description": "An ERC721 token and Crowdsale to buy and give away an Ethereum based Collectible Gift",
+  "description": "An ERC721 NFT Token and Marketplace to buy and give away an Ethereum based Collectible Gift",
   "authors": [
     "Vittorio Minacori (@vittominacori)"
   ],

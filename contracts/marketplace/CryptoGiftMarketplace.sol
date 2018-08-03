@@ -63,8 +63,8 @@ contract CryptoGiftMarketplace is Ownable {
     uint256 _date,
     uint256 _style
   )
-  public
-  payable
+    public
+    payable
   {
     uint256 weiAmount = msg.value;
     _preValidatePurchase(_beneficiary, weiAmount);
@@ -72,6 +72,7 @@ contract CryptoGiftMarketplace is Ownable {
     uint256 giftValue = msg.value.sub(price);
 
     uint256 lastTokenId = _processPurchase(
+      giftValue,
       _beneficiary,
       _sender,
       _receiver,
@@ -108,8 +109,8 @@ contract CryptoGiftMarketplace is Ownable {
     address _beneficiary,
     uint256 _weiAmount
   )
-  internal
-  view
+    internal
+    view
   {
     require(
       _beneficiary != address(0),
@@ -125,6 +126,7 @@ contract CryptoGiftMarketplace is Ownable {
    * @dev Executed when a purchase has been validated and is ready to be executed.
    */
   function _processPurchase(
+    uint256 _amount,
     address _beneficiary,
     string _sender,
     string _receiver,
@@ -137,6 +139,7 @@ contract CryptoGiftMarketplace is Ownable {
     returns (uint256)
   {
     return token.newToken(
+      _amount,
       msg.sender,
       _beneficiary,
       _sender,

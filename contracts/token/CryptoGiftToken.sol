@@ -5,6 +5,7 @@ import "./base/ERC721RBACMintableToken.sol";
 
 contract CryptoGiftToken is ERC721RBACMintableToken {
   struct GiftStructure {
+    uint256 amount;
     address purchaser;
     string sender;
     string receiver;
@@ -41,6 +42,7 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
   }
 
   function newToken(
+    uint256 _amount,
     address _purchaser,
     address _beneficiary,
     string _sender,
@@ -65,6 +67,7 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
     uint256 tokenId = progressiveId.add(1);
     _mint(_beneficiary, tokenId);
     structureIndex[tokenId] = GiftStructure(
+      _amount,
       _purchaser,
       _sender,
       _receiver,
@@ -100,6 +103,7 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
     public
     view
     returns (
+      uint256 amount,
       address purchaser,
       address beneficiary,
       string sender,
@@ -122,6 +126,7 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
       "Now should be greater than gift date"
     );
 
+    amount = gift.amount;
     purchaser = gift.purchaser;
     beneficiary = ownerOf(tokenId);
     sender = gift.sender;

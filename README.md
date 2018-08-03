@@ -4,7 +4,7 @@
 [![Coverage Status](https://coveralls.io/repos/github/vittominacori/cryptogift/badge.svg?branch=master)](https://coveralls.io/github/vittominacori/cryptogift?branch=master)
 
 
-An ERC721 token and Crowdsale to buy and give away an Ethereum based Collectible Gift.
+An ERC721 NFT Token and Marketplace to buy and give away an Ethereum based Collectible Gift.
 
 
 Gift has:
