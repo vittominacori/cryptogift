@@ -36,8 +36,14 @@ contract CryptoGiftMarket is Ownable {
    * @param _token Address of the token being sold
    */
   constructor(uint256 _price, address _wallet, address _token) public {
-    require(_wallet != address(0), "Wallet can't be the zero address");
-    require(_token != address(0), "Token can't be the zero address");
+    require(
+      _wallet != address(0),
+      "Wallet can't be the zero address"
+    );
+    require(
+      _token != address(0),
+      "Token can't be the zero address"
+    );
 
     price = _price;
     wallet = _wallet;
@@ -105,8 +111,14 @@ contract CryptoGiftMarket is Ownable {
   internal
   view
   {
-    require(_beneficiary != address(0), "Beneficiary can't be the zero address");
-    require(_weiAmount >= price, "Sent ETH must be greater than or equal to token price");
+    require(
+      _beneficiary != address(0),
+      "Beneficiary can't be the zero address"
+    );
+    require(
+      _weiAmount >= price,
+      "Sent ETH must be greater than or equal to token price"
+    );
   }
 
   /**

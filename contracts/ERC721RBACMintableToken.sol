@@ -16,7 +16,10 @@ contract ERC721RBACMintableToken is ERC721Token, Ownable, RBAC {
   string public constant ROLE_MINTER = "minter";
 
   modifier canMint() {
-    require(!mintingFinished, "Minting is finished");
+    require(
+      !mintingFinished,
+      "Minting is finished"
+    );
     _;
   }
 
@@ -61,7 +64,14 @@ contract ERC721RBACMintableToken is ERC721Token, Ownable, RBAC {
   /**
    * @dev Override to add the can mint check
    */
-  function _mint(address _to, uint256 _tokenId) internal canMint hasMintPermission {
+  function _mint(
+    address _to,
+    uint256 _tokenId
+  )
+    internal
+    canMint
+    hasMintPermission
+  {
     super._mint(_to, _tokenId);
   }
 }

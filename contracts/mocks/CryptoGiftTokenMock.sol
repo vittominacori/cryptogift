@@ -11,7 +11,14 @@ contract CryptoGiftTokenMock is CryptoGiftToken {
   /**
    * @dev Only for test purpose
    */
-  function mint(address _to, uint256 _tokenId) public canMint hasMintPermission {
+  function mint(
+    address _to,
+    uint256 _tokenId
+  )
+    public
+    canMint
+    hasMintPermission
+  {
     _mint(_to, _tokenId);
   }
 

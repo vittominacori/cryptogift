@@ -22,7 +22,10 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
   mapping(uint256 => GiftStructure) structureIndex;
 
   modifier canGenerate() {
-    require(progressiveId < maxSupply, "Max token supply reached");
+    require(
+      progressiveId < maxSupply,
+      "Max token supply reached"
+    );
     _;
   }
 
@@ -46,8 +49,14 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
   canGenerate
   returns (uint256)
   {
-    require(_date > 0, "Date must be greater than zero");
-    require(_style <= styles, "Style is not available");
+    require(
+      _date > 0,
+      "Date must be greater than zero"
+    );
+    require(
+      _style <= styles,
+      "Style is not available"
+    );
     uint256 tokenId = progressiveId.add(1);
     _mint(_beneficiary, tokenId);
     structureIndex[tokenId] = GiftStructure(
@@ -63,7 +72,13 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
     return tokenId;
   }
 
-  function isVisible (uint256 tokenId) public view returns (bool visible, uint256 date) {
+  function isVisible (
+    uint256 tokenId
+  )
+    public
+    view
+    returns (bool visible, uint256 date)
+  {
     if (exists(tokenId)) {
       GiftStructure storage gift = structureIndex[tokenId];
 
@@ -90,12 +105,17 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
     uint256 style
   )
   {
-    require(exists(tokenId), "Token must exists");
+    require(
+      exists(tokenId),
+      "Token must exists"
+    );
 
     GiftStructure storage gift = structureIndex[tokenId];
 
-    // solium-disable-next-line security/no-block-members
-    require(block.timestamp >= gift.date, "Now should be greater than gift date");
+    require(
+      block.timestamp >= gift.date, // solium-disable-line security/no-block-members
+      "Now should be greater than gift date"
+    );
 
     purchaser = gift.purchaser;
     beneficiary = ownerOf(tokenId);
@@ -120,7 +140,10 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
    * @dev Set the max amount of styles available
    */
   function setStyles(uint256 _styles) public hasMintPermission {
-    require(_styles > styles, "Styles cannot be decreased");
+    require(
+      _styles > styles,
+      "Styles cannot be decreased"
+    );
     styles = _styles;
   }
 }
