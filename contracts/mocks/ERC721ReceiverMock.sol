@@ -15,7 +15,12 @@ contract ERC721ReceiverMock is ERC721Receiver {
     uint256 _gas
   );
 
-  constructor(bytes4 _retval, bool _reverts) public {
+  constructor(
+    bytes4 _retval,
+    bool _reverts
+  )
+    public
+  {
     retval = _retval;
     reverts = _reverts;
   }
@@ -26,8 +31,8 @@ contract ERC721ReceiverMock is ERC721Receiver {
     uint256 _tokenId,
     bytes _data
   )
-  public
-  returns(bytes4)
+    public
+    returns(bytes4)
   {
     require(!reverts, "The ERC721ReceiverMock contract reverts");
     emit Received(

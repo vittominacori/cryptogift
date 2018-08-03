@@ -1,12 +1,18 @@
 pragma solidity ^0.4.24;
 
-import "../CryptoGiftToken.sol";
+import "../token/CryptoGiftToken.sol";
 
 
 contract CryptoGiftTokenMock is CryptoGiftToken {
-  constructor(string _name, string _symbol, uint256 _maxSupply) public
-  CryptoGiftToken(_name, _symbol, _maxSupply)
-  { }
+
+  constructor(
+    string _name,
+    string _symbol,
+    uint256 _maxSupply
+  )
+    public
+    CryptoGiftToken(_name, _symbol, _maxSupply)
+  {}
 
   /**
    * @dev Only for test purpose

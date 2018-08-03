@@ -31,9 +31,10 @@ contract ERC721RBACMintableToken is ERC721Token, Ownable, RBAC {
     _;
   }
 
-  constructor(string _name, string _symbol) public
-  ERC721Token(_name, _symbol)
-  { }
+  constructor(string _name, string _symbol)
+    public
+    ERC721Token(_name, _symbol)
+  {}
 
   /**
    * @dev add a minter role to an address
@@ -68,9 +69,9 @@ contract ERC721RBACMintableToken is ERC721Token, Ownable, RBAC {
     address _to,
     uint256 _tokenId
   )
-    internal
-    canMint
-    hasMintPermission
+  internal
+  canMint
+  hasMintPermission
   {
     super._mint(_to, _tokenId);
   }

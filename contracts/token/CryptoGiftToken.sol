@@ -1,6 +1,6 @@
 pragma solidity ^0.4.24;
 
-import "./ERC721RBACMintableToken.sol";
+import "./base/ERC721RBACMintableToken.sol";
 
 
 contract CryptoGiftToken is ERC721RBACMintableToken {
@@ -29,8 +29,13 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
     _;
   }
 
-  constructor(string _name, string _symbol, uint256 _maxSupply) public
-  ERC721RBACMintableToken(_name, _symbol)
+  constructor(
+    string _name,
+    string _symbol,
+    uint256 _maxSupply
+  )
+    public
+    ERC721RBACMintableToken(_name, _symbol)
   {
     maxSupply = _maxSupply;
   }
@@ -45,9 +50,9 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
     uint256 _date,
     uint256 _style
   )
-  public
-  canGenerate
-  returns (uint256)
+    public
+    canGenerate
+    returns (uint256)
   {
     require(
       _date > 0,
@@ -92,18 +97,18 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
   }
 
   function getGift (uint256 tokenId)
-  public
-  view
-  returns (
-    address purchaser,
-    address beneficiary,
-    string sender,
-    string receiver,
-    string message,
-    string youtube,
-    uint256 date,
-    uint256 style
-  )
+    public
+    view
+    returns (
+      address purchaser,
+      address beneficiary,
+      string sender,
+      string receiver,
+      string message,
+      string youtube,
+      uint256 date,
+      uint256 style
+    )
   {
     require(
       exists(tokenId),

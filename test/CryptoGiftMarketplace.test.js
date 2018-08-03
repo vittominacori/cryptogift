@@ -8,13 +8,13 @@ const should = require('chai')
   .use(require('chai-bignumber')(BigNumber))
   .should();
 
-const CryptoGiftMarket = artifacts.require('CryptoGiftMarket.sol');
+const CryptoGiftMarketplace = artifacts.require('CryptoGiftMarketplace.sol');
 const CryptoGiftToken = artifacts.require('CryptoGiftToken.sol');
 
 const ROLE_MINTER = 'minter';
 const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 
-contract('CryptoGiftMarket', function ([_, wallet, purchaser, beneficiary, anotherAccount]) {
+contract('CryptoGiftMarketplace', function ([_, wallet, purchaser, beneficiary, anotherAccount]) {
   const name = 'CryptoGiftToken';
   const symbol = 'CGT';
   const maxSupply = new BigNumber(3);
@@ -33,15 +33,15 @@ contract('CryptoGiftMarket', function ([_, wallet, purchaser, beneficiary, anoth
 
   beforeEach(async function () {
     this.token = await CryptoGiftToken.new(name, symbol, maxSupply);
-    this.crowdsale = await CryptoGiftMarket.new(price, wallet, this.token.address);
-    await this.token.addMinter(this.crowdsale.address);
+    this.marketplace = await CryptoGiftMarketplace.new(price, wallet, this.token.address);
+    await this.token.addMinter(this.marketplace.address);
   });
 
-  context('creating a valid market', function () {
+  context('creating a valid marketplace', function () {
     describe('if wallet is the zero address', function () {
       it('reverts ', async function () {
         await assertRevert(
-          CryptoGiftMarket.new(price, ZERO_ADDRESS, this.token.address)
+          CryptoGiftMarketplace.new(price, ZERO_ADDRESS, this.token.address)
         );
       });
     });
@@ -49,7 +49,7 @@ contract('CryptoGiftMarket', function ([_, wallet, purchaser, beneficiary, anoth
     describe('if token is the zero address', function () {
       it('reverts ', async function () {
         await assertRevert(
-          CryptoGiftMarket.new(price, wallet, ZERO_ADDRESS)
+          CryptoGiftMarketplace.new(price, wallet, ZERO_ADDRESS)
         );
       });
     });
@@ -57,23 +57,23 @@ contract('CryptoGiftMarket', function ([_, wallet, purchaser, beneficiary, anoth
 
   describe('after creation', function () {
     it('should have minter role on token', async function () {
-      const isMinter = await this.token.hasRole(this.crowdsale.address, ROLE_MINTER);
+      const isMinter = await this.token.hasRole(this.marketplace.address, ROLE_MINTER);
       isMinter.should.equal(true);
     });
 
     it('price should be right set', async function () {
-      (await this.crowdsale.price()).should.be.bignumber.equal(price);
+      (await this.marketplace.price()).should.be.bignumber.equal(price);
     });
 
     describe('change price', function () {
       it('owner can change price', async function () {
-        await this.crowdsale.setPrice(price.mul(2));
-        (await this.crowdsale.price()).should.be.bignumber.equal(price.mul(2));
+        await this.marketplace.setPrice(price.mul(2));
+        (await this.marketplace.price()).should.be.bignumber.equal(price.mul(2));
       });
 
       it('others can\'t change price', async function () {
         await assertRevert(
-          this.crowdsale.setPrice(price.mul(2), { from: anotherAccount })
+          this.marketplace.setPrice(price.mul(2), { from: anotherAccount })
         );
       });
     });
@@ -81,7 +81,7 @@ contract('CryptoGiftMarket', function ([_, wallet, purchaser, beneficiary, anoth
 
   describe('accepting payments', function () {
     it('should accept payments through buyToken function', async function () {
-      await this.crowdsale.buyToken(
+      await this.marketplace.buyToken(
         beneficiary,
         tokenDetails.sender,
         tokenDetails.receiver,
@@ -95,7 +95,7 @@ contract('CryptoGiftMarket', function ([_, wallet, purchaser, beneficiary, anoth
 
     it('should reject payments if beneficiary is zero address', async function () {
       await assertRevert(
-        this.crowdsale.buyToken(
+        this.marketplace.buyToken(
           ZERO_ADDRESS,
           tokenDetails.sender,
           tokenDetails.receiver,
@@ -110,7 +110,7 @@ contract('CryptoGiftMarket', function ([_, wallet, purchaser, beneficiary, anoth
 
     it('should reject payments with an invalid price', async function () {
       await assertRevert(
-        this.crowdsale.buyToken(
+        this.marketplace.buyToken(
           beneficiary,
           tokenDetails.sender,
           tokenDetails.receiver,
@@ -125,7 +125,7 @@ contract('CryptoGiftMarket', function ([_, wallet, purchaser, beneficiary, anoth
 
     it('should reject payments through default payable function', async function () {
       await assertRevert(
-        this.crowdsale.send(value)
+        this.marketplace.send(value)
       );
     });
   });
@@ -133,7 +133,7 @@ contract('CryptoGiftMarket', function ([_, wallet, purchaser, beneficiary, anoth
   describe('token purchase', function () {
     it('should log purchase', async function () {
       const tokenId = await this.token.progressiveId();
-      const { logs } = await this.crowdsale.buyToken(
+      const { logs } = await this.marketplace.buyToken(
         beneficiary,
         tokenDetails.sender,
         tokenDetails.receiver,
@@ -152,7 +152,7 @@ contract('CryptoGiftMarket', function ([_, wallet, purchaser, beneficiary, anoth
     });
 
     it('should assign token to beneficiary', async function () {
-      await this.crowdsale.buyToken(
+      await this.marketplace.buyToken(
         beneficiary,
         tokenDetails.sender,
         tokenDetails.receiver,
@@ -169,7 +169,7 @@ contract('CryptoGiftMarket', function ([_, wallet, purchaser, beneficiary, anoth
     it('should forward funds to wallet', async function () {
       const preWallet = web3.eth.getBalance(wallet);
       const preBeneficiary = web3.eth.getBalance(beneficiary);
-      await this.crowdsale.buyToken(
+      await this.marketplace.buyToken(
         beneficiary,
         tokenDetails.sender,
         tokenDetails.receiver,

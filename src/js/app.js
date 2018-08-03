@@ -26,12 +26,12 @@ App = {
       // Set the provider for our contract.
       App.contracts.CryptoGiftToken.setProvider(App.web3Provider);
     });
-    $.getJSON('CryptoGiftMarket.json', function(data) {
+    $.getJSON('CryptoGiftMarketplace.json', function(data) {
       // Get the necessary contract artifact file and instantiate it with truffle-contract.
-      App.contracts.CryptoGiftMarket = TruffleContract(data);
+      App.contracts.CryptoGiftMarketplace = TruffleContract(data);
 
       // Set the provider for our contract.
-      App.contracts.CryptoGiftMarket.setProvider(App.web3Provider);
+      App.contracts.CryptoGiftMarketplace.setProvider(App.web3Provider);
     });
   },
   deployToken: async function () {

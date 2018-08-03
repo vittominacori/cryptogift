@@ -1,10 +1,10 @@
 pragma solidity ^0.4.24;
 
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
-import "./CryptoGiftToken.sol";
+import "../token/CryptoGiftToken.sol";
 
 
-contract CryptoGiftMarket is Ownable {
+contract CryptoGiftMarketplace is Ownable {
   using SafeMath for uint256;
 
   // The token being sold
@@ -133,8 +133,8 @@ contract CryptoGiftMarket is Ownable {
     uint256 _date,
     uint256 _style
   )
-  internal
-  returns (uint256)
+    internal
+    returns (uint256)
   {
     return token.newToken(
       msg.sender,
