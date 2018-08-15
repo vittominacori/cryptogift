@@ -1,10 +1,10 @@
-import expectThrow from '../helpers/expectThrow';
-import shouldBeAnERC721Token from './ERC721Token.behaviour';
-import assertRevert from '../helpers/assertRevert';
+const { expectThrow } = require('../helpers/expectThrow');
+const { shouldBeAnERC721Token } = require('./ERC721Token.behaviour');
+const { assertRevert } = require('../helpers/assertRevert');
 
 const ROLE_MINTER = 'minter';
 
-export default function shouldBehaveLikeRBACMintableERC721Token (accounts, creator, minter, name, symbol) {
+function shouldBehaveLikeRBACMintableERC721Token (accounts, creator, minter, name, symbol) {
   const anotherAccount = accounts[3];
 
   const tokenIds = [1, 2, 3];
@@ -128,3 +128,7 @@ export default function shouldBehaveLikeRBACMintableERC721Token (accounts, creat
     });
   });
 }
+
+module.exports = {
+  shouldBehaveLikeRBACMintableERC721Token,
+};

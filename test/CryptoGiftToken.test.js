@@ -1,12 +1,10 @@
-import { advanceBlock } from './helpers/advanceToBlock';
-import { duration } from './helpers/increaseTime';
-// import { increaseTimeTo, duration } from './helpers/increaseTime';
-import latestTime from './helpers/latestTime';
-// import expectThrow from './helpers/expectThrow';
-import assertRevert from './helpers/assertRevert';
-import ether from './helpers/ether';
+const { advanceBlock } = require('./helpers/advanceToBlock');
+const { duration } = require('./helpers/increaseTime');
+const { latestTime } = require('./helpers/latestTime');
+const { ether } = require('./helpers/ether');
+const { assertRevert } = require('./helpers/assertRevert');
 
-import shouldBehaveLikeRBACMintableERC721Token from './ERC721/ERC721RBACMintableToken.behaviour';
+const { shouldBehaveLikeRBACMintableERC721Token } = require('./ERC721/ERC721RBACMintableToken.behaviour');
 
 const BigNumber = web3.BigNumber;
 
@@ -43,7 +41,7 @@ contract('CryptoGiftToken', function (accounts) {
       receiver: 'Topolino',
       message: 'Lorem Ipsum',
       youtube: 'ABCD-123',
-      date: latestTime() - duration.weeks(1),
+      date: (await latestTime()) - duration.weeks(1),
       style: 0,
     };
 
@@ -173,9 +171,11 @@ contract('CryptoGiftToken', function (accounts) {
 
       describe('when now is less than gift date', function () {
         let tokenVisibility;
-        const giftTime = latestTime() + duration.weeks(1);
+        let giftTime;
 
         beforeEach(async function () {
+          giftTime = (await latestTime()) + duration.weeks(1);
+
           await this.token.newToken(
             this.structure.amount,
             minter,

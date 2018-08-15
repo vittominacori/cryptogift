@@ -1,5 +1,5 @@
-import ether from './helpers/ether';
-import assertRevert from './helpers/assertRevert';
+const { ether } = require('./helpers/ether');
+const { assertRevert } = require('./helpers/assertRevert');
 
 const BigNumber = web3.BigNumber;
 
@@ -39,7 +39,7 @@ contract('CryptoGiftMarketplace', function ([_, wallet, purchaser, beneficiary, 
 
   context('creating a valid marketplace', function () {
     describe('if wallet is the zero address', function () {
-      it('reverts ', async function () {
+      it('reverts', async function () {
         await assertRevert(
           CryptoGiftMarketplace.new(price, ZERO_ADDRESS, this.token.address)
         );
@@ -47,7 +47,7 @@ contract('CryptoGiftMarketplace', function ([_, wallet, purchaser, beneficiary, 
     });
 
     describe('if token is the zero address', function () {
-      it('reverts ', async function () {
+      it('reverts', async function () {
         await assertRevert(
           CryptoGiftMarketplace.new(price, wallet, ZERO_ADDRESS)
         );

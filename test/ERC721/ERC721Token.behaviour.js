@@ -1,8 +1,8 @@
-import assertRevert from '../helpers/assertRevert';
-import shouldBehaveLikeERC721BasicToken from './ERC721BasicToken.behaviour';
-import shouldMintAndBurnERC721Token from './ERC721MintBurn.behaviour';
-import shouldSupportInterfaces from '../introspection/SupportsInterface.behavior';
-import _ from 'lodash';
+const { assertRevert } = require('../helpers/assertRevert');
+const { shouldBehaveLikeERC721BasicToken } = require('./ERC721BasicToken.behaviour');
+const { shouldMintAndBurnERC721Token } = require('./ERC721MintBurn.behaviour');
+const { shouldSupportInterfaces } = require('../introspection/SupportsInterface.behavior');
+const _ = require('lodash');
 
 const BigNumber = web3.BigNumber;
 
@@ -11,7 +11,7 @@ require('chai')
   .use(require('chai-bignumber')(BigNumber))
   .should();
 
-export default function shouldBeAnERC721Token (accounts, creator, minter, name, symbol, tokenIds) {
+function shouldBeAnERC721Token (accounts, creator, minter, name, symbol, tokenIds) {
   const firstTokenId = tokenIds[0];
   const secondTokenId = tokenIds[1];
 
@@ -198,3 +198,7 @@ export default function shouldBeAnERC721Token (accounts, creator, minter, name, 
     'ERC721Metadata',
   ]);
 }
+
+module.exports = {
+  shouldBeAnERC721Token,
+};
