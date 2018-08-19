@@ -1,7 +1,6 @@
 const { shouldSupportInterfaces } = require('../introspection/SupportsInterface.behavior');
 const { assertRevert } = require('../helpers/assertRevert');
-// TODO re-enable decodeLogs
-// const { decodeLogs } = require('../helpers/decodeLogs');
+const { decodeLogs } = require('../helpers/decodeLogs');
 const { sendTransaction } = require('../helpers/sendTransaction');
 const _ = require('lodash');
 
@@ -277,12 +276,11 @@ function shouldBehaveLikeERC721BasicToken (accounts, tokenIds) {
 
             shouldTransferTokensByUsers(transferFun);
 
-            /*
             it('should call onERC721Received', async function () {
               const result = await transferFun.call(this, owner, this.to, tokenId, { from: owner });
               result.receipt.logs.length.should.be.equal(2);
               const [log] = decodeLogs([result.receipt.logs[1]], ERC721Receiver, this.receiver.address);
-              log.event.should.be.eq('Received');
+              log.event.should.be.equal('Received');
               log.args._operator.should.be.equal(owner);
               log.args._from.should.be.equal(owner);
               log.args._tokenId.toNumber().should.be.equal(tokenId);
@@ -293,13 +291,12 @@ function shouldBehaveLikeERC721BasicToken (accounts, tokenIds) {
               const result = await transferFun.call(this, owner, this.to, tokenId, { from: approved });
               result.receipt.logs.length.should.be.equal(2);
               const [log] = decodeLogs([result.receipt.logs[1]], ERC721Receiver, this.receiver.address);
-              log.event.should.be.eq('Received');
+              log.event.should.be.equal('Received');
               log.args._operator.should.be.equal(approved);
               log.args._from.should.be.equal(owner);
               log.args._tokenId.toNumber().should.be.equal(tokenId);
               log.args._data.should.be.equal(data);
             });
-            */
 
             describe('with an invalid token id', function () {
               it('reverts', async function () {
