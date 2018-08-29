@@ -23,11 +23,10 @@ Code created using [Open Zeppelin (openzeppelin-solidity)](https://github.com/Op
 ## Installation
 
 
-Install truffle, compiler and linter.
+Install truffle.
 
 ```bash
 npm install -g truffle      // Version 4.1.13+ required.
-npm install -g solium       // Version 1.1.8+ required.
 ```
 
 
@@ -47,12 +46,18 @@ npm install
 Use Solium
 
 ```bash
-solium -d contracts
+npm run lint:sol
+```
+
+Lint and fix all
+
+```bash
+npm run lint:all:fix
 ```
 
 
 
-## Compile, migrate and test the contracts.
+## Compile and test the contracts.
  
 
 Open the Truffle console
@@ -67,12 +72,6 @@ Compile
 compile 
 ```
 
-Migrate
-
-```bash
-migrate
-```
-
 Test
 
 ```bash
@@ -84,7 +83,7 @@ test
 ## Run server
 
 
-Run the `liteserver` development server for front-end hot reloading. For now, smart contract changes must be manually recompiled and migrated.
+Run the `liteserver` development server.
 
 ```bash
 npm run dev
@@ -124,4 +123,4 @@ OpenZeppelin [Doc](https://openzeppelin.org/api/docs/open-zeppelin.html) [Github
 
 Truffle [Doc](http://truffleframework.com/docs) [Github](https://github.com/trufflesuite/truffle)
 
-Web3.js [Doc 0.20.4](https://github.com/ethereum/wiki/wiki/JavaScript-API) [Doc 1.0](http://web3js.readthedocs.io/en/1.0) [Github](https://github.com/ethereum/web3.js)
+Web3.js [Doc 0.20.6](https://github.com/ethereum/wiki/wiki/JavaScript-API) [Doc 1.0](http://web3js.readthedocs.io/en/1.0) [Github](https://github.com/ethereum/web3.js)

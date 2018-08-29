@@ -20,6 +20,10 @@ coverageEnv
 # node-waf configuration
 .lock-wscript
 
+# ide config
+.idea
+
+# npm lock
 package-lock.json
 
 # Dependency directory

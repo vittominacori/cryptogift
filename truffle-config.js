@@ -3,10 +3,10 @@ require('dotenv').config();
 module.exports = {
   networks: {
     develop: {
-      host: "127.0.0.1",
+      host: '127.0.0.1',
       port: 9545,
-      network_id: "*", // Match any network id
-      gas: 6000000 // Gas limit used for deploys
+      network_id: '*', // eslint-disable-line camelcase
+      gas: 6000000, // Gas limit used for deploys
     },
     coverage: {
       host: 'localhost',
@@ -24,7 +24,7 @@ module.exports = {
   solc: {
     optimizer: {
       enabled: true,
-      runs: 200
-    }
-  }
+      runs: 200,
+    },
+  },
 };
