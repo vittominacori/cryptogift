@@ -12,7 +12,7 @@ require('chai')
   .use(require('chai-bignumber')(BigNumber))
   .should();
 
-const CryptoGiftToken = artifacts.require('CryptoGiftTokenMock.sol');
+const CryptoGiftToken = artifacts.require('CryptoGiftTokenMock');
 
 contract('CryptoGiftToken', function (
   [

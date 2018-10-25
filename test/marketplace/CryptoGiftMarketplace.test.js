@@ -1,5 +1,6 @@
-const { ether } = require('./helpers/ether');
-const { assertRevert } = require('./helpers/assertRevert');
+const { ether } = require('openzeppelin-solidity/test/helpers/ether');
+const shouldFail = require('openzeppelin-solidity/test/helpers/shouldFail');
+const { ZERO_ADDRESS } = require('openzeppelin-solidity/test/helpers/constants');
 
 const BigNumber = web3.BigNumber;
 
@@ -7,13 +8,10 @@ const should = require('chai')
   .use(require('chai-bignumber')(BigNumber))
   .should();
 
-const CryptoGiftMarketplace = artifacts.require('CryptoGiftMarketplace.sol');
-const CryptoGiftToken = artifacts.require('CryptoGiftToken.sol');
+const CryptoGiftMarketplace = artifacts.require('CryptoGiftMarketplace');
+const CryptoGiftToken = artifacts.require('CryptoGiftToken');
 
-const ROLE_MINTER = 'minter';
-const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
-
-contract('CryptoGiftMarketplace', function ([_, wallet, purchaser, beneficiary, anotherAccount]) {
+contract('CryptoGiftMarketplace', function ([owner, wallet, purchaser, beneficiary, anotherAccount]) {
   const name = 'CryptoGiftToken';
   const symbol = 'CGT';
   const maxSupply = new BigNumber(3);
@@ -31,24 +29,24 @@ contract('CryptoGiftMarketplace', function ([_, wallet, purchaser, beneficiary, 
   const value = ether(0.0001);
 
   beforeEach(async function () {
-    this.token = await CryptoGiftToken.new(name, symbol, maxSupply);
-    this.marketplace = await CryptoGiftMarketplace.new(price, wallet, this.token.address);
-    await this.token.addMinter(this.marketplace.address);
+    this.token = await CryptoGiftToken.new(name, symbol, maxSupply, { from: owner });
+    this.marketplace = await CryptoGiftMarketplace.new(price, wallet, this.token.address, { from: owner });
+    await this.token.addMinter(this.marketplace.address, { from: owner });
   });
 
   context('creating a valid marketplace', function () {
     describe('if wallet is the zero address', function () {
       it('reverts', async function () {
-        await assertRevert(
-          CryptoGiftMarketplace.new(price, ZERO_ADDRESS, this.token.address)
+        await shouldFail.reverting(
+          CryptoGiftMarketplace.new(price, ZERO_ADDRESS, this.token.address, { from: owner })
         );
       });
     });
 
     describe('if token is the zero address', function () {
       it('reverts', async function () {
-        await assertRevert(
-          CryptoGiftMarketplace.new(price, wallet, ZERO_ADDRESS)
+        await shouldFail.reverting(
+          CryptoGiftMarketplace.new(price, wallet, ZERO_ADDRESS, { from: owner })
         );
       });
     });
@@ -56,7 +54,7 @@ contract('CryptoGiftMarketplace', function ([_, wallet, purchaser, beneficiary, 
 
   describe('after creation', function () {
     it('should have minter role on token', async function () {
-      const isMinter = await this.token.hasRole(this.marketplace.address, ROLE_MINTER);
+      const isMinter = await this.token.isMinter(this.marketplace.address);
       isMinter.should.equal(true);
     });
 
@@ -71,7 +69,7 @@ contract('CryptoGiftMarketplace', function ([_, wallet, purchaser, beneficiary, 
       });
 
       it('others can\'t change price', async function () {
-        await assertRevert(
+        await shouldFail.reverting(
           this.marketplace.setPrice(price.mul(2), { from: anotherAccount })
         );
       });
@@ -89,11 +87,11 @@ contract('CryptoGiftMarketplace', function ([_, wallet, purchaser, beneficiary, 
         tokenDetails.date,
         tokenDetails.style,
         { value: value, from: purchaser }
-      ).should.be.fulfilled;
+      );
     });
 
     it('should reject payments if beneficiary is zero address', async function () {
-      await assertRevert(
+      await shouldFail.reverting(
         this.marketplace.buyToken(
           ZERO_ADDRESS,
           tokenDetails.sender,
@@ -108,7 +106,7 @@ contract('CryptoGiftMarketplace', function ([_, wallet, purchaser, beneficiary, 
     });
 
     it('should reject payments with an invalid price', async function () {
-      await assertRevert(
+      await shouldFail.reverting(
         this.marketplace.buyToken(
           beneficiary,
           tokenDetails.sender,
@@ -123,7 +121,7 @@ contract('CryptoGiftMarketplace', function ([_, wallet, purchaser, beneficiary, 
     });
 
     it('should reject payments through default payable function', async function () {
-      await assertRevert(
+      await shouldFail.reverting(
         this.marketplace.send(value)
       );
     });
