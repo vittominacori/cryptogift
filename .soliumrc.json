@@ -2,7 +2,9 @@
   "extends": "solium:all",
   "plugins": ["security"],
   "rules": {
+    "blank-lines": "off",
     "indentation": ["error", 2],
+    "lbrace": "off",
     "linebreak-style": ["error", "unix"],
     "max-len": ["error", 79],
     "no-constant": ["error"],

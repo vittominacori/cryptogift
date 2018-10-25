@@ -5,33 +5,32 @@ import "../token/CryptoGiftToken.sol";
 
 contract CryptoGiftTokenMock is CryptoGiftToken {
 
-  constructor(
-    string _name,
-    string _symbol,
-    uint256 _maxSupply
-  )
-    public
-    CryptoGiftToken(_name, _symbol, _maxSupply)
-  {}
+	constructor(
+		string name,
+		string symbol,
+		uint256 maxSupply
+	)
+		public
+		CryptoGiftToken(name, symbol, maxSupply)
+	{}
 
-  /**
-   * @dev Only for test purpose
-   */
-  function mint(
-    address _to,
-    uint256 _tokenId
-  )
-    public
-    canMint
-    hasMintPermission
-  {
-    _mint(_to, _tokenId);
-  }
+	function mint(address to, uint256 tokenId) public {
+		_mint(to, tokenId);
+	}
 
-  /**
-   * @dev Only for test purpose
-   */
-  function setTokenURI(uint256 _tokenId, string _uri) public {
-    super._setTokenURI(_tokenId, _uri);
-  }
+	function burn(uint256 tokenId) public {
+		_burn(ownerOf(tokenId), tokenId);
+	}
+
+	function exists(uint256 tokenId) public view returns (bool) {
+		return _exists(tokenId);
+	}
+
+	function setTokenURI(uint256 tokenId, string uri) public {
+		_setTokenURI(tokenId, uri);
+	}
+
+	function removeTokenFrom(address from, uint256 tokenId) public {
+		_removeTokenFrom(from, tokenId);
+	}
 }

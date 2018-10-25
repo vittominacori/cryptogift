@@ -2,7 +2,6 @@
   "name": "cryptogift",
   "version": "1.0.0",
   "description": "An ERC721 NFT Token and Marketplace to buy and give away an Ethereum based Collectible Gift",
-  "main": "truffle-config.js",
   "directories": {
     "test": "test"
   },
@@ -26,13 +25,7 @@
     "contracts",
     "erc721"
   ],
-  "author": "@vittominacori",
-  "contributors": [
-    {
-      "name": "Vittorio Minacori",
-      "url": "https://github.com/vittominacori"
-    }
-  ],
+  "author": "Vittorio Minacori (https://github.com/vittominacori)",
   "repository": {
     "type": "git",
     "url": "https://github.com/vittominacori/cryptogift.git"
@@ -42,35 +35,28 @@
     "url": "https://github.com/vittominacori/cryptogift/issues"
   },
   "license": "MIT",
+  "dependencies": {
+    "openzeppelin-solidity": "^2.0.0",
+    "web3": "^0.20.6"
+  },
   "devDependencies": {
     "chai": "^4.2.0",
-    "chai-as-promised": "^7.1.1",
     "chai-bignumber": "^2.0.2",
     "coveralls": "^3.0.2",
     "dotenv": "^6.1.0",
-    "eslint": "^5.6.1",
+    "eslint": "^5.7.0",
     "eslint-config-standard": "^12.0.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-node": "^7.0.1",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
-    "ethereumjs-abi": "^0.6.5",
-    "ethereumjs-util": "^6.0.0",
-    "ethereumjs-wallet": "^0.6.2",
     "ethjs-abi": "^0.2.1",
-    "ganache-cli": "6.1.0",
-    "lite-server": "^2.4.0",
-    "log4js": "^3.0.6",
-    "openzeppelin-solidity": "^1.12.0",
-    "prompt-sync": "^4.1.6",
+    "ganache-cli": "6.1.8",
     "solidity-coverage": "^0.5.11",
     "solium": "^1.1.8",
     "truffle": "^4.1.14",
-    "truffle-contract": "^3.0.6",
-    "truffle-hdwallet-provider": "0.0.3",
-    "truffle-wallet-provider": "0.0.5",
-    "web3": "^0.20.6",
-    "web3-eth-abi": "^1.0.0-beta.36",
+    "truffle-hdwallet-provider": "0.0.6",
+    "vuepress": "^0.14.4",
     "web3-utils": "^1.0.0-beta.36"
   }
 }

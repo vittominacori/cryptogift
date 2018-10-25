@@ -1,15 +1,13 @@
-const { advanceBlock } = require('./helpers/advanceToBlock');
-const { duration } = require('./helpers/increaseTime');
-const { latestTime } = require('./helpers/latestTime');
-const { ether } = require('./helpers/ether');
-const { assertRevert } = require('./helpers/assertRevert');
+const { advanceBlock } = require('openzeppelin-solidity/test/helpers/advanceToBlock');
+const time = require('openzeppelin-solidity/test/helpers/time');
+const { ether } = require('openzeppelin-solidity/test/helpers/ether');
+const shouldFail = require('openzeppelin-solidity/test/helpers/shouldFail');
 
-const { shouldBehaveLikeRBACMintableERC721Token } = require('./ERC721/ERC721RBACMintableToken.behaviour');
+const { shouldBehaveLikeERC721Full } = require('./behaviors/ERC721Full.behavior');
 
 const BigNumber = web3.BigNumber;
 
 require('chai')
-  .use(require('chai-as-promised'))
   .use(require('chai-bignumber')(BigNumber))
   .should();
 
@@ -20,6 +18,7 @@ const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
 contract('CryptoGiftToken', function (accounts) {
   const name = 'CryptoGiftToken';
   const symbol = 'CGT';
+
   const creator = accounts[0];
   const minter = accounts[1];
   const beneficiary = accounts[2];
@@ -41,7 +40,7 @@ contract('CryptoGiftToken', function (accounts) {
       receiver: 'Topolino',
       message: 'Lorem Ipsum',
       youtube: 'ABCD-123',
-      date: (await latestTime()) - duration.weeks(1),
+      date: (await time.latest()) - time.duration.weeks(1),
       style: 0,
     };
 
@@ -70,7 +69,7 @@ contract('CryptoGiftToken', function (accounts) {
         (await this.token.styles()).should.be.bignumber.equal(newStyle);
 
         const invalidValue = new BigNumber(3);
-        await assertRevert(
+        await shouldFail.reverting(
           this.token.setStyles(invalidValue, { from: minter })
         );
         (await this.token.styles()).should.be.bignumber.equal(newStyle);
@@ -78,7 +77,7 @@ contract('CryptoGiftToken', function (accounts) {
 
       it('another account should fail to update', async function () {
         const newStyle = new BigNumber(3);
-        await assertRevert(
+        await shouldFail.reverting(
           this.token.setStyles(newStyle, { from: anotherAccount })
         );
         (await this.token.styles()).should.be.bignumber.equal(0);
@@ -174,7 +173,7 @@ contract('CryptoGiftToken', function (accounts) {
         let giftTime;
 
         beforeEach(async function () {
-          giftTime = (await latestTime()) + duration.weeks(1);
+          giftTime = (await time.latest()) + time.duration.weeks(1);
 
           await this.token.newToken(
             this.structure.amount,
@@ -200,7 +199,7 @@ contract('CryptoGiftToken', function (accounts) {
 
         describe('check metadata', function () {
           it('reverts', async function () {
-            await assertRevert(this.token.getGift(tokenId));
+            await shouldFail.reverting(this.token.getGift(tokenId));
           });
         });
       });
@@ -220,7 +219,7 @@ contract('CryptoGiftToken', function (accounts) {
 
         describe('check metadata', function () {
           it('reverts', async function () {
-            await assertRevert(this.token.getGift(tokenId));
+            await shouldFail.reverting(this.token.getGift(tokenId));
           });
         });
       });
@@ -250,7 +249,7 @@ contract('CryptoGiftToken', function (accounts) {
 
     describe('date is equal to zero', function () {
       it('reverts', async function () {
-        await assertRevert(
+        await shouldFail.reverting(
           this.token.newToken(
             this.structure.amount,
             minter,
@@ -269,7 +268,7 @@ contract('CryptoGiftToken', function (accounts) {
 
     describe('style is not available', function () {
       it('reverts', async function () {
-        await assertRevert(
+        await shouldFail.reverting(
           this.token.newToken(
             this.structure.amount,
             minter,
@@ -308,7 +307,7 @@ contract('CryptoGiftToken', function (accounts) {
         const newProgressiveId = await this.token.progressiveId();
         newProgressiveId.should.be.bignumber.equal(tokenMaxSupply);
 
-        await assertRevert(
+        await shouldFail.reverting(
           this.token.newToken(
             this.structure.amount,
             minter,
@@ -327,7 +326,7 @@ contract('CryptoGiftToken', function (accounts) {
 
     describe('if beneficiary is the zero address', function () {
       it('reverts', async function () {
-        await assertRevert(
+        await shouldFail.reverting(
           this.token.newToken(
             this.structure.amount,
             minter,
@@ -346,7 +345,7 @@ contract('CryptoGiftToken', function (accounts) {
 
     describe('if caller has not minter permission', function () {
       it('reverts', async function () {
-        await assertRevert(
+        await shouldFail.reverting(
           this.token.newToken(
             this.structure.amount,
             minter,
@@ -364,11 +363,7 @@ contract('CryptoGiftToken', function (accounts) {
     });
   });
 
-  context('like an ERC721RBACMintableToken', function () {
-    beforeEach(async function () {
-      await this.token.addMinter(minter, { from: creator });
-    });
-
-    shouldBehaveLikeRBACMintableERC721Token(accounts, creator, minter, name, symbol);
+  context.only('like an ERC721Full', function () {
+    shouldBehaveLikeERC721Full(accounts, name, symbol);
   });
 });

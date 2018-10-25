@@ -1,9 +1,11 @@
 pragma solidity ^0.4.24;
 
-import "./base/ERC721RBACMintableToken.sol";
+import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "openzeppelin-solidity/contracts/access/roles/MinterRole.sol";
+import "openzeppelin-solidity/contracts/token/ERC721/ERC721Full.sol";
 
 
-contract CryptoGiftToken is ERC721RBACMintableToken {
+contract CryptoGiftToken is ERC721Full, Ownable, MinterRole {
   struct GiftStructure {
     uint256 amount;
     address purchaser;
@@ -36,7 +38,7 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
     uint256 _maxSupply
   )
     public
-    ERC721RBACMintableToken(_name, _symbol)
+    ERC721Full(_name, _symbol)
   {
     maxSupply = _maxSupply;
   }
@@ -54,6 +56,7 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
   )
     public
     canGenerate
+    onlyMinter
     returns (uint256)
   {
     require(
@@ -87,7 +90,7 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
     view
     returns (bool visible, uint256 date)
   {
-    if (exists(tokenId)) {
+    if (_exists(tokenId)) {
       GiftStructure storage gift = structureIndex[tokenId];
 
       // solium-disable-next-line security/no-block-members
@@ -115,7 +118,7 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
     )
   {
     require(
-      exists(tokenId),
+			_exists(tokenId),
       "Token must exists"
     );
 
@@ -141,7 +144,7 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
    * @dev Only contract owner or token owner can burn
    */
   function burn(uint256 tokenId) public {
-    address tokenOwner = msg.sender == owner ? ownerOf(tokenId) : msg.sender;
+    address tokenOwner = isOwner() ? ownerOf(tokenId) : msg.sender;
     super._burn(tokenOwner, tokenId);
     delete structureIndex[tokenId];
   }
@@ -149,7 +152,7 @@ contract CryptoGiftToken is ERC721RBACMintableToken {
   /**
    * @dev Set the max amount of styles available
    */
-  function setStyles(uint256 _styles) public hasMintPermission {
+  function setStyles(uint256 _styles) public onlyMinter {
     require(
       _styles > styles,
       "Styles cannot be decreased"
