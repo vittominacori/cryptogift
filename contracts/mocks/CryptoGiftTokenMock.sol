@@ -1,9 +1,10 @@
 pragma solidity ^0.4.24;
 
 import "../token/CryptoGiftToken.sol";
+import "openzeppelin-solidity/contracts/token/ERC721/ERC721Mintable.sol";
+import "openzeppelin-solidity/contracts/token/ERC721/ERC721MetadataMintable.sol"; // solium-disable-line max-len
 
-
-contract CryptoGiftTokenMock is CryptoGiftToken {
+contract CryptoGiftTokenMock is CryptoGiftToken, ERC721Mintable, ERC721MetadataMintable { // solium-disable-line max-len
 
   constructor(
     string name,
@@ -13,10 +14,6 @@ contract CryptoGiftTokenMock is CryptoGiftToken {
     public
     CryptoGiftToken(name, symbol, maxSupply)
   {}
-
-  function mint(address to, uint256 tokenId) public {
-    _mint(to, tokenId);
-  }
 
   function exists(uint256 tokenId) public view returns (bool) {
     return _exists(tokenId);

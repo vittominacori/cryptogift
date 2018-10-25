@@ -2,6 +2,7 @@ const { advanceBlock } = require('openzeppelin-solidity/test/helpers/advanceToBl
 const time = require('openzeppelin-solidity/test/helpers/time');
 const { ether } = require('openzeppelin-solidity/test/helpers/ether');
 const shouldFail = require('openzeppelin-solidity/test/helpers/shouldFail');
+const { ZERO_ADDRESS } = require('openzeppelin-solidity/test/helpers/constants');
 
 const { shouldBehaveLikeERC721Full } = require('./behaviors/ERC721Full.behavior');
 
@@ -13,18 +14,19 @@ require('chai')
 
 const CryptoGiftToken = artifacts.require('CryptoGiftTokenMock.sol');
 
-const ZERO_ADDRESS = '0x0000000000000000000000000000000000000000';
-
-contract('CryptoGiftToken', function (accounts) {
+contract('CryptoGiftToken', function (
+  [
+    creator,
+    minter,
+    beneficiary,
+    anotherAccount,
+    ...accounts
+  ]
+) {
   const name = 'CryptoGiftToken';
   const symbol = 'CGT';
 
-  const creator = accounts[0];
-  const minter = accounts[1];
-  const beneficiary = accounts[2];
-  const anotherAccount = accounts[3];
   const maxSupply = new BigNumber(3);
-  // const anotherAccount = accounts[3];
 
   let tokenId;
 
@@ -47,8 +49,12 @@ contract('CryptoGiftToken', function (accounts) {
     this.token = await CryptoGiftToken.new(name, symbol, maxSupply, { from: creator });
   });
 
-  context('like an ERC721Full', function () {
-    shouldBehaveLikeERC721Full(accounts, name, symbol);
+  context('testing ERC721 behaviors', function () {
+    beforeEach(async function () {
+      await this.token.addMinter(minter, { from: creator });
+    });
+
+    shouldBehaveLikeERC721Full(creator, minter, accounts, name, symbol);
   });
 
   context('check initial values', function () {
@@ -212,7 +218,7 @@ contract('CryptoGiftToken', function (accounts) {
         let tokenVisibility;
 
         beforeEach(async function () {
-          await this.token.burn(tokenId);
+          await this.token.burn(tokenId, { from: beneficiary });
           tokenVisibility = await this.token.isVisible(tokenId);
         });
 

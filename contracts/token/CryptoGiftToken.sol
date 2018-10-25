@@ -4,7 +4,6 @@ import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "openzeppelin-solidity/contracts/access/roles/MinterRole.sol";
 import "openzeppelin-solidity/contracts/token/ERC721/ERC721Full.sol";
 
-
 contract CryptoGiftToken is ERC721Full, Ownable, MinterRole {
   struct GiftStructure {
     uint256 amount;

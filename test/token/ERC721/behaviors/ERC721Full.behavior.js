@@ -2,19 +2,19 @@ const shouldFail = require('openzeppelin-solidity/test/helpers/shouldFail');
 const { shouldBehaveLikeERC721 } = require('openzeppelin-solidity/test/token/ERC721/ERC721.behavior');
 const { shouldSupportInterfaces } = require('openzeppelin-solidity/test/introspection/SupportsInterface.behavior');
 
+const { shouldBehaveLikeMintAndBurnERC721 } = require('openzeppelin-solidity/test/token/ERC721/ERC721MintBurn.behavior'); // eslint-disable-line max-len
+
 const BigNumber = web3.BigNumber;
 
 require('chai')
   .use(require('chai-bignumber')(BigNumber))
   .should();
 
-function shouldBehaveLikeERC721Full ([creator, ...accounts], name, symbol) {
+function shouldBehaveLikeERC721Full (creator, minter, accounts, name, symbol) {
   const firstTokenId = 100;
   const secondTokenId = 200;
   const thirdTokenId = 300;
   const nonExistentTokenId = 999;
-
-  const minter = creator;
 
   const [
     owner,
@@ -210,6 +210,7 @@ function shouldBehaveLikeERC721Full ([creator, ...accounts], name, symbol) {
   });
 
   shouldBehaveLikeERC721(creator, minter, accounts);
+  shouldBehaveLikeMintAndBurnERC721(creator, minter, accounts);
 
   shouldSupportInterfaces([
     'ERC165',

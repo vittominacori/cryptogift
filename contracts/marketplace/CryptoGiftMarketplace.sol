@@ -4,7 +4,6 @@ import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "../token/CryptoGiftToken.sol";
 
-
 contract CryptoGiftMarketplace is Ownable {
   using SafeMath for uint256;
 
