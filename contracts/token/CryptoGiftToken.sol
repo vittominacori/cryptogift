@@ -118,7 +118,7 @@ contract CryptoGiftToken is ERC721Full, Ownable, MinterRole {
     )
   {
     require(
-			_exists(tokenId),
+      _exists(tokenId),
       "Token must exists"
     );
 
