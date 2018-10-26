@@ -15,8 +15,7 @@
     "lint": "npm run lint:js && npm run lint:sol",
     "lint:fix": "npm run lint:js:fix && npm run lint:sol:fix",
     "console": "truffle console",
-    "coverage": "scripts/coverage.sh",
-    "version": "scripts/version.js"
+    "coverage": "scripts/coverage.sh"
   },
   "keywords": [
     "solidity",
@@ -56,7 +55,6 @@
     "solium": "^1.1.8",
     "truffle": "^4.1.14",
     "truffle-hdwallet-provider": "0.0.6",
-    "vuepress": "^0.14.4",
     "web3-utils": "^1.0.0-beta.36"
   }
 }

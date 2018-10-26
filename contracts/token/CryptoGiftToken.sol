@@ -16,42 +16,54 @@ contract CryptoGiftToken is ERC721Full, Ownable, MinterRole {
     uint256 style;
   }
 
-  uint256 public styles;
-  uint256 public progressiveId;
-  uint256 public maxSupply;
+  uint256 private _styles;
+  uint256 private _progressiveId;
+  uint256 private _maxSupply;
 
   // Mapping from token ID to the structures
-  mapping(uint256 => GiftStructure) structureIndex;
+  mapping(uint256 => GiftStructure) private _structureIndex;
 
   modifier canGenerate() {
     require(
-      progressiveId < maxSupply,
+      _progressiveId < _maxSupply,
       "Max token supply reached"
     );
     _;
   }
 
   constructor(
-    string _name,
-    string _symbol,
-    uint256 _maxSupply
+    string name,
+    string symbol,
+    uint256 maxSupply
   )
     public
-    ERC721Full(_name, _symbol)
+    ERC721Full(name, symbol)
   {
-    maxSupply = _maxSupply;
+    _maxSupply = maxSupply;
+  }
+
+  function styles() public view returns (uint256) {
+    return _styles;
+  }
+
+  function progressiveId() public view returns (uint256) {
+    return _progressiveId;
+  }
+
+  function maxSupply() public view returns (uint256) {
+    return _maxSupply;
   }
 
   function newToken(
-    uint256 _amount,
-    address _purchaser,
-    address _beneficiary,
-    string _sender,
-    string _receiver,
-    string _message,
-    string _youtube,
-    uint256 _date,
-    uint256 _style
+    uint256 amount,
+    address purchaser,
+    address beneficiary,
+    string sender,
+    string receiver,
+    string message,
+    string youtube,
+    uint256 date,
+    uint256 style
   )
     public
     canGenerate
@@ -59,26 +71,26 @@ contract CryptoGiftToken is ERC721Full, Ownable, MinterRole {
     returns (uint256)
   {
     require(
-      _date > 0,
+      date > 0,
       "Date must be greater than zero"
     );
     require(
-      _style <= styles,
+      style <= _styles,
       "Style is not available"
     );
-    uint256 tokenId = progressiveId.add(1);
-    _mint(_beneficiary, tokenId);
-    structureIndex[tokenId] = GiftStructure(
-      _amount,
-      _purchaser,
-      _sender,
-      _receiver,
-      _message,
-      _youtube,
-      _date,
-      _style
+    uint256 tokenId = _progressiveId.add(1);
+    _mint(beneficiary, tokenId);
+    _structureIndex[tokenId] = GiftStructure(
+      amount,
+      purchaser,
+      sender,
+      receiver,
+      message,
+      youtube,
+      date,
+      style
     );
-    progressiveId = tokenId;
+    _progressiveId = tokenId;
     return tokenId;
   }
 
@@ -90,7 +102,7 @@ contract CryptoGiftToken is ERC721Full, Ownable, MinterRole {
     returns (bool visible, uint256 date)
   {
     if (_exists(tokenId)) {
-      GiftStructure storage gift = structureIndex[tokenId];
+      GiftStructure storage gift = _structureIndex[tokenId];
 
       // solium-disable-next-line security/no-block-members
       visible = block.timestamp >= gift.date;
@@ -121,7 +133,7 @@ contract CryptoGiftToken is ERC721Full, Ownable, MinterRole {
       "Token must exists"
     );
 
-    GiftStructure storage gift = structureIndex[tokenId];
+    GiftStructure storage gift = _structureIndex[tokenId];
 
     require(
       block.timestamp >= gift.date, // solium-disable-line security/no-block-members
@@ -145,17 +157,17 @@ contract CryptoGiftToken is ERC721Full, Ownable, MinterRole {
   function burn(uint256 tokenId) public {
     address tokenOwner = isOwner() ? ownerOf(tokenId) : msg.sender;
     super._burn(tokenOwner, tokenId);
-    delete structureIndex[tokenId];
+    delete _structureIndex[tokenId];
   }
 
   /**
    * @dev Set the max amount of styles available
    */
-  function setStyles(uint256 _styles) public onlyMinter {
+  function setStyles(uint256 styles) public onlyMinter {
     require(
-      _styles > styles,
+      styles > _styles,
       "Styles cannot be decreased"
     );
-    styles = _styles;
+    _styles = styles;
   }
 }

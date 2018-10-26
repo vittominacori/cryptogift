@@ -8,13 +8,13 @@ contract CryptoGiftMarketplace is Ownable {
   using SafeMath for uint256;
 
   // The token being sold
-  CryptoGiftToken public token;
+  CryptoGiftToken private _token;
 
   // Address where funds are collected
-  address public wallet;
+  address private _wallet;
 
   // The price for a token
-  uint256 public price;
+  uint256 private _price;
 
   /**
    * Event for token purchase logging
@@ -31,69 +31,81 @@ contract CryptoGiftMarketplace is Ownable {
   );
 
   /**
-   * @param _price The price for a token in wei
-   * @param _wallet Address where collected funds will be forwarded to
-   * @param _token Address of the token being sold
+   * @param price The price for a token in wei
+   * @param wallet Address where collected funds will be forwarded to
+   * @param token Address of the token being sold
    */
-  constructor(uint256 _price, address _wallet, address _token) public {
+  constructor(uint256 price, address wallet, address token) public {
     require(
-      _wallet != address(0),
+      wallet != address(0),
       "Wallet can't be the zero address"
     );
     require(
-      _token != address(0),
+      token != address(0),
       "Token can't be the zero address"
     );
 
-    price = _price;
-    wallet = _wallet;
-    token = CryptoGiftToken(_token);
+    _price = price;
+    _wallet = wallet;
+    _token = CryptoGiftToken(token);
+  }
+
+  function token() public view returns (CryptoGiftToken) {
+    return _token;
+  }
+
+  function wallet() public view returns (address) {
+    return _wallet;
+  }
+
+  function price() public view returns (uint256) {
+    return _price;
   }
 
   /**
    * @dev low level token purchase ***DO NOT OVERRIDE***
-   * @param _beneficiary Address performing the token purchase
+   * @param beneficiary Address performing the token purchase
    */
   function buyToken(
-    address _beneficiary,
-    string _sender,
-    string _receiver,
-    string _message,
-    string _youtube,
-    uint256 _date,
-    uint256 _style
+    address beneficiary,
+    string sender,
+    string receiver,
+    string message,
+    string youtube,
+    uint256 date,
+    uint256 style
   )
     public
     payable
   {
     uint256 weiAmount = msg.value;
-    _preValidatePurchase(_beneficiary, weiAmount);
+    _preValidatePurchase(beneficiary, weiAmount);
 
-    uint256 giftValue = msg.value.sub(price);
+    uint256 giftValue = msg.value.sub(_price);
 
     uint256 lastTokenId = _processPurchase(
       giftValue,
-      _beneficiary,
-      _sender,
-      _receiver,
-      _message,
-      _youtube,
-      _date,
-      _style
+      beneficiary,
+      sender,
+      receiver,
+      message,
+      youtube,
+      date,
+      style
     );
 
     emit TokenPurchase(
       msg.sender,
-      _beneficiary,
+      beneficiary,
       weiAmount,
       lastTokenId
     );
 
-    _forwardFunds(giftValue, _beneficiary);
+    _forwardFunds(giftValue, beneficiary);
   }
 
-  function setPrice(uint256 _price) public onlyOwner {
-    price = _price;
+  function setPrice(uint256 newPrice) public onlyOwner {
+    _price = newPrice;
   }
 
   // -----------------------------------------
@@ -102,22 +114,22 @@ contract CryptoGiftMarketplace is Ownable {
 
   /**
    * @dev Validation of an incoming purchase. Use require statements to revert state when conditions are not met. Use super to concatenate validations.
-   * @param _beneficiary Address performing the token purchase
-   * @param _weiAmount Value in wei involved in the purchase
+   * @param beneficiary Address performing the token purchase
+   * @param weiAmount Value in wei involved in the purchase
    */
   function _preValidatePurchase(
-    address _beneficiary,
-    uint256 _weiAmount
+    address beneficiary,
+    uint256 weiAmount
   )
     internal
     view
   {
     require(
-      _beneficiary != address(0),
+      beneficiary != address(0),
       "Beneficiary can't be the zero address"
     );
     require(
-      _weiAmount >= price,
+      weiAmount >= _price,
       "Sent ETH must be greater than or equal to token price"
     );
   }
@@ -126,41 +138,41 @@ contract CryptoGiftMarketplace is Ownable {
    * @dev Executed when a purchase has been validated and is ready to be executed.
    */
   function _processPurchase(
-    uint256 _amount,
-    address _beneficiary,
-    string _sender,
-    string _receiver,
-    string _message,
-    string _youtube,
-    uint256 _date,
-    uint256 _style
+    uint256 amount,
+    address beneficiary,
+    string sender,
+    string receiver,
+    string message,
+    string youtube,
+    uint256 date,
+    uint256 style
   )
     internal
     returns (uint256)
   {
-    return token.newToken(
-      _amount,
+    return _token.newToken(
+      amount,
       msg.sender,
-      _beneficiary,
-      _sender,
-      _receiver,
-      _message,
-      _youtube,
-      _date,
-      _style
+      beneficiary,
+      sender,
+      receiver,
+      message,
+      youtube,
+      date,
+      style
     );
   }
 
   /**
    * @dev Determines how ETH is stored/forwarded on purchases.
    */
-  function _forwardFunds(uint256 _giftValue, address _beneficiary) internal {
-    if (price > 0) {
-      wallet.transfer(price);
+  function _forwardFunds(uint256 giftValue, address beneficiary) internal {
+    if (_price > 0) {
+      _wallet.transfer(_price);
     }
 
-    if (_giftValue > 0) {
-      _beneficiary.transfer(_giftValue);
+    if (giftValue > 0) {
+      beneficiary.transfer(giftValue);
     }
   }
 }
