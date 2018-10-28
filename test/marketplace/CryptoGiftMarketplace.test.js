@@ -4,6 +4,8 @@ const { ZERO_ADDRESS } = require('openzeppelin-solidity/test/helpers/constants')
 
 const encryption = require('../helpers/encryption');
 
+const { shouldBehaveLikeTokenRecover } = require('eth-token-recover/test/TokenRecover.behaviour');
+
 const BigNumber = web3.BigNumber;
 
 const should = require('chai')
@@ -172,5 +174,13 @@ contract('CryptoGiftMarketplace', function ([owner, wallet, purchaser, beneficia
       const postBeneficiary = web3.eth.getBalance(beneficiary);
       postBeneficiary.minus(preBeneficiary).should.be.bignumber.equal(price.mul(2));
     });
+  });
+
+  context('like a TokenRecover', function () {
+    beforeEach(async function () {
+      this.instance = this.marketplace;
+    });
+
+    shouldBehaveLikeTokenRecover([owner, anotherAccount]);
   });
 });

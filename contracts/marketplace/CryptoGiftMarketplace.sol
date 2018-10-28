@@ -2,9 +2,10 @@ pragma solidity ^0.4.24;
 
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
 import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
+import "eth-token-recover/contracts/TokenRecover.sol";
 import "../token/CryptoGiftToken.sol";
 
-contract CryptoGiftMarketplace is Ownable {
+contract CryptoGiftMarketplace is TokenRecover {
   using SafeMath for uint256;
 
   // The token being sold

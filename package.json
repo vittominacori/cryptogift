@@ -34,10 +34,6 @@
     "url": "https://github.com/vittominacori/cryptogift/issues"
   },
   "license": "MIT",
-  "dependencies": {
-    "openzeppelin-solidity": "^2.0.0",
-    "web3": "^0.20.6"
-  },
   "devDependencies": {
     "chai": "^4.2.0",
     "chai-bignumber": "^2.0.2",
@@ -49,12 +45,15 @@
     "eslint-plugin-node": "^7.0.1",
     "eslint-plugin-promise": "^4.0.1",
     "eslint-plugin-standard": "^4.0.0",
+    "eth-token-recover": "^2.0.0",
     "ethjs-abi": "^0.2.1",
     "ganache-cli": "6.1.8",
+    "openzeppelin-solidity": "2.0.0",
     "solidity-coverage": "^0.5.11",
     "solium": "^1.1.8",
     "truffle": "^4.1.14",
     "truffle-hdwallet-provider": "0.0.6",
+    "web3": "^0.20.6",
     "web3-utils": "^1.0.0-beta.36"
   }
 }

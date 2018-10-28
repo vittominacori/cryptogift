@@ -6,6 +6,7 @@ const { ZERO_ADDRESS } = require('openzeppelin-solidity/test/helpers/constants')
 
 const encryption = require('../../helpers/encryption');
 
+const { shouldBehaveLikeTokenRecover } = require('eth-token-recover/test/TokenRecover.behaviour');
 const { shouldBehaveLikeERC721Full } = require('./behaviors/ERC721Full.behavior');
 
 const BigNumber = web3.BigNumber;
@@ -363,5 +364,13 @@ contract('CryptoGiftToken', function (
         );
       });
     });
+  });
+
+  context('like a TokenRecover', function () {
+    beforeEach(async function () {
+      this.instance = this.token;
+    });
+
+    shouldBehaveLikeTokenRecover([creator, anotherAccount]);
   });
 });
