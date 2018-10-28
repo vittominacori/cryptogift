@@ -48,7 +48,6 @@ contract('CryptoGiftToken', function (
         sender: 'Paperino',
         receiver: 'Topolino',
         message: 'Lorem Ipsum',
-        youtube: 'ABCD-123',
       },
       date: (await time.latest()) - time.duration.weeks(1),
       style: 0,
@@ -176,10 +175,6 @@ contract('CryptoGiftToken', function (
 
             it('has a message', async function () {
               decryptedTokenContent.message.should.be.equal(this.structure.content.message);
-            });
-
-            it('has a youtube', async function () {
-              decryptedTokenContent.youtube.should.be.equal(this.structure.content.youtube);
             });
           });
 

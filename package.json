@@ -48,6 +48,7 @@
     "eth-token-recover": "^2.0.0",
     "ethjs-abi": "^0.2.1",
     "ganache-cli": "6.1.8",
+    "lite-server": "^2.4.0",
     "openzeppelin-solidity": "2.0.0",
     "solidity-coverage": "^0.5.11",
     "solium": "^1.1.8",

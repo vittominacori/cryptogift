@@ -28,7 +28,6 @@ contract('CryptoGiftMarketplace', function ([owner, wallet, purchaser, beneficia
       sender: 'Paperino',
       receiver: 'Topolino',
       message: 'Lorem Ipsum',
-      youtube: 'ABCD-123',
     },
     date: Date.now(),
     style: 0,
@@ -60,6 +59,16 @@ contract('CryptoGiftMarketplace', function ([owner, wallet, purchaser, beneficia
           CryptoGiftMarketplace.new(price, wallet, ZERO_ADDRESS, { from: owner })
         );
       });
+    });
+
+    it('has a token', async function () {
+      const marketToken = await this.marketplace.token();
+      marketToken.should.be.equal(this.token.address);
+    });
+
+    it('has a wallet', async function () {
+      const marketWallet = await this.marketplace.wallet();
+      marketWallet.should.be.equal(wallet);
     });
   });
 

@@ -12,7 +12,6 @@ Gift has:
 * sender: who is sending the gift
 * receiver: who is receiving the gift
 * message: a message for the receiver
-* youtube: an optional YouTube id (for instance a video message or a song)
 * date: the date after which the gift is visible
 
 
@@ -104,7 +103,8 @@ npm install -g truffle-flattener
 Usage 
 
 ```bash
-truffle-flattener contracts/CryptoGiftToken.sol >> dist/CryptoGiftToken.sol
+truffle-flattener contracts/token/CryptoGiftToken.sol >> dist/CryptoGiftToken.sol
+truffle-flattener contracts/marketplace/CryptoGiftMarketplace.sol >> dist/CryptoGiftMarketplace.sol
 ```
  
 
