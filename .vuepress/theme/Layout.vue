@@ -12,6 +12,7 @@
 <script>
   import SiteHeader from './Header.vue';
   import SiteFooter from './Footer.vue';
+  
   export default {
     components: {
       SiteHeader,

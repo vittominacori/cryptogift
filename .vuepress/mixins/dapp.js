@@ -100,9 +100,9 @@ export default {
     },
     initContracts () {
       this.contracts.token = this.web3.eth.contract(TokenArtifact.abi);
-      this.instances.token = this.contracts.token.at();
+      this.instances.token = this.contracts.token.at(config.tokenAddress);
       this.contracts.market = this.web3.eth.contract(MarketArtifact.abi);
-      this.instances.market = this.contracts.market.at();
+      this.instances.market = this.contracts.market.at(config.marketAddress);
 
       this.ready();
     },

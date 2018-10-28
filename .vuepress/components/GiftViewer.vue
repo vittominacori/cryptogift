@@ -1,18 +1,36 @@
 <template>
     <div v-if="!loading">
-        <!--<h3>Prop passed via data attribute: {{ message }}</h3>-->
-
         <b-card no-body class="shadow-lg" v-if="currentToken.visible">
-            <h4 slot="header">For {{ currentToken.content.receiver }}</h4>
-            <b-card-body>
-                <p class="card-test">{{ currentToken.content.message }}</p>
-            </b-card-body>
-            <youtube :video-id="currentToken.content.youtube" :player-vars="playerVars"></youtube>
-            <b-card-footer>
-                <small class="text-muted">
-                    {{ currentToken.amount }} ETH, From <strong>{{ currentToken.content.sender }}</strong> on <strong>{{ currentToken.formattedDate }}</strong>
-                </small>
-            </b-card-footer>
+            <template v-if="currentToken.loaded">
+                <h4 slot="header">For {{ currentToken.content.receiver }}</h4>
+                <b-card-body>
+                    <p class="card-test">{{ currentToken.content.message }}</p>
+                </b-card-body>
+                <b-card-footer>
+                    <small class="text-muted">
+                        {{ currentToken.amount }} ETH, From <strong>{{ currentToken.content.sender }}</strong> on <strong>{{ currentToken.formattedDate }}</strong>
+                    </small>
+                </b-card-footer>
+            </template>
+            <template v-else>
+                <b-card-body>
+                    <b-form @submit.prevent="getToken">
+                        <b-form-group id="gift-encryption-key-group"
+                                      label="Encryption Key: [96ftqdc3lm2u]"
+                                      label-for="gift-encryption-key"
+                                      description="Insert the Encryption Key">
+                            <b-form-input id="gift-encryption-key"
+                                          name="gift-encryption-key"
+                                          type="password"
+                                          v-model="encryptionKey"
+                                          v-validate="'required'"
+                                          :class="{'is-invalid': errors.has('gift-encryption-key')}">
+                            </b-form-input>
+                        </b-form-group>
+                        <b-button type="submit" variant="primary">Decrypt</b-button>
+                    </b-form>
+                </b-card-body>
+            </template>
         </b-card>
         <b-card no-body class="shadow-lg" v-else>
             <b-card-body>
@@ -35,7 +53,6 @@
       encryption,
       dapp,
     ],
-    props: ['message'],
     data () {
       return {
         loading: true,
@@ -45,8 +62,9 @@
           controls: 0,
           showinfo: 0,
         },
-        encryptionKey: '1hr29p28i5h3',
+        encryptionKey: '',
         currentToken: {
+          loaded: false,
           visible: false,
           id: 0,
           amount: 0,
@@ -54,7 +72,6 @@
             sender: '',
             receiver: '',
             message: '',
-            youtube: '',
           },
           date: '',
           style: '',
@@ -88,35 +105,44 @@
             this.loading = false;
             return;
           }
-          if (result[0]) {
-            this.getToken();
-          } else {
+
+          this.currentToken.visible = result[0];
+
+          if (!this.currentToken.visible) {
             this.currentToken.date = (result[1]).valueOf() * 1000;
             this.currentToken.formattedDate = new Date(this.currentToken.date).toLocaleString();
-            this.loading = false;
           }
+          this.loading = false;
         });
       },
       getToken () {
-        this.instances.token.getGift(this.currentToken.id, (err, result) => {
-          if (err) {
-            alert('Some error');
-            this.loading = false;
-            return;
+        this.$validator.validateAll().then(async (result) => {
+          if (result) {
+            try {
+              this.instances.token.getGift(this.currentToken.id, (err, result) => {
+                if (err) {
+                  alert('Some error');
+                  this.loading = false;
+                  return;
+                }
+                this.formatStructure(result);
+              });
+            } catch (e) {
+              alert("Some error occurred. Check your Encryption Key");
+            }
           }
-          this.formatStructure(result);
         });
       },
       formatStructure (structure) {
-        this.currentToken.amount = this.web3.fromWei(structure[0]);
+        this.currentToken.amount = parseFloat(this.web3.fromWei(structure[0]));
         this.currentToken.purchaser = structure[1];
         this.currentToken.beneficiary = structure[2];
-        this.currentToken.content = JSON.parse(this.decrypt(structure[3], this.encryptionKey));
+        this.currentToken.content = JSON.parse(JSON.parse(this.web3.toAscii(this.decrypt(structure[3], this.encryptionKey))));
         this.currentToken.date = (structure[4]).valueOf() * 1000;
         this.currentToken.formattedDate = new Date(this.currentToken.date).toLocaleString();
         this.currentToken.style = structure[5];
         this.currentToken.visible = true;
-        this.loading = false;
+        this.currentToken.loaded = true;
       },
     }
   }

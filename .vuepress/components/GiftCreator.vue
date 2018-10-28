@@ -1,7 +1,5 @@
 <template>
-    <div>
-        <!--<h3>Prop passed via data attribute: {{ message }}</h3>-->
-
+    <div v-if="!loading">
         <b-card bg-variant="light">
             <b-alert show variant="warning" v-if="!metamask.installed">
                 You need the <a href="https://metamask.io/" target="_blank">MetaMask</a> extension.
@@ -85,20 +83,6 @@
                         </b-form-input>
                     </b-form-group>
 
-                    <b-form-group id="gift-youtube-group"
-                                  label="Youtube:"
-                                  label-for="gift-youtube"
-                                  description="The YouTube link (optional)">
-                        <b-form-input id="gift-youtube"
-                                      name="gift-youtube"
-                                      type="url"
-                                      v-model="gift.content.youtube"
-                                      v-validate="'url'"
-                                      :class="{'is-invalid': errors.has('gift-youtube')}"
-                                      placeholder="Enter a YouTube video link">
-                        </b-form-input>
-                    </b-form-group>
-
                     <b-form-group id="gift-style-group"
                                   label="Style:"
                                   label-for="gift-style"
@@ -177,7 +161,6 @@
             sender: '',
             receiver: '',
             message: '',
-            youtube: '',
           },
           date: '',
           style: 0,
@@ -236,14 +219,6 @@
                 const encryptedContent = this.encrypt(JSON.stringify(this.gift.content), this.encryptionKey);
 
                 const beneficiary = this.gift.beneficiary || this.web3.eth.coinbase;
-
-                console.log(this.encryptionKey);
-                console.log(encryptedContent);
-                console.log(this.gift);
-                console.log(beneficiary);
-                console.log((new Date(this.gift.date).getTime() / 1000));
-                console.log(this.web3.eth.coinbase);
-                console.log(this.price);
 
                 this.instances.market.buyToken(
                   beneficiary,

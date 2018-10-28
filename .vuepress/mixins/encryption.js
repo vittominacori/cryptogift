@@ -9,8 +9,8 @@ export default {
       return CryptoJS.AES.encrypt(JSON.stringify(text), encryptionKey).toString();
     },
     decrypt (text, encryptionKey) {
-      const bytes  = CryptoJS.AES.decrypt(text.toString(), encryptionKey);
-      return bytes.toString(CryptoJS.enc.Utf8);
+      const bytes = CryptoJS.AES.decrypt(text.toString(), encryptionKey);
+      return bytes.toString();
     },
   },
 };
