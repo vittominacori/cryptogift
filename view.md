@@ -1,0 +1,3 @@
+---
+component: gift-viewer
+---
