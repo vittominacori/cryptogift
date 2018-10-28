@@ -36,7 +36,7 @@ contract('CryptoGiftMarketplace', function ([owner, wallet, purchaser, beneficia
   const encryptedContent = encryption.encrypt(JSON.stringify(tokenDetails.content), ENCRYPTION_KEY);
 
   const price = ether(0.0001);
-  const value = ether(0.0001);
+  const value = price.mul(2);
 
   beforeEach(async function () {
     this.token = await CryptoGiftToken.new(name, symbol, maxSupply, { from: owner });
@@ -126,7 +126,7 @@ contract('CryptoGiftMarketplace', function ([owner, wallet, purchaser, beneficia
           encryptedContent,
           tokenDetails.date,
           tokenDetails.style,
-          { value: value.div(2), from: purchaser }
+          { value: price.sub(1), from: purchaser }
         )
       );
     });
@@ -139,49 +139,104 @@ contract('CryptoGiftMarketplace', function ([owner, wallet, purchaser, beneficia
   });
 
   describe('token purchase', function () {
-    it('should log purchase', async function () {
-      const tokenId = await this.token.progressiveId();
-      const { logs } = await this.marketplace.buyToken(
-        beneficiary,
-        encryptedContent,
-        tokenDetails.date,
-        tokenDetails.style,
-        { value: value, from: purchaser }
-      );
-      const event = logs.find(e => e.event === 'TokenPurchase');
-      should.exist(event);
-      event.args.purchaser.should.equal(purchaser);
-      event.args.beneficiary.should.equal(beneficiary);
-      event.args.value.should.be.bignumber.equal(value);
-      event.args.tokenId.should.be.bignumber.equal(tokenId.add(1));
+    describe('with price greater than zero', function () {
+      it('should log purchase', async function () {
+        const tokenId = await this.token.progressiveId();
+        const { logs } = await this.marketplace.buyToken(
+          beneficiary,
+          encryptedContent,
+          tokenDetails.date,
+          tokenDetails.style,
+          { value: value, from: purchaser }
+        );
+        const event = logs.find(e => e.event === 'TokenPurchase');
+        should.exist(event);
+        event.args.purchaser.should.equal(purchaser);
+        event.args.beneficiary.should.equal(beneficiary);
+        event.args.value.should.be.bignumber.equal(value.sub(price));
+        event.args.tokenId.should.be.bignumber.equal(tokenId.add(1));
+      });
+
+      it('should assign token to beneficiary', async function () {
+        await this.marketplace.buyToken(
+          beneficiary,
+          encryptedContent,
+          tokenDetails.date,
+          tokenDetails.style,
+          { value: value, from: purchaser }
+        );
+        const balance = await this.token.balanceOf(beneficiary);
+        balance.should.be.bignumber.equal(1);
+      });
+
+      it('should forward funds to wallet and beneficiary', async function () {
+        const preWallet = web3.eth.getBalance(wallet);
+        const preBeneficiary = web3.eth.getBalance(beneficiary);
+        await this.marketplace.buyToken(
+          beneficiary,
+          encryptedContent,
+          tokenDetails.date,
+          tokenDetails.style,
+          { value: value, from: purchaser }
+        );
+        const postWallet = web3.eth.getBalance(wallet);
+        postWallet.minus(preWallet).should.be.bignumber.equal(price);
+        const postBeneficiary = web3.eth.getBalance(beneficiary);
+        postBeneficiary.minus(preBeneficiary).should.be.bignumber.equal(value.sub(price));
+      });
     });
 
-    it('should assign token to beneficiary', async function () {
-      await this.marketplace.buyToken(
-        beneficiary,
-        encryptedContent,
-        tokenDetails.date,
-        tokenDetails.style,
-        { value: value, from: purchaser }
-      );
-      const balance = await this.token.balanceOf(beneficiary);
-      balance.should.be.bignumber.equal(1);
-    });
+    describe('with price equal to zero', function () {
+      beforeEach(async function () {
+        this.token = await CryptoGiftToken.new(name, symbol, maxSupply, { from: owner });
+        this.marketplace = await CryptoGiftMarketplace.new(0, wallet, this.token.address, { from: owner });
+        await this.token.addMinter(this.marketplace.address, { from: owner });
+      });
 
-    it('should forward funds to wallet', async function () {
-      const preWallet = web3.eth.getBalance(wallet);
-      const preBeneficiary = web3.eth.getBalance(beneficiary);
-      await this.marketplace.buyToken(
-        beneficiary,
-        encryptedContent,
-        tokenDetails.date,
-        tokenDetails.style,
-        { value: price.mul(3), from: purchaser }
-      );
-      const postWallet = web3.eth.getBalance(wallet);
-      postWallet.minus(preWallet).should.be.bignumber.equal(price);
-      const postBeneficiary = web3.eth.getBalance(beneficiary);
-      postBeneficiary.minus(preBeneficiary).should.be.bignumber.equal(price.mul(2));
+      it('should log purchase', async function () {
+        const tokenId = await this.token.progressiveId();
+        const { logs } = await this.marketplace.buyToken(
+          beneficiary,
+          encryptedContent,
+          tokenDetails.date,
+          tokenDetails.style,
+          { value: value, from: purchaser }
+        );
+        const event = logs.find(e => e.event === 'TokenPurchase');
+        should.exist(event);
+        event.args.purchaser.should.equal(purchaser);
+        event.args.beneficiary.should.equal(beneficiary);
+        event.args.value.should.be.bignumber.equal(value);
+        event.args.tokenId.should.be.bignumber.equal(tokenId.add(1));
+      });
+
+      it('should assign token to beneficiary', async function () {
+        await this.marketplace.buyToken(
+          beneficiary,
+          encryptedContent,
+          tokenDetails.date,
+          tokenDetails.style,
+          { value: value, from: purchaser }
+        );
+        const balance = await this.token.balanceOf(beneficiary);
+        balance.should.be.bignumber.equal(1);
+      });
+
+      it('should forward funds to wallet and beneficiary', async function () {
+        const preWallet = web3.eth.getBalance(wallet);
+        const preBeneficiary = web3.eth.getBalance(beneficiary);
+        await this.marketplace.buyToken(
+          beneficiary,
+          encryptedContent,
+          tokenDetails.date,
+          tokenDetails.style,
+          { value: value, from: purchaser }
+        );
+        const postWallet = web3.eth.getBalance(wallet);
+        postWallet.minus(preWallet).should.be.bignumber.equal(0);
+        const postBeneficiary = web3.eth.getBalance(beneficiary);
+        postBeneficiary.minus(preBeneficiary).should.be.bignumber.equal(value);
+      });
     });
   });
 

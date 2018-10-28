@@ -1316,7 +1316,7 @@ contract CryptoGiftMarketplace is TokenRecover {
     emit TokenPurchase(
       msg.sender,
       beneficiary,
-      weiAmount,
+      giftValue,
       lastTokenId
     );
 
