@@ -8,10 +8,7 @@ contract CryptoGiftToken is ERC721Full, Ownable, MinterRole {
   struct GiftStructure {
     uint256 amount;
     address purchaser;
-    string sender;
-    string receiver;
-    string message;
-    string youtube;
+    string content;
     uint256 date;
     uint256 style;
   }
@@ -58,10 +55,7 @@ contract CryptoGiftToken is ERC721Full, Ownable, MinterRole {
     uint256 amount,
     address purchaser,
     address beneficiary,
-    string sender,
-    string receiver,
-    string message,
-    string youtube,
+    string content,
     uint256 date,
     uint256 style
   )
@@ -83,10 +77,7 @@ contract CryptoGiftToken is ERC721Full, Ownable, MinterRole {
     _structureIndex[tokenId] = GiftStructure(
       amount,
       purchaser,
-      sender,
-      receiver,
-      message,
-      youtube,
+      content,
       date,
       style
     );
@@ -120,10 +111,7 @@ contract CryptoGiftToken is ERC721Full, Ownable, MinterRole {
       uint256 amount,
       address purchaser,
       address beneficiary,
-      string sender,
-      string receiver,
-      string message,
-      string youtube,
+      string content,
       uint256 date,
       uint256 style
     )
@@ -143,10 +131,7 @@ contract CryptoGiftToken is ERC721Full, Ownable, MinterRole {
     amount = gift.amount;
     purchaser = gift.purchaser;
     beneficiary = ownerOf(tokenId);
-    sender = gift.sender;
-    receiver = gift.receiver;
-    message = gift.message;
-    youtube = gift.youtube;
+    content = gift.content;
     date = gift.date;
     style = gift.style;
   }
@@ -163,11 +148,11 @@ contract CryptoGiftToken is ERC721Full, Ownable, MinterRole {
   /**
    * @dev Set the max amount of styles available
    */
-  function setStyles(uint256 styles) public onlyMinter {
+  function setStyles(uint256 newStyles) public onlyMinter {
     require(
-      styles > _styles,
+      newStyles > _styles,
       "Styles cannot be decreased"
     );
-    _styles = styles;
+    _styles = newStyles;
   }
 }

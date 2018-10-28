@@ -68,10 +68,7 @@ contract CryptoGiftMarketplace is Ownable {
    */
   function buyToken(
     address beneficiary,
-    string sender,
-    string receiver,
-    string message,
-    string youtube,
+    string content,
     uint256 date,
     uint256 style
   )
@@ -86,10 +83,7 @@ contract CryptoGiftMarketplace is Ownable {
     uint256 lastTokenId = _processPurchase(
       giftValue,
       beneficiary,
-      sender,
-      receiver,
-      message,
-      youtube,
+      content,
       date,
       style
     );
@@ -140,10 +134,7 @@ contract CryptoGiftMarketplace is Ownable {
   function _processPurchase(
     uint256 amount,
     address beneficiary,
-    string sender,
-    string receiver,
-    string message,
-    string youtube,
+    string content,
     uint256 date,
     uint256 style
   )
@@ -154,10 +145,7 @@ contract CryptoGiftMarketplace is Ownable {
       amount,
       msg.sender,
       beneficiary,
-      sender,
-      receiver,
-      message,
-      youtube,
+      content,
       date,
       style
     );

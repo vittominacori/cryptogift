@@ -2,6 +2,8 @@ const { ether } = require('openzeppelin-solidity/test/helpers/ether');
 const shouldFail = require('openzeppelin-solidity/test/helpers/shouldFail');
 const { ZERO_ADDRESS } = require('openzeppelin-solidity/test/helpers/constants');
 
+const encryption = require('../helpers/encryption');
+
 const BigNumber = web3.BigNumber;
 
 const should = require('chai')
@@ -11,19 +13,26 @@ const should = require('chai')
 const CryptoGiftMarketplace = artifacts.require('CryptoGiftMarketplace');
 const CryptoGiftToken = artifacts.require('CryptoGiftToken');
 
+// each byte encoded to hex is 2 characters. 16 bytes will be 32 characters of hex.
+const ENCRYPTION_KEY = encryption.randomKey(16);
+
 contract('CryptoGiftMarketplace', function ([owner, wallet, purchaser, beneficiary, anotherAccount]) {
   const name = 'CryptoGiftToken';
   const symbol = 'CGT';
   const maxSupply = new BigNumber(3);
 
   const tokenDetails = {
-    sender: 'Paperino',
-    receiver: 'Topolino',
-    message: 'Happy Birthday!',
-    youtube: 'ABCD-123',
+    content: {
+      sender: 'Paperino',
+      receiver: 'Topolino',
+      message: 'Lorem Ipsum',
+      youtube: 'ABCD-123',
+    },
     date: Date.now(),
     style: 0,
   };
+
+  const encryptedContent = encryption.encrypt(JSON.stringify(tokenDetails.content), ENCRYPTION_KEY);
 
   const price = ether(0.0001);
   const value = ether(0.0001);
@@ -80,10 +89,7 @@ contract('CryptoGiftMarketplace', function ([owner, wallet, purchaser, beneficia
     it('should accept payments through buyToken function', async function () {
       await this.marketplace.buyToken(
         beneficiary,
-        tokenDetails.sender,
-        tokenDetails.receiver,
-        tokenDetails.message,
-        tokenDetails.youtube,
+        encryptedContent,
         tokenDetails.date,
         tokenDetails.style,
         { value: value, from: purchaser }
@@ -94,10 +100,7 @@ contract('CryptoGiftMarketplace', function ([owner, wallet, purchaser, beneficia
       await shouldFail.reverting(
         this.marketplace.buyToken(
           ZERO_ADDRESS,
-          tokenDetails.sender,
-          tokenDetails.receiver,
-          tokenDetails.message,
-          tokenDetails.youtube,
+          encryptedContent,
           tokenDetails.date,
           tokenDetails.style,
           { value: value, from: purchaser }
@@ -109,10 +112,7 @@ contract('CryptoGiftMarketplace', function ([owner, wallet, purchaser, beneficia
       await shouldFail.reverting(
         this.marketplace.buyToken(
           beneficiary,
-          tokenDetails.sender,
-          tokenDetails.receiver,
-          tokenDetails.message,
-          tokenDetails.youtube,
+          encryptedContent,
           tokenDetails.date,
           tokenDetails.style,
           { value: value.div(2), from: purchaser }
@@ -132,10 +132,7 @@ contract('CryptoGiftMarketplace', function ([owner, wallet, purchaser, beneficia
       const tokenId = await this.token.progressiveId();
       const { logs } = await this.marketplace.buyToken(
         beneficiary,
-        tokenDetails.sender,
-        tokenDetails.receiver,
-        tokenDetails.message,
-        tokenDetails.youtube,
+        encryptedContent,
         tokenDetails.date,
         tokenDetails.style,
         { value: value, from: purchaser }
@@ -151,10 +148,7 @@ contract('CryptoGiftMarketplace', function ([owner, wallet, purchaser, beneficia
     it('should assign token to beneficiary', async function () {
       await this.marketplace.buyToken(
         beneficiary,
-        tokenDetails.sender,
-        tokenDetails.receiver,
-        tokenDetails.message,
-        tokenDetails.youtube,
+        encryptedContent,
         tokenDetails.date,
         tokenDetails.style,
         { value: value, from: purchaser }
@@ -168,10 +162,7 @@ contract('CryptoGiftMarketplace', function ([owner, wallet, purchaser, beneficia
       const preBeneficiary = web3.eth.getBalance(beneficiary);
       await this.marketplace.buyToken(
         beneficiary,
-        tokenDetails.sender,
-        tokenDetails.receiver,
-        tokenDetails.message,
-        tokenDetails.youtube,
+        encryptedContent,
         tokenDetails.date,
         tokenDetails.style,
         { value: price.mul(3), from: purchaser }

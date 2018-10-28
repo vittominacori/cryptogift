@@ -4,6 +4,8 @@ const { ether } = require('openzeppelin-solidity/test/helpers/ether');
 const shouldFail = require('openzeppelin-solidity/test/helpers/shouldFail');
 const { ZERO_ADDRESS } = require('openzeppelin-solidity/test/helpers/constants');
 
+const encryption = require('../../helpers/encryption');
+
 const { shouldBehaveLikeERC721Full } = require('./behaviors/ERC721Full.behavior');
 
 const BigNumber = web3.BigNumber;
@@ -13,6 +15,9 @@ require('chai')
   .should();
 
 const CryptoGiftToken = artifacts.require('CryptoGiftTokenMock');
+
+// each byte encoded to hex is 2 characters. 16 bytes will be 32 characters of hex.
+const ENCRYPTION_KEY = encryption.randomKey(16);
 
 contract('CryptoGiftToken', function (
   [
@@ -38,13 +43,17 @@ contract('CryptoGiftToken', function (
   beforeEach(async function () {
     this.structure = {
       amount: ether(0.1),
-      sender: 'Paperino',
-      receiver: 'Topolino',
-      message: 'Lorem Ipsum',
-      youtube: 'ABCD-123',
+      content: {
+        sender: 'Paperino',
+        receiver: 'Topolino',
+        message: 'Lorem Ipsum',
+        youtube: 'ABCD-123',
+      },
       date: (await time.latest()) - time.duration.weeks(1),
       style: 0,
     };
+
+    this.encryptedContent = encryption.encrypt(JSON.stringify(this.structure.content), ENCRYPTION_KEY);
 
     this.token = await CryptoGiftToken.new(name, symbol, maxSupply, { from: creator });
   });
@@ -102,10 +111,7 @@ contract('CryptoGiftToken', function (
         this.structure.amount,
         minter,
         beneficiary,
-        this.structure.sender,
-        this.structure.receiver,
-        this.structure.message,
-        this.structure.youtube,
+        this.encryptedContent,
         this.structure.date,
         this.structure.style,
         { from: minter }
@@ -146,33 +152,43 @@ contract('CryptoGiftToken', function (
             tokenBeneficiary.should.be.equal(beneficiary);
           });
 
-          it('has a sender', async function () {
-            const tokenSender = tokenStructure[3];
-            tokenSender.should.be.equal(this.structure.sender);
-          });
+          describe('checking content', function () {
+            let decryptedTokenContent;
+            let encryptedTokenContent;
 
-          it('has a receiver', async function () {
-            const tokenReceiver = tokenStructure[4];
-            tokenReceiver.should.be.equal(this.structure.receiver);
-          });
+            beforeEach(async function () {
+              encryptedTokenContent = tokenStructure[3];
+              decryptedTokenContent = JSON.parse(encryption.decrypt(encryptedTokenContent, ENCRYPTION_KEY));
+            });
 
-          it('has a message', async function () {
-            const tokenMessage = tokenStructure[5];
-            tokenMessage.should.be.equal(this.structure.message);
-          });
+            it('has an encrypted token content', async function () {
+              encryptedTokenContent.should.be.equal(this.encryptedContent);
+            });
 
-          it('has a youtube', async function () {
-            const tokenYoutube = tokenStructure[6];
-            tokenYoutube.should.be.equal(this.structure.youtube);
+            it('has a sender', async function () {
+              decryptedTokenContent.sender.should.be.equal(this.structure.content.sender);
+            });
+
+            it('has a receiver', async function () {
+              decryptedTokenContent.receiver.should.be.equal(this.structure.content.receiver);
+            });
+
+            it('has a message', async function () {
+              decryptedTokenContent.message.should.be.equal(this.structure.content.message);
+            });
+
+            it('has a youtube', async function () {
+              decryptedTokenContent.youtube.should.be.equal(this.structure.content.youtube);
+            });
           });
 
           it('has a date', async function () {
-            const tokenDate = tokenStructure[7];
+            const tokenDate = tokenStructure[4];
             tokenDate.should.be.bignumber.equal(this.structure.date);
           });
 
           it('has a style', async function () {
-            const tokenStyle = tokenStructure[8];
+            const tokenStyle = tokenStructure[5];
             tokenStyle.should.be.bignumber.equal(this.structure.style);
           });
         });
@@ -189,10 +205,7 @@ contract('CryptoGiftToken', function (
             this.structure.amount,
             minter,
             beneficiary,
-            this.structure.sender,
-            this.structure.receiver,
-            this.structure.message,
-            this.structure.youtube,
+            this.encryptedContent,
             giftTime,
             this.structure.style,
             { from: minter }
@@ -243,10 +256,7 @@ contract('CryptoGiftToken', function (
           this.structure.amount,
           minter,
           beneficiary,
-          this.structure.sender,
-          this.structure.receiver,
-          this.structure.message,
-          this.structure.youtube,
+          this.encryptedContent,
           this.structure.date,
           this.structure.style,
           { from: minter }
@@ -264,10 +274,7 @@ contract('CryptoGiftToken', function (
             this.structure.amount,
             minter,
             beneficiary,
-            this.structure.sender,
-            this.structure.receiver,
-            this.structure.message,
-            this.structure.youtube,
+            this.encryptedContent,
             0,
             this.structure.style,
             { from: minter }
@@ -283,10 +290,7 @@ contract('CryptoGiftToken', function (
             this.structure.amount,
             minter,
             beneficiary,
-            this.structure.sender,
-            this.structure.receiver,
-            this.structure.message,
-            this.structure.youtube,
+            this.encryptedContent,
             this.structure.date,
             999,
             { from: minter }
@@ -304,10 +308,7 @@ contract('CryptoGiftToken', function (
             this.structure.amount,
             minter,
             beneficiary,
-            this.structure.sender,
-            this.structure.receiver,
-            this.structure.message,
-            this.structure.youtube,
+            this.encryptedContent,
             this.structure.date,
             this.structure.style,
             { from: minter }
@@ -322,10 +323,7 @@ contract('CryptoGiftToken', function (
             this.structure.amount,
             minter,
             beneficiary,
-            this.structure.sender,
-            this.structure.receiver,
-            this.structure.message,
-            this.structure.youtube,
+            this.encryptedContent,
             this.structure.date,
             this.structure.style,
             { from: minter }
@@ -341,10 +339,7 @@ contract('CryptoGiftToken', function (
             this.structure.amount,
             minter,
             ZERO_ADDRESS,
-            this.structure.sender,
-            this.structure.receiver,
-            this.structure.message,
-            this.structure.youtube,
+            this.encryptedContent,
             this.structure.date,
             this.structure.style,
             { from: minter }
@@ -360,10 +355,7 @@ contract('CryptoGiftToken', function (
             this.structure.amount,
             minter,
             beneficiary,
-            this.structure.sender,
-            this.structure.receiver,
-            this.structure.message,
-            this.structure.youtube,
+            this.encryptedContent,
             this.structure.date,
             this.structure.style,
             { from: anotherAccount }
