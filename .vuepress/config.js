@@ -11,7 +11,7 @@ module.exports = {
     ['meta', { property: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { property: 'twitter:image', content: 'https://vittominacori.github.io/cryptogift/assets/images/cryptogift.png' }], // eslint-disable-line max-len
     ['meta', { property: 'twitter:title', content: 'CryptoGift' }],
-    ['script', { src: 'assets/js/web3.min.js' }],
+    ['script', { src: '/assets/js/web3.min.js' }],
   ],
   defaultNetwork: 'rinkeby',
   tokenAddress: '0x9d938d3139A26477e5990FF5fD3eB5f4584AeE97',

@@ -1,3 +1,3 @@
 ---
-component: gift-viewer
+component: GiftViewer
 ---

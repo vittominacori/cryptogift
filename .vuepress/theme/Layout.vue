@@ -1,7 +1,7 @@
 <template>
     <div class="main">
         <site-header />
-        <b-container class="p-3">
+        <b-container class="mt-5">
             <transition name="fade" mode="out-in">
                 <component v-if="page" :is="page" :key="page"></component>
             </transition>
@@ -12,7 +12,7 @@
 <script>
   import SiteHeader from './Header.vue';
   import SiteFooter from './Footer.vue';
-  
+
   export default {
     components: {
       SiteHeader,
@@ -20,7 +20,7 @@
     },
     computed: {
       page() {
-        return this.$page.frontmatter.home ? 'GiftCreator' : (this.$page.frontmatter.component || null);
+        return this.$page.frontmatter.component || null;
       },
     },
   };

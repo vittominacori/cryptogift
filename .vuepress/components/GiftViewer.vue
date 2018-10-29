@@ -1,43 +1,47 @@
 <template>
     <div v-if="!loading">
-        <b-card no-body class="shadow-lg" v-if="currentToken.visible">
-            <template v-if="currentToken.loaded">
-                <h4 slot="header">For {{ currentToken.content.receiver }}</h4>
-                <b-card-body>
-                    <p class="card-test">{{ currentToken.content.message }}</p>
-                </b-card-body>
-                <b-card-footer>
-                    <small class="text-muted">
-                        {{ currentToken.amount }} ETH, From <strong>{{ currentToken.content.sender }}</strong> on <strong>{{ currentToken.formattedDate }}</strong>
-                    </small>
-                </b-card-footer>
-            </template>
-            <template v-else>
-                <b-card-body>
-                    <b-form @submit.prevent="getToken">
-                        <b-form-group id="gift-encryption-key-group"
-                                      label="Encryption Key: [96ftqdc3lm2u]"
-                                      label-for="gift-encryption-key"
-                                      description="Insert the Encryption Key">
-                            <b-form-input id="gift-encryption-key"
-                                          name="gift-encryption-key"
-                                          type="password"
-                                          v-model="encryptionKey"
-                                          v-validate="'required'"
-                                          :class="{'is-invalid': errors.has('gift-encryption-key')}">
-                            </b-form-input>
-                        </b-form-group>
-                        <b-button type="submit" variant="primary">Decrypt</b-button>
-                    </b-form>
-                </b-card-body>
-            </template>
-        </b-card>
-        <b-card no-body class="shadow-lg" v-else>
-            <b-card-body>
-                <p class="card-test" v-if="currentToken.date">Gift will be visible on {{ currentToken.formattedDate }}</p>
-                <p class="card-test" v-else>Gift doesn't exist</p>
-            </b-card-body>
-        </b-card>
+        <b-row>
+            <b-col lg="8" offset-lg="2">
+                <b-card no-body class="shadow-lg" v-if="currentToken.visible">
+                    <template v-if="!currentToken.loaded">
+                        <b-card-body>
+                            <b-form @submit.prevent="getToken">
+                                <b-form-group id="gift-encryption-key-group"
+                                              label="Encryption Key:"
+                                              label-for="gift-encryption-key"
+                                              description="Insert the Encryption Key">
+                                    <b-form-input id="gift-encryption-key"
+                                                  name="gift-encryption-key"
+                                                  type="password"
+                                                  v-model="encryptionKey"
+                                                  v-validate="'required'"
+                                                  :class="{'is-invalid': errors.has('gift-encryption-key')}">
+                                    </b-form-input>
+                                </b-form-group>
+                                <b-button type="submit" variant="success" size="lg">Decrypt</b-button>
+                            </b-form>
+                        </b-card-body>
+                    </template>
+                    <template v-else>
+                        <h4 slot="header">For {{ currentToken.content.receiver }}</h4>
+                        <b-card-body>
+                            <p class="card-test">{{ currentToken.content.message }}</p>
+                        </b-card-body>
+                        <b-card-footer>
+                            <small class="text-muted">
+                                {{ currentToken.amount }} ETH, From <strong>{{ currentToken.content.sender }}</strong> on <strong>{{ currentToken.formattedDate }}</strong>
+                            </small>
+                        </b-card-footer>
+                    </template>
+                </b-card>
+                <b-card no-body class="shadow-lg" v-else>
+                    <b-card-body>
+                        <p class="card-test" v-if="currentToken.date">Gift will be visible on {{ currentToken.formattedDate }}</p>
+                        <p class="card-test" v-else>Gift doesn't exist</p>
+                    </b-card-body>
+                </b-card>
+            </b-col>
+        </b-row>
     </div>
 </template>
 
@@ -144,8 +148,8 @@
         this.currentToken.visible = true;
         this.currentToken.loaded = true;
       },
-    }
-  }
+    },
+  };
 </script>
 
 <style>
