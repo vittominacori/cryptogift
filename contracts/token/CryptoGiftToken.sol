@@ -1,6 +1,5 @@
 pragma solidity ^0.4.24;
 
-import "openzeppelin-solidity/contracts/ownership/Ownable.sol";
 import "openzeppelin-solidity/contracts/access/roles/MinterRole.sol";
 import "openzeppelin-solidity/contracts/token/ERC721/ERC721Full.sol";
 import "eth-token-recover/contracts/TokenRecover.sol";
