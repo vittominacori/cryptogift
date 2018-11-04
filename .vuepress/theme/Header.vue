@@ -8,7 +8,8 @@
         <b-collapse is-nav id="nav_collapse">
 
             <b-navbar-nav>
-                <b-nav-item to="/send.html">Send</b-nav-item>
+                <b-nav-item to="/how-it-works.html">How it works</b-nav-item>
+                <b-nav-item to="/send.html">Send a Gift</b-nav-item>
             </b-navbar-nav>
 
         </b-collapse>

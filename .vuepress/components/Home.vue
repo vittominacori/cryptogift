@@ -9,8 +9,8 @@
                     {{ $site.description }}
                 </template>
                 <hr class="my-4">
-                <p>Buy and Send a CryptoGift</p>
-                <b-btn variant="success" to="/send.html" size="lg">Send</b-btn>
+                <p>Make your Gift unique on the Blockchain!</p>
+                <b-btn variant="success" to="/send.html" size="lg">Send a CryptoGift</b-btn>
             </b-jumbotron>
         </b-col>
     </b-row>

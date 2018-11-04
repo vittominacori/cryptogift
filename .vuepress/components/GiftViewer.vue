@@ -29,7 +29,7 @@
                         </b-card-body>
                         <b-card-footer>
                             <small class="text-muted">
-                                {{ currentToken.amount }} ETH, From <strong>{{ currentToken.content.sender }}</strong> on <strong>{{ currentToken.formattedDate }}</strong>
+                                <strong>{{ currentToken.amount }} ETH</strong>, From <strong>{{ currentToken.content.sender }}</strong> on <strong>{{ currentToken.formattedDate }}</strong>
                             </small>
                         </b-card-footer>
                     </template>
