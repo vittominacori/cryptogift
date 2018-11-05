@@ -199,7 +199,7 @@
                     </b-card>
 
                     <b-alert v-if="tokenLink" show variant="success">
-                        <b>Visit your <a target="_blank" :href="tokenLink">Gift page</a>.</b>
+                        Visit your <a target="_blank" :href="tokenLink">Gift page</a>.
                     </b-alert>
                 </b-col>
             </b-row>
@@ -290,7 +290,6 @@
             try {
               this.trxHash = '';
               this.trxLink = '';
-              this.encryptionKey = '';
               this.makingTransaction = true;
 
               if (!this.legacy) {

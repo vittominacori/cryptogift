@@ -1,4 +1,3 @@
-import config from '../config';
 import TokenArtifact from '../abi/CryptoGiftToken';
 import MarketArtifact from '../abi/CryptoGiftMarketplace';
 
@@ -13,7 +12,7 @@ export default {
         netId: null,
       },
       network: {
-        default: config.defaultNetwork,
+        default: __DEFAULT_NETWORK__,
         current: null,
         map: {
           1: 'mainnet',
@@ -100,9 +99,9 @@ export default {
     },
     initContracts () {
       this.contracts.token = this.web3.eth.contract(TokenArtifact.abi);
-      this.instances.token = this.contracts.token.at(config.tokenAddress);
+      this.instances.token = this.contracts.token.at(__TOKEN_ADDRESS__);
       this.contracts.market = this.web3.eth.contract(MarketArtifact.abi);
-      this.instances.market = this.contracts.market.at(config.marketAddress);
+      this.instances.market = this.contracts.market.at(__MARKET_ADDRESS__);
 
       this.ready();
     },

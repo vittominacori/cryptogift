@@ -13,7 +13,14 @@ module.exports = {
     ['meta', { property: 'twitter:title', content: 'CryptoGift' }],
     ['script', { src: '/assets/js/web3.min.js' }],
   ],
-  defaultNetwork: 'rinkeby',
-  tokenAddress: '0x9d938d3139A26477e5990FF5fD3eB5f4584AeE97',
-  marketAddress: '0x4D97594F27A86E1440cC9b0C5361dC8F3B63f8E1',
+  chainWebpack: (config) => {
+    const isProd = process.env.NODE_ENV && process.env.NODE_ENV === 'production';
+
+    config.plugin('injections').tap(pluginArgs => pluginArgs.map(definitions => ({
+      ...definitions,
+      '__TOKEN_ADDRESS__': JSON.stringify(isProd ? '0x9d938d3139A26477e5990FF5fD3eB5f4584AeE97' : '0x9d938d3139A26477e5990FF5fD3eB5f4584AeE97'), // eslint-disable-line max-len
+      '__MARKET_ADDRESS__': JSON.stringify(isProd ? '0x4D97594F27A86E1440cC9b0C5361dC8F3B63f8E1' : '0x4D97594F27A86E1440cC9b0C5361dC8F3B63f8E1'), // eslint-disable-line max-len
+      '__DEFAULT_NETWORK__': JSON.stringify(isProd ? 'rinkeby' : 'rinkeby'),
+    })));
+  },
 };

@@ -13,6 +13,9 @@
     "jest"    : true
   },
   "globals" : {
+    "__DEFAULT_NETWORK__": false,
+    "__TOKEN_ADDRESS__": false,
+    "__MARKET_ADDRESS__": false,
     "ethereum": false,
     "web3": false,
     "Web3": false
