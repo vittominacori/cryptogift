@@ -94,16 +94,52 @@ contract('CryptoGiftMarketplace', function ([owner, wallet, purchaser, beneficia
         );
       });
     });
+
+    describe('change wallet', function () {
+      describe('if owner is calling', function () {
+        it('success and update wallet', async function () {
+          await this.marketplace.setWallet(anotherAccount);
+          const newWallet = await this.marketplace.wallet();
+          newWallet.should.be.equal(anotherAccount);
+        });
+
+        describe('if wallet is the zero address', function () {
+          it('reverts ', async function () {
+            await shouldFail.reverting(
+              this.marketplace.setWallet(ZERO_ADDRESS)
+            );
+          });
+        });
+      });
+
+      describe('if another account is calling', function () {
+        it('reverts ', async function () {
+          await shouldFail.reverting(
+            this.marketplace.setWallet(anotherAccount, { from: anotherAccount })
+          );
+        });
+      });
+    });
   });
 
   describe('accepting payments', function () {
-    it('should accept payments through buyToken function', async function () {
+    it('should accept payments greater than price through buyToken function', async function () {
       await this.marketplace.buyToken(
         beneficiary,
         encryptedContent,
         tokenDetails.date,
         tokenDetails.style,
         { value: value, from: purchaser }
+      );
+    });
+
+    it('should accept payments equal to price through buyToken function', async function () {
+      await this.marketplace.buyToken(
+        beneficiary,
+        encryptedContent,
+        tokenDetails.date,
+        tokenDetails.style,
+        { value: price, from: purchaser }
       );
     });
 

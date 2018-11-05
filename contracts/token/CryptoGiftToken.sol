@@ -1,10 +1,10 @@
 pragma solidity ^0.4.24;
 
-import "openzeppelin-solidity/contracts/access/roles/MinterRole.sol";
 import "openzeppelin-solidity/contracts/token/ERC721/ERC721Full.sol";
+import "openzeppelin-solidity/contracts/access/roles/MinterRole.sol";
 import "eth-token-recover/contracts/TokenRecover.sol";
 
-contract CryptoGiftToken is ERC721Full, TokenRecover, MinterRole {
+contract CryptoGiftToken is ERC721Full, MinterRole, TokenRecover {
   struct GiftStructure {
     uint256 amount;
     address purchaser;

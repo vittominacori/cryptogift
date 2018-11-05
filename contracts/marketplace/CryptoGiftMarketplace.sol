@@ -1,7 +1,6 @@
 pragma solidity ^0.4.24;
 
 import "openzeppelin-solidity/contracts/math/SafeMath.sol";
-import "eth-token-recover/contracts/TokenRecover.sol";
 import "../token/CryptoGiftToken.sol";
 
 contract CryptoGiftMarketplace is TokenRecover {
@@ -98,13 +97,26 @@ contract CryptoGiftMarketplace is TokenRecover {
     _forwardFunds(giftValue, beneficiary);
   }
 
+  /**
+   * @dev Set the price of a gift
+   * @param newPrice Value of the gift
+   */
   function setPrice(uint256 newPrice) public onlyOwner {
     _price = newPrice;
   }
 
-  // -----------------------------------------
-  // Internal interface (extensible)
-  // -----------------------------------------
+  /**
+   * @dev Change the destination wallet
+   * @param newWallet Address of the wallet
+   */
+  function setWallet(address newWallet) public onlyOwner {
+    require(
+      newWallet != address(0),
+      "Wallet can't be the zero address"
+    );
+
+    _wallet = newWallet;
+  }
 
   /**
    * @dev Validation of an incoming purchase. Use require statements to revert state when conditions are not met. Use super to concatenate validations.
