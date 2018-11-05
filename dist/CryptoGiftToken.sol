@@ -1,168 +1,5 @@
 pragma solidity ^0.4.24;
 
-// File: openzeppelin-solidity/contracts/ownership/Ownable.sol
-
-/**
- * @title Ownable
- * @dev The Ownable contract has an owner address, and provides basic authorization control
- * functions, this simplifies the implementation of "user permissions".
- */
-contract Ownable {
-  address private _owner;
-
-  event OwnershipTransferred(
-    address indexed previousOwner,
-    address indexed newOwner
-  );
-
-  /**
-   * @dev The Ownable constructor sets the original `owner` of the contract to the sender
-   * account.
-   */
-  constructor() internal {
-    _owner = msg.sender;
-    emit OwnershipTransferred(address(0), _owner);
-  }
-
-  /**
-   * @return the address of the owner.
-   */
-  function owner() public view returns(address) {
-    return _owner;
-  }
-
-  /**
-   * @dev Throws if called by any account other than the owner.
-   */
-  modifier onlyOwner() {
-    require(isOwner());
-    _;
-  }
-
-  /**
-   * @return true if `msg.sender` is the owner of the contract.
-   */
-  function isOwner() public view returns(bool) {
-    return msg.sender == _owner;
-  }
-
-  /**
-   * @dev Allows the current owner to relinquish control of the contract.
-   * @notice Renouncing to ownership will leave the contract without an owner.
-   * It will not be possible to call the functions with the `onlyOwner`
-   * modifier anymore.
-   */
-  function renounceOwnership() public onlyOwner {
-    emit OwnershipTransferred(_owner, address(0));
-    _owner = address(0);
-  }
-
-  /**
-   * @dev Allows the current owner to transfer control of the contract to a newOwner.
-   * @param newOwner The address to transfer ownership to.
-   */
-  function transferOwnership(address newOwner) public onlyOwner {
-    _transferOwnership(newOwner);
-  }
-
-  /**
-   * @dev Transfers control of the contract to a newOwner.
-   * @param newOwner The address to transfer ownership to.
-   */
-  function _transferOwnership(address newOwner) internal {
-    require(newOwner != address(0));
-    emit OwnershipTransferred(_owner, newOwner);
-    _owner = newOwner;
-  }
-}
-
-// File: openzeppelin-solidity/contracts/access/Roles.sol
-
-/**
- * @title Roles
- * @dev Library for managing addresses assigned to a Role.
- */
-library Roles {
-  struct Role {
-    mapping (address => bool) bearer;
-  }
-
-  /**
-   * @dev give an account access to this role
-   */
-  function add(Role storage role, address account) internal {
-    require(account != address(0));
-    require(!has(role, account));
-
-    role.bearer[account] = true;
-  }
-
-  /**
-   * @dev remove an account's access to this role
-   */
-  function remove(Role storage role, address account) internal {
-    require(account != address(0));
-    require(has(role, account));
-
-    role.bearer[account] = false;
-  }
-
-  /**
-   * @dev check if an account has this role
-   * @return bool
-   */
-  function has(Role storage role, address account)
-    internal
-    view
-    returns (bool)
-  {
-    require(account != address(0));
-    return role.bearer[account];
-  }
-}
-
-// File: openzeppelin-solidity/contracts/access/roles/MinterRole.sol
-
-contract MinterRole {
-  using Roles for Roles.Role;
-
-  event MinterAdded(address indexed account);
-  event MinterRemoved(address indexed account);
-
-  Roles.Role private minters;
-
-  constructor() internal {
-    _addMinter(msg.sender);
-  }
-
-  modifier onlyMinter() {
-    require(isMinter(msg.sender));
-    _;
-  }
-
-  function isMinter(address account) public view returns (bool) {
-    return minters.has(account);
-  }
-
-  function addMinter(address account) public onlyMinter {
-    _addMinter(account);
-  }
-
-  function renounceMinter() public {
-    _removeMinter(msg.sender);
-  }
-
-  function _addMinter(address account) internal {
-    minters.add(account);
-    emit MinterAdded(account);
-  }
-
-  function _removeMinter(address account) internal {
-    minters.remove(account);
-    emit MinterRemoved(account);
-  }
-}
-
 // File: openzeppelin-solidity/contracts/introspection/IERC165.sol
 
 /**
@@ -1012,6 +849,93 @@ contract ERC721Full is ERC721, ERC721Enumerable, ERC721Metadata {
   }
 }
 
+// File: openzeppelin-solidity/contracts/access/Roles.sol
+
+/**
+ * @title Roles
+ * @dev Library for managing addresses assigned to a Role.
+ */
+library Roles {
+  struct Role {
+    mapping (address => bool) bearer;
+  }
+
+  /**
+   * @dev give an account access to this role
+   */
+  function add(Role storage role, address account) internal {
+    require(account != address(0));
+    require(!has(role, account));
+
+    role.bearer[account] = true;
+  }
+
+  /**
+   * @dev remove an account's access to this role
+   */
+  function remove(Role storage role, address account) internal {
+    require(account != address(0));
+    require(has(role, account));
+
+    role.bearer[account] = false;
+  }
+
+  /**
+   * @dev check if an account has this role
+   * @return bool
+   */
+  function has(Role storage role, address account)
+    internal
+    view
+    returns (bool)
+  {
+    require(account != address(0));
+    return role.bearer[account];
+  }
+}
+
+// File: openzeppelin-solidity/contracts/access/roles/MinterRole.sol
+
+contract MinterRole {
+  using Roles for Roles.Role;
+
+  event MinterAdded(address indexed account);
+  event MinterRemoved(address indexed account);
+
+  Roles.Role private minters;
+
+  constructor() internal {
+    _addMinter(msg.sender);
+  }
+
+  modifier onlyMinter() {
+    require(isMinter(msg.sender));
+    _;
+  }
+
+  function isMinter(address account) public view returns (bool) {
+    return minters.has(account);
+  }
+
+  function addMinter(address account) public onlyMinter {
+    _addMinter(account);
+  }
+
+  function renounceMinter() public {
+    _removeMinter(msg.sender);
+  }
+
+  function _addMinter(address account) internal {
+    minters.add(account);
+    emit MinterAdded(account);
+  }
+
+  function _removeMinter(address account) internal {
+    minters.remove(account);
+    emit MinterRemoved(account);
+  }
+}
+
 // File: openzeppelin-solidity/contracts/token/ERC20/IERC20.sol
 
 /**
@@ -1047,6 +971,82 @@ interface IERC20 {
   );
 }
 
+// File: openzeppelin-solidity/contracts/ownership/Ownable.sol
+
+/**
+ * @title Ownable
+ * @dev The Ownable contract has an owner address, and provides basic authorization control
+ * functions, this simplifies the implementation of "user permissions".
+ */
+contract Ownable {
+  address private _owner;
+
+  event OwnershipTransferred(
+    address indexed previousOwner,
+    address indexed newOwner
+  );
+
+  /**
+   * @dev The Ownable constructor sets the original `owner` of the contract to the sender
+   * account.
+   */
+  constructor() internal {
+    _owner = msg.sender;
+    emit OwnershipTransferred(address(0), _owner);
+  }
+
+  /**
+   * @return the address of the owner.
+   */
+  function owner() public view returns(address) {
+    return _owner;
+  }
+
+  /**
+   * @dev Throws if called by any account other than the owner.
+   */
+  modifier onlyOwner() {
+    require(isOwner());
+    _;
+  }
+
+  /**
+   * @return true if `msg.sender` is the owner of the contract.
+   */
+  function isOwner() public view returns(bool) {
+    return msg.sender == _owner;
+  }
+
+  /**
+   * @dev Allows the current owner to relinquish control of the contract.
+   * @notice Renouncing to ownership will leave the contract without an owner.
+   * It will not be possible to call the functions with the `onlyOwner`
+   * modifier anymore.
+   */
+  function renounceOwnership() public onlyOwner {
+    emit OwnershipTransferred(_owner, address(0));
+    _owner = address(0);
+  }
+
+  /**
+   * @dev Allows the current owner to transfer control of the contract to a newOwner.
+   * @param newOwner The address to transfer ownership to.
+   */
+  function transferOwnership(address newOwner) public onlyOwner {
+    _transferOwnership(newOwner);
+  }
+
+  /**
+   * @dev Transfers control of the contract to a newOwner.
+   * @param newOwner The address to transfer ownership to.
+   */
+  function _transferOwnership(address newOwner) internal {
+    require(newOwner != address(0));
+    emit OwnershipTransferred(_owner, newOwner);
+    _owner = newOwner;
+  }
+}
+
 // File: eth-token-recover/contracts/TokenRecover.sol
 
 /**
@@ -1074,7 +1074,7 @@ contract TokenRecover is Ownable {
 
 // File: contracts/token/CryptoGiftToken.sol
 
-contract CryptoGiftToken is ERC721Full, TokenRecover, MinterRole {
+contract CryptoGiftToken is ERC721Full, MinterRole, TokenRecover {
   struct GiftStructure {
     uint256 amount;
     address purchaser;

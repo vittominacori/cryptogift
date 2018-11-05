@@ -12,35 +12,32 @@ Gift has:
 * sender: who is sending the gift
 * receiver: who is receiving the gift
 * message: a message for the receiver
+* amount: the value of ETH sent to the receiver
+* style: a number representing the message style
 * date: the date after which the gift is visible
 
 
-Code created using [Open Zeppelin (openzeppelin-solidity)](https://github.com/OpenZeppelin/openzeppelin-solidity) and [Truffle Framework](https://github.com/trufflesuite/truffle).
+Code created using [Open Zeppelin](https://github.com/OpenZeppelin/openzeppelin-solidity) and [Truffle Framework](https://github.com/trufflesuite/truffle).
 
+## DAPP Source
  
- 
+Discover DApp source [here](https://github.com/vittominacori/cryptogift/tree/dapp).  
+
 ## Installation
-
 
 Install truffle.
 
 ```bash
-npm install -g truffle      // Version 4.1.13+ required.
+npm install -g truffle      // Version 4.1.14+ required.
 ```
 
-
-
 ## Install dependencies
-
 
 ```bash
 npm install
 ```
 
-
-
 ## Linter
-
 
 Use Solium
 
@@ -48,16 +45,19 @@ Use Solium
 npm run lint:sol
 ```
 
-Lint and fix all
+Use ESLint
 
 ```bash
-npm run lint:all:fix
+npm run lint:js
 ```
 
+Use both and fix
 
+```bash
+npm run lint:fix
+```
 
 ## Compile and test the contracts.
- 
 
 Open the Truffle console
 
@@ -77,10 +77,7 @@ Test
 test
 ```
 
-
-
 ## Run server
-
 
 Run the `liteserver` development server.
 
@@ -88,10 +85,7 @@ Run the `liteserver` development server.
 npm run dev
 ```
 
-
-
 ## Optional
-
 
 Install the [truffle-flattener](https://github.com/alcuadrado/truffle-flattener)
 
@@ -99,28 +93,13 @@ Install the [truffle-flattener](https://github.com/alcuadrado/truffle-flattener)
 npm install -g truffle-flattener
 ```
  
- 
 Usage 
 
 ```bash
 truffle-flattener contracts/token/CryptoGiftToken.sol >> dist/CryptoGiftToken.sol
 truffle-flattener contracts/marketplace/CryptoGiftMarketplace.sol >> dist/CryptoGiftMarketplace.sol
 ```
- 
 
+## License
 
-## TODO
- 
-DAPP is coming...
- 
-
- 
-## Links
-
-Solidity [Doc](https://solidity.readthedocs.io) [Github](https://solidity.readthedocs.io)
-
-OpenZeppelin [Doc](https://openzeppelin.org/api/docs/open-zeppelin.html) [Github](https://github.com/OpenZeppelin)
-
-Truffle [Doc](http://truffleframework.com/docs) [Github](https://github.com/trufflesuite/truffle)
-
-Web3.js [Doc 0.20.6](https://github.com/ethereum/wiki/wiki/JavaScript-API) [Doc 1.0](http://web3js.readthedocs.io/en/1.0) [Github](https://github.com/ethereum/web3.js)
+Code released under the [MIT License](https://github.com/vittominacori/cryptogift/blob/master/LICENSE).
