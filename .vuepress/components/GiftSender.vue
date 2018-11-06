@@ -180,27 +180,42 @@
         <template v-else>
             <b-row>
                 <b-col lg="8" offset-lg="2">
-                    <b-alert show variant="warning">
+                    <b-card v-if="tokenLink"
+                            :img-src="$withBase('assets/images/cryptogift-og.jpg')"
+                            title="Your CryptoGift is on the Blockchain"
+                            class="shadow-lg mb-3"
+                            bg-variant="light">
+                        <p class="card-text"><a target="_blank" :href="tokenLink">{{ tokenLink }}</a></p>
+                        <b-row>
+                            <b-col md="9" class="mb-2">
+                                <p class="card-text">
+                                    Visit the link above or scan the QR Code and then enter your encryption key <b>{{ encryptionKey }}</b>.<br>
+                                    Find out who sent it to you and what he wants to say.<br>
+                                    View your unique Gift on the Blockchain!
+                                </p>
+                                <b-button v-on:click="print" size="lg" variant="outline-success" class="d-print-none">Print your Gift</b-button>
+                            </b-col>
+                            <b-col md="3" class="mb-2">
+                                <b-img v-if="qrcode" :src="qrcode" fluid-grow></b-img>
+                            </b-col>
+                        </b-row>
+                    </b-card>
+
+                    <b-alert show variant="warning" class="d-print-none">
                         <h6>Your encryption key is <b>{{ encryptionKey }}</b></h6>
-                        <b>Do not lose it!</b> It cannot be recovered if you lose it. It allows receiver to decrypt your message. You <b>must</b> copy and share it with receiver.<br>
+                        <b>Do not lose it!</b> It cannot be recovered if you lose it. It allows receiver to decrypt your message. You <b>must</b> copy and share it with receiver.
                     </b-alert>
 
-                    <b-card class="shadow-lg mb-3" bg-variant="light">
-                        <div v-if="trxHash">
-                            <div>
-                                <b>Well! Transaction done!</b><br>
-                                Transaction id <a :href="trxLink" target="_blank">{{ trxHash }}</a>
-                            </div>
-                            <div v-if="!tokenLink">
-                                Retrieving Gift. Please wait...
-                            </div>
+                    <b-alert v-if="trxHash" show variant="success" class="d-print-none">
+                        <div class="text-truncate">
+                            <b>Well! Transaction done!</b><br>
+                            TxHash <a :href="trxLink" target="_blank">{{ trxHash }}</a>
                         </div>
-                        <div v-else>Making transaction. Do not refresh the page. Please wait...</div>
-                    </b-card>
-
-                    <b-card v-if="tokenLink" class="shadow-lg mb-3" bg-variant="light">
-                        <b-img v-if="qrcode" :src="qrcode"></b-img> Visit your <a target="_blank" :href="tokenLink">Gift page</a>.
-                    </b-card>
+                        <div v-if="!tokenLink">
+                            Retrieving Gift. Please wait...
+                        </div>
+                    </b-alert>
+                    <b-alert v-else show variant="light">Making transaction. Do not refresh the page. Please wait...</b-alert>
                 </b-col>
             </b-row>
         </template>
@@ -324,7 +339,7 @@
                         },
                         (err, event) => {
                           if (!err) {
-                            this.tokenLink = this.$withBase(`view.html?id=${(event.args.tokenId).valueOf()}`);
+                            this.tokenLink = window.location.origin + this.$withBase(`/view.html?id=${(event.args.tokenId).valueOf()}`);
                             this.generateQRCode();
                           } else {
                             this.makingTransaction = false;

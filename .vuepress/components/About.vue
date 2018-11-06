@@ -4,7 +4,7 @@
             <b-alert show variant="info">👇 below is how a CryptoGift looks like.</b-alert>
         </b-col>
         <b-col lg="8" offset-lg="2" class="mb-3">
-            <b-card no-body class="shadow-lg">
+            <b-card :img-src="$withBase('assets/images/cryptogift-og.jpg')" no-body class="shadow-lg">
                 <h4 slot="header">For Paperino</h4>
                 <b-card-body>
                     <p class="card-test">You may be getting older but at least I still look great! Happy birthday best friend!</p>
