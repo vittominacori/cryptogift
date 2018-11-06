@@ -5,13 +5,6 @@
                 <li class="list-inline-item">
                     <small>created by <b-link class="text-light" href="https://github.com/vittominacori" target="_blank">@vittominacori</b-link></small>
                 </li>
-                <li class="list-inline-item">
-                    <small>
-                        GitHub:
-                        <b-link class="text-light" href="https://github.com/vittominacori/cryptogift" target="_blank">Smart Contracts</b-link> -
-                        <b-link class="text-light" href="https://github.com/vittominacori/cryptogift/tree/dapp" target="_blank">DApp</b-link>
-                    </small>
-                </li>
             </ul>
         </b-col>
     </b-row>

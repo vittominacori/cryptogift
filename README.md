@@ -1,4 +1,5 @@
 ---
+title: Make your Gift unique on the Blockchain
 component: Home
 ---
 

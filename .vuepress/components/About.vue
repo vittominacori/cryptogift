@@ -20,7 +20,7 @@
             <b-card no-body class="shadow-lg">
                 <b-card-body>
                     <p class="card-text">
-                        A CryptoGift is an ERC721 Collectible or NFT Token to store a message into the Blockchain.<br>
+                        A CryptoGift is an ERC721 Collectible or NFT Token to store a message into the Ethereum Blockchain.<br>
                         Send Ethereum to a friend for birthday, or send a love message. Crypt and make it eternal.<br><br>
                         Choose your and your receiver name, write an awesome message, decide how many ETH do you want to Gift (also zero) and
                         sign yor Gift using <a href="https://metamask.io/" target="_blank">MetaMask</a>.<br>
@@ -29,7 +29,7 @@
                     <p class="card-text">
                         Make your Gift unique on the Blockchain!
                     </p>
-                    <b-btn variant="success" to="/send.html" size="lg">Send a CryptoGift</b-btn>
+                    <b-button variant="outline-success" to="/send.html" size="lg">Send a CryptoGift</b-button>
                 </b-card-body>
             </b-card>
         </b-col>

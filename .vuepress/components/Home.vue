@@ -3,14 +3,14 @@
         <b-col lg="8" offset-lg="2">
             <b-jumbotron>
                 <template slot="header">
-                    {{ $site.title }}
+                    <b-img slot="aside" :src="$withBase('/assets/images/logo-color.png')" width="100" :alt="$site.title"></b-img> {{ $site.title }}
                 </template>
                 <template slot="lead">
                     {{ $site.description }}
                 </template>
                 <hr class="my-4">
                 <p>Make your Gift unique on the Blockchain!</p>
-                <b-btn variant="success" to="/send.html" size="lg">Send a CryptoGift</b-btn>
+                <b-button variant="outline-success" to="/send.html" size="lg">Send a CryptoGift</b-button>
             </b-jumbotron>
         </b-col>
     </b-row>

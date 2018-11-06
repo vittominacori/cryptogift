@@ -12,6 +12,13 @@
                 <b-nav-item to="/send.html">Send a Gift</b-nav-item>
             </b-navbar-nav>
 
+            <b-navbar-nav class="ml-auto">
+                <b-nav-item-dropdown text="GitHub" right>
+                    <b-dropdown-item target="_blank" href="https://github.com/vittominacori/cryptogift">Smart Contracts</b-dropdown-item>
+                    <b-dropdown-item target="_blank" href="https://github.com/vittominacori/cryptogift/tree/dapp">DApp</b-dropdown-item>
+                </b-nav-item-dropdown>
+            </b-navbar-nav>
+
         </b-collapse>
     </b-navbar>
 </template>

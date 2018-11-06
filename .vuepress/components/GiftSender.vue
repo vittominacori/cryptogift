@@ -2,7 +2,7 @@
     <div v-if="!loading">
         <template v-if="!makingTransaction">
             <b-form @submit.prevent="createGift">
-                <fieldset :disabled="!metamask.installed || makingTransaction">
+                <fieldset :disabled="!metamask.installed">
                     <b-row>
                         <b-col lg="7" class="mb-4">
                             <b-card class="shadow-lg" bg-variant="light">
@@ -170,7 +170,7 @@
                                     </b-list-group-item>
                                 </b-list-group>
 
-                                <b-button type="submit" variant="success" size="lg">Send your Gift</b-button>
+                                <b-button type="submit" variant="outline-success" size="lg">Send your Gift</b-button>
                             </b-card>
                         </b-col>
                     </b-row>
@@ -198,9 +198,9 @@
                         <div v-else>Making transaction. Do not refresh the page. Please wait...</div>
                     </b-card>
 
-                    <b-alert v-if="tokenLink" show variant="success">
-                        Visit your <a target="_blank" :href="tokenLink">Gift page</a>.
-                    </b-alert>
+                    <b-card v-if="tokenLink" class="shadow-lg mb-3" bg-variant="light">
+                        <b-img v-if="qrcode" :src="qrcode"></b-img> Visit your <a target="_blank" :href="tokenLink">Gift page</a>.
+                    </b-card>
                 </b-col>
             </b-row>
         </template>
@@ -211,6 +211,7 @@
   import browser from '../mixins/browser';
   import encryption from '../mixins/encryption';
   import dapp from '../mixins/dapp';
+  import QRCode from 'qrcode';
 
   export default {
     name: 'GiftSender',
@@ -227,6 +228,7 @@
         trxHash: '',
         trxLink: '',
         tokenLink: '',
+        qrcode: '',
         makingTransaction: false,
         gift: {
           beneficiary: '',
@@ -290,6 +292,7 @@
             try {
               this.trxHash = '';
               this.trxLink = '';
+              this.tokenLink = '';
               this.makingTransaction = true;
 
               if (!this.legacy) {
@@ -321,7 +324,8 @@
                         },
                         (err, event) => {
                           if (!err) {
-                            this.tokenLink = `view.html?id=${(event.args.tokenId).valueOf()}`;
+                            this.tokenLink = this.$withBase(`view.html?id=${(event.args.tokenId).valueOf()}`);
+                            this.generateQRCode();
                           } else {
                             this.makingTransaction = false;
                             alert("Some error occurred. Maybe transaction failed for some reasons. Check your transaction id.");
@@ -340,6 +344,17 @@
             }
           }
         });
+      },
+      generateQRCode () {
+        if (this.tokenLink) {
+          QRCode.toDataURL(this.tokenLink)
+            .then(url => {
+              this.qrcode = url;
+            })
+            .catch(err => {
+              console.error(err)
+            });
+        }
       },
     },
   };

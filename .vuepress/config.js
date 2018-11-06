@@ -1,15 +1,15 @@
 module.exports = {
   title: 'CryptoGift',
-  description: 'An ERC721 NFT Token and Marketplace to buy and give away an Ethereum based Collectible Gift',
+  description: 'CryptoGift is an ERC721 NFT Token and Marketplace to buy and give away an Ethereum based Collectible Gift. Make your Gift unique on the Blockchain!', // eslint-disable-line max-len
   base: '/cryptogift/',
   ga: 'UA-115756440-2',
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
     ['meta', { property: 'og:type', content: 'website' }],
     ['meta', { property: 'og:url', content: 'https://vittominacori.github.io/cryptogift' }],
-    ['meta', { property: 'og:image', content: 'https://vittominacori.github.io/cryptogift/assets/images/cryptogift.png' }], // eslint-disable-line max-len
+    ['meta', { property: 'og:image', content: 'https://vittominacori.github.io/cryptogift/assets/images/cryptogift-og.jpg' }], // eslint-disable-line max-len
     ['meta', { property: 'twitter:card', content: 'summary_large_image' }],
-    ['meta', { property: 'twitter:image', content: 'https://vittominacori.github.io/cryptogift/assets/images/cryptogift.png' }], // eslint-disable-line max-len
+    ['meta', { property: 'twitter:image', content: 'https://vittominacori.github.io/cryptogift/assets/images/cryptogift-og.jpg' }], // eslint-disable-line max-len
     ['meta', { property: 'twitter:title', content: 'CryptoGift' }],
     ['script', { src: '/assets/js/web3.min.js' }],
   ],
