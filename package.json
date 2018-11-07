@@ -21,7 +21,7 @@
     "url": "https://github.com/vittominacori/cryptogift.git"
   },
   "dependencies": {
-    "web3": "^0.20.6"
+    "web3": "0.20.6"
   },
   "devDependencies": {
     "bootstrap-vue": "^2.0.0-rc.11",
