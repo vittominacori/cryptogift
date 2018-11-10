@@ -141,10 +141,28 @@
                                     </small>
                                 </b-form-group>
 
+                                <b-form-group id="gift-encryption-key-group"
+                                              label="Encryption Key:"
+                                              label-for="gift-encryption-key"
+                                              description="Insert the Encryption Key">
+                                    <b-form-input id="gift-encryption-key"
+                                                  name="gift-encryption-key"
+                                                  type="text"
+                                                  v-model="encryptionKey"
+                                                  v-validate="'required|alpha_dash'"
+                                                  data-vv-as="Encryption Key"
+                                                  :class="{'is-invalid': errors.has('gift-encryption-key')}">
+                                    </b-form-input>
+                                    <small v-show="errors.has('gift-encryption-key')" class="text-danger">
+                                        {{ errors.first('gift-encryption-key') }}
+                                    </small>
+                                </b-form-group>
+
                                 <b-form-group id="gift-style-group"
                                               label="Style:"
                                               label-for="gift-style"
-                                              description="The style of your gift">
+                                              description="The style of your gift"
+                                              class="d-none">
                                     <b-form-select id="gift-style"
                                                    name="gift-style"
                                                    v-model="gift.style"
@@ -182,21 +200,23 @@
                 <b-col lg="8" offset-lg="2">
                     <b-card v-if="tokenLink"
                             :img-src="$withBase('assets/images/cryptogift-header.jpg')"
-                            title="Your CryptoGift is on the Blockchain"
+                            title="View your unique Gift on the Blockchain."
                             class="shadow-lg mb-3 border-0 rounded-0"
                             bg-variant="light">
-                        <p class="card-text"><a target="_blank" :href="tokenLink">{{ tokenLink }}</a></p>
                         <b-row>
                             <b-col md="9" class="mb-2">
                                 <p class="card-text">
-                                    Visit the link above or scan the QR Code and then enter your encryption key <b>{{ encryptionKey }}</b>.<br>
-                                    Find out who sent it to you and what he wants to say.<br>
-                                    View your unique Gift on the Blockchain!
+                                    <b-button variant="outline-success" target="_blank" :href="tokenLink">{{ tokenLink }}</b-button>
                                 </p>
-                                <b-button v-on:click="print" size="lg" variant="outline-success" class="d-print-none">Print your Gift</b-button>
+                                <p class="card-text">
+                                    Visit the link above or scan the QR Code.<br>
+                                    Find out who sent it to you and what he wants to say.<br><br>
+                                    Your encryption key: <b-badge variant="info" class="p-2">{{ encryptionKey }}</b-badge>
+                                </p>
                             </b-col>
                             <b-col md="3" class="mb-2">
                                 <b-img v-if="qrcode" :src="qrcode" fluid-grow></b-img>
+                                <b-button v-on:click="print" variant="link" class="d-print-none mt-3">Print your Gift</b-button>
                             </b-col>
                         </b-row>
                     </b-card>
@@ -245,6 +265,7 @@
         tokenLink: '',
         qrcode: '',
         makingTransaction: false,
+        encryptionKey: this.randomKey(),
         gift: {
           beneficiary: '',
           content: {
@@ -260,9 +281,6 @@
       }
     },
     computed: {
-      encryptionKey () {
-        return this.randomKey();
-      },
       totalPrice () {
         const price = new this.web3.BigNumber(this.price);
         const value = new this.web3.BigNumber(this.gift.value || 0);
