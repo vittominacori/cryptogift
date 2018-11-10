@@ -181,9 +181,9 @@
             <b-row>
                 <b-col lg="8" offset-lg="2">
                     <b-card v-if="tokenLink"
-                            :img-src="$withBase('assets/images/cryptogift-og.jpg')"
+                            :img-src="$withBase('assets/images/cryptogift-header.jpg')"
                             title="Your CryptoGift is on the Blockchain"
-                            class="shadow-lg mb-3"
+                            class="shadow-lg mb-3 border-0 rounded-0"
                             bg-variant="light">
                         <p class="card-text"><a target="_blank" :href="tokenLink">{{ tokenLink }}</a></p>
                         <b-row>

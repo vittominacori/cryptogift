@@ -2,9 +2,9 @@
     <div v-if="!loading">
         <b-row>
             <b-col lg="8" offset-lg="2">
-                <b-card :img-src="$withBase('assets/images/cryptogift-og.jpg')" no-body class="shadow-lg">
-                    <template v-if="currentToken.visible">
-                        <template v-if="!currentToken.loaded">
+                <template v-if="gift.visible">
+                    <template v-if="!gift.loaded">
+                        <b-card no-body class="shadow-lg border-0 rounded-0">
                             <b-card-body>
                                 <b-form @submit.prevent="getToken">
                                     <b-form-group id="gift-encryption-key-group"
@@ -22,38 +22,37 @@
                                     <b-button type="submit" variant="outline-success" size="lg">Decrypt your Gift</b-button>
                                 </b-form>
                             </b-card-body>
-                        </template>
-                        <template v-else>
-                            <h4 slot="header">For {{ currentToken.content.receiver }}</h4>
-                            <b-card-body>
-                                <p class="card-test">{{ currentToken.content.message }}</p>
-                            </b-card-body>
-                            <b-card-footer>
-                                <small class="text-muted">
-                                    <strong>{{ currentToken.amount }} ETH</strong>, From <strong>{{ currentToken.content.sender }}</strong> on <strong>{{ currentToken.formattedDate }}</strong>
-                                </small>
-                            </b-card-footer>
-                        </template>
+                        </b-card>
                     </template>
                     <template v-else>
+                        <gift-box :gift="gift"></gift-box>
+                    </template>
+                </template>
+                <template v-else>
+                    <b-card no-body class="shadow-lg border-0 rounded-0">
                         <b-card-body>
-                            <p class="card-test" v-if="currentToken.date">Gift will be visible on {{ currentToken.formattedDate }}</p>
+                            <p class="card-test" v-if="gift.date">Gift will be visible on {{ gift.formattedDate }}</p>
                             <p class="card-test" v-else>Gift doesn't exist</p>
                         </b-card-body>
-                    </template>
-                </b-card>
+                    </b-card>
+                </template>
             </b-col>
         </b-row>
     </div>
 </template>
 
 <script>
+  import GiftBox from './ui-components/GiftBox.vue';
+
   import browser from '../mixins/browser';
   import encryption from '../mixins/encryption';
   import dapp from '../mixins/dapp';
 
   export default {
     name: 'GiftViewer',
+    components: {
+      GiftBox,
+    },
     mixins: [
       browser,
       encryption,
@@ -62,14 +61,8 @@
     data () {
       return {
         loading: true,
-        playerVars: {
-          autoplay: 0,
-          rel: 0,
-          controls: 0,
-          showinfo: 0,
-        },
         encryptionKey: '',
-        currentToken: {
+        gift: {
           loaded: false,
           visible: false,
           id: 0,
@@ -101,22 +94,22 @@
         }
       },
       ready () {
-        this.currentToken.id = this.getParam('id');
+        this.gift.id = this.getParam('id');
         this.getTokenVisibility();
       },
       getTokenVisibility () {
-        this.instances.token.isVisible(this.currentToken.id, (err, result) => {
+        this.instances.token.isVisible(this.gift.id, (err, result) => {
           if (err) {
             alert('Some error');
             this.loading = false;
             return;
           }
 
-          this.currentToken.visible = result[0];
+          this.gift.visible = result[0];
 
-          if (!this.currentToken.visible) {
-            this.currentToken.date = (result[1]).valueOf() * 1000;
-            this.currentToken.formattedDate = new Date(this.currentToken.date).toLocaleString();
+          if (!this.gift.visible) {
+            this.gift.date = (result[1]).valueOf() * 1000;
+            this.gift.formattedDate = new Date(this.gift.date).toLocaleString();
           }
           this.loading = false;
         });
@@ -125,7 +118,7 @@
         this.$validator.validateAll().then(async (result) => {
           if (result) {
             try {
-              this.instances.token.getGift(this.currentToken.id, (err, result) => {
+              this.instances.token.getGift(this.gift.id, (err, result) => {
                 if (err) {
                   alert('Some error');
                   this.loading = false;
@@ -140,23 +133,16 @@
         });
       },
       formatStructure (structure) {
-        this.currentToken.amount = parseFloat(this.web3.fromWei(structure[0]));
-        this.currentToken.purchaser = structure[1];
-        this.currentToken.beneficiary = structure[2];
-        this.currentToken.content = JSON.parse(JSON.parse(this.web3.toAscii(this.decrypt(structure[3], this.encryptionKey))));
-        this.currentToken.date = (structure[4]).valueOf() * 1000;
-        this.currentToken.formattedDate = new Date(this.currentToken.date).toLocaleString();
-        this.currentToken.style = structure[5];
-        this.currentToken.visible = true;
-        this.currentToken.loaded = true;
+        this.gift.amount = parseFloat(this.web3.fromWei(structure[0]));
+        this.gift.purchaser = structure[1];
+        this.gift.beneficiary = structure[2];
+        this.gift.content = JSON.parse(JSON.parse(this.web3.toAscii(this.decrypt(structure[3], this.encryptionKey))));
+        this.gift.date = (structure[4]).valueOf() * 1000;
+        this.gift.formattedDate = new Date(this.gift.date).toLocaleString();
+        this.gift.style = structure[5];
+        this.gift.visible = true;
+        this.gift.loaded = true;
       },
     },
   };
 </script>
-
-<style>
-    iframe {
-        width: 100% !important;
-        max-width: 100% !important;
-    }
-</style>

@@ -4,17 +4,7 @@
             <b-alert show variant="info">👇 below is how a CryptoGift looks like.</b-alert>
         </b-col>
         <b-col lg="8" offset-lg="2" class="mb-3">
-            <b-card :img-src="$withBase('assets/images/cryptogift-og.jpg')" no-body class="shadow-lg">
-                <h4 slot="header">For Paperino</h4>
-                <b-card-body>
-                    <p class="card-test">You may be getting older but at least I still look great! Happy birthday best friend!</p>
-                </b-card-body>
-                <b-card-footer>
-                    <small class="text-muted">
-                        <strong>2 ETH</strong>, From <strong>Topolino</strong> on <strong>24/03/2018, 12:00:00</strong>
-                    </small>
-                </b-card-footer>
-            </b-card>
+            <gift-box :gift="gift"></gift-box>
         </b-col>
         <b-col lg="8" offset-lg="2">
             <b-card no-body class="shadow-lg">
@@ -37,7 +27,29 @@
 </template>
 
 <script>
+  import GiftBox from './ui-components/GiftBox.vue';
+
   export default {
     name: 'About',
+    components: {
+      GiftBox,
+    },
+    data () {
+      return {
+        gift: {
+          loaded: true,
+          visible: true,
+          id: 0,
+          amount: 3,
+          content: {
+            sender: 'Paperino',
+            receiver: 'Topolino',
+            message: 'You may be getting older but at least I still look great! Happy birthday best friend!',
+          },
+          formattedDate: new Date().toLocaleString(),
+          style: 1,
+        }
+      }
+    },
   };
 </script>
