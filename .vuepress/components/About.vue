@@ -42,11 +42,14 @@
           id: 0,
           amount: 3,
           content: {
-            sender: 'Paperino',
-            receiver: 'Topolino',
+            sender: 'Luigi',
+            receiver: 'Mario',
             message: 'You may be getting older but at least I still look great! Happy birthday best friend!',
           },
           formattedDate: new Date().toLocaleString(),
+          purchaser: '0x0000000000000000000000000000000000000000',
+          beneficiary: '0x8888888888888888888888888888888888888888',
+          beneficiaryLink: 'https://etherscan.io/address/0x8888888888888888888888888888888888888888#internaltx',
           style: 1,
         }
       }

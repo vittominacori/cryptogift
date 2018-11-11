@@ -127,7 +127,7 @@
                                               description="The value of your gift">
                                     <b-form-input id="gift-value"
                                                   name="gift-value"
-                                                  step="0.1"
+                                                  step="any"
                                                   type="number"
                                                   min="0"
                                                   v-model="gift.value"

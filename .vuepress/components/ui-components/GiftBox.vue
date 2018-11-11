@@ -1,14 +1,20 @@
 <template>
-    <b-card :img-src="$withBase('assets/images/cryptogift-header.jpg')" no-body class="shadow-lg border-0 rounded-0">
-        <h4 slot="header">For {{ gift.content.receiver }}</h4>
+    <b-card no-body class="shadow-lg border-0 rounded-0">
         <b-card-body>
-            <p class="card-test">{{ gift.content.message }}</p>
+            <h5>Dear {{ gift.content.receiver }},</h5>
+            <p class="card-text pt-4 pb-3">{{ gift.content.message }}</p>
+            <h6>{{ gift.content.sender }}</h6>
+            <small>{{ gift.formattedDate }}</small>
         </b-card-body>
-        <b-card-footer>
+        <b-card-footer v-if="gift.amount > 0 && gift.purchaser !== gift.beneficiary">
             <small class="text-muted">
-                <strong>{{ gift.amount }} ETH</strong>, From <strong>{{ gift.content.sender }}</strong> on <strong>{{ gift.formattedDate }}</strong>
+                You received <strong>{{ gift.amount }} ETH</strong> at <a :href="gift.beneficiaryLink" target="_blank">{{ gift.beneficiary }}</a>
             </small>
         </b-card-footer>
+        <b-card-img :src="$withBase('assets/images/cryptogift-header.jpg')"
+                    alt="CryptoGift"
+                    bottom
+                    class="rounded-0"></b-card-img>
     </b-card>
 </template>
 

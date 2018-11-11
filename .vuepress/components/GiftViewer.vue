@@ -31,8 +31,8 @@
                 <template v-else>
                     <b-card no-body class="shadow-lg border-0 rounded-0">
                         <b-card-body>
-                            <p class="card-test" v-if="gift.date">Gift will be visible on {{ gift.formattedDate }}</p>
-                            <p class="card-test" v-else>Gift doesn't exist</p>
+                            <p class="card-text" v-if="gift.date">Gift will be visible on {{ gift.formattedDate }}</p>
+                            <p class="card-text" v-else>Gift doesn't exist</p>
                         </b-card-body>
                     </b-card>
                 </template>
@@ -142,6 +142,7 @@
         this.gift.style = structure[5];
         this.gift.visible = true;
         this.gift.loaded = true;
+        this.gift.beneficiaryLink = this.network.current.etherscanLink + "/address/" + this.gift.beneficiary + '#internaltx';
       },
     },
   };
