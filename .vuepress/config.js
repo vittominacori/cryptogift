@@ -2,7 +2,6 @@ module.exports = {
   title: 'CryptoGift',
   description: 'CryptoGift is an ERC721 NFT Token and Marketplace to buy and give away an Ethereum based Collectible Gift. Make your Gift unique on the Blockchain!', // eslint-disable-line max-len
   base: '/cryptogift/',
-  ga: 'UA-115756440-2',
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
     ['meta', { property: 'og:type', content: 'website' }],
@@ -18,6 +17,7 @@ module.exports = {
 
     config.plugin('injections').tap(pluginArgs => pluginArgs.map(definitions => ({
       ...definitions,
+      '__GOOGLE_ANALYTICS_ID__': isProd ? JSON.stringify('UA-115756440-2') : false,
       '__TOKEN_ADDRESS__': JSON.stringify(isProd ? '0x9d938d3139A26477e5990FF5fD3eB5f4584AeE97' : '0x9d938d3139A26477e5990FF5fD3eB5f4584AeE97'), // eslint-disable-line max-len
       '__MARKET_ADDRESS__': JSON.stringify(isProd ? '0x4D97594F27A86E1440cC9b0C5361dC8F3B63f8E1' : '0x4D97594F27A86E1440cC9b0C5361dC8F3B63f8E1'), // eslint-disable-line max-len
       '__DEFAULT_NETWORK__': JSON.stringify(isProd ? 'rinkeby' : 'rinkeby'),
