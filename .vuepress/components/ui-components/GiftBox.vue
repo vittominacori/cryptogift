@@ -8,7 +8,7 @@
         </b-card-body>
         <b-card-footer v-if="gift.amount > 0 && gift.purchaser !== gift.beneficiary">
             <small class="text-muted">
-                You received <strong>{{ gift.amount }} ETH</strong> at <a :href="gift.beneficiaryLink" target="_blank">{{ gift.beneficiary }}</a>
+                You received <strong>{{ gift.amount }} ETH</strong> at <b-link :href="gift.beneficiaryLink" target="_blank">{{ gift.beneficiary }}</b-link>
             </small>
         </b-card-footer>
         <b-card-img :src="$withBase('assets/images/cryptogift-header.jpg')"

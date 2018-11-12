@@ -19,7 +19,7 @@
                                                       :class="{'is-invalid': errors.has('gift-encryption-key')}">
                                         </b-form-input>
                                     </b-form-group>
-                                    <b-button type="submit" variant="outline-success" size="lg">Decrypt your Gift</b-button>
+                                    <b-button type="submit" variant="outline-success" size="lg">Decrypt your CryptoGift</b-button>
                                 </b-form>
                             </b-card-body>
                         </b-card>
@@ -31,7 +31,7 @@
                 <template v-else>
                     <b-card no-body class="shadow-lg border-0 rounded-0">
                         <b-card-body>
-                            <p class="card-text" v-if="gift.date">Gift will be visible on {{ gift.formattedDate }}</p>
+                            <p class="card-text" v-if="gift.date">CryptoGift will be visible on {{ gift.formattedDate }}</p>
                             <p class="card-text" v-else>Gift doesn't exist</p>
                         </b-card-body>
                     </b-card>

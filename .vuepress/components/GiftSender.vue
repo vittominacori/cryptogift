@@ -88,7 +88,7 @@
                                                value="1"
                                                v-model="gift.privacyAndTerms">
                                         <label class="form-check-label" for="gift-privacy-and-terms">
-                                            I accept the terms and use
+                                            I've read and agreed the CryptoGift <b-link target="_blank" :href="$withBase('/terms-of-use.html')">Terms of use</b-link> and <b-link target="_blank" :href="$withBase('/privacy-policy.html')">Privacy policy</b-link>.
                                         </label>
                                     </div>
                                 </b-form-group>
@@ -97,7 +97,7 @@
                         <b-col lg="5" class="mb-4">
                             <b-card class="shadow-lg" bg-variant="light">
                                 <b-alert show variant="warning" v-if="!metamask.installed">
-                                    You need <a href="https://metamask.io/" target="_blank">MetaMask</a> extension.
+                                    You need <b-link href="https://metamask.io/" target="_blank">MetaMask</b-link> extension.
                                 </b-alert>
                                 <b-alert show variant="warning" v-else-if="metamask.netId !== network.current.id">
                                     You are on the wrong Network.<br>Please switch your MetaMask on <b>{{ network.current.name }}</b>.
@@ -178,17 +178,17 @@
 
                                 <b-list-group class="mb-4">
                                     <b-list-group-item variant="light" class="d-flex justify-content-between align-items-center">
-                                        Gift Value <b-badge variant="light" pill>{{ gift.value || 0 }} ETH</b-badge>
+                                        CryptoGift Value <b-badge variant="light" pill>{{ gift.value || 0 }} ETH</b-badge>
                                     </b-list-group-item>
                                     <b-list-group-item variant="light" class="d-flex justify-content-between align-items-center">
-                                        Gift Cost <b-badge variant="light" pill>{{ price }} ETH</b-badge>
+                                        CryptoGift Cost <b-badge variant="light" pill>{{ price }} ETH</b-badge>
                                     </b-list-group-item>
                                     <b-list-group-item class="d-flex justify-content-between align-items-center">
                                         Total <b-badge variant="light" pill>{{ totalPrice }} ETH</b-badge>
                                     </b-list-group-item>
                                 </b-list-group>
 
-                                <b-button type="submit" variant="outline-success" size="lg">Send your Gift</b-button>
+                                <b-button type="submit" variant="outline-success" size="lg">Send your CryptoGift</b-button>
                             </b-card>
                         </b-col>
                     </b-row>
@@ -200,7 +200,7 @@
                 <b-col lg="8" offset-lg="2">
                     <b-card v-if="tokenLink"
                             :img-src="$withBase('assets/images/cryptogift-header.jpg')"
-                            title="View your unique Gift on the Blockchain."
+                            title="View your unique CryptoGift on the Blockchain."
                             class="shadow-lg mb-3 border-0 rounded-0"
                             bg-variant="light">
                         <b-row>
@@ -216,7 +216,7 @@
                             </b-col>
                             <b-col md="3" class="mb-2">
                                 <b-img v-if="qrcode" :src="qrcode" fluid-grow></b-img>
-                                <b-button v-on:click="print" variant="link" class="d-print-none mt-3">Print your Gift</b-button>
+                                <b-button v-on:click="print" variant="link" class="d-print-none mt-3">Print your CryptoGift</b-button>
                             </b-col>
                         </b-row>
                     </b-card>
@@ -229,10 +229,10 @@
                     <b-alert v-if="trxHash" show variant="success" class="d-print-none">
                         <div class="text-truncate">
                             <b>Well! Transaction done!</b><br>
-                            TxHash <a :href="trxLink" target="_blank">{{ trxHash }}</a>
+                            TxHash <b-link :href="trxLink" target="_blank">{{ trxHash }}</b-link>
                         </div>
                         <div v-if="!tokenLink">
-                            Retrieving Gift. Please wait...
+                            Retrieving CryptoGift. Please wait...
                         </div>
                     </b-alert>
                     <b-alert v-else show variant="light">Making transaction. Do not refresh the page. Please wait...</b-alert>
@@ -311,7 +311,7 @@
       },
       createGift () {
         if (!this.metamask.installed) {
-          alert("To create a Gift please install MetaMask!");
+          alert("To create a CryptoGift please install MetaMask!");
           return;
         } else {
           if (this.metamask.netId !== this.network.current.id) {

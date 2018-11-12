@@ -13,8 +13,8 @@
                         A CryptoGift is an ERC721 Collectible or NFT Token to store a message into the Ethereum Blockchain.<br>
                         Send Ethereum to a friend for birthday, or send a love message. Crypt and make it eternal.<br><br>
                         Choose your and your receiver name, write an awesome message, decide how many ETH do you want to Gift (also zero) and
-                        sign yor Gift using <a href="https://metamask.io/" target="_blank">MetaMask</a>.<br>
-                        Copy and share gift link and encryption key with your receiver. Only who hold the key can decrypt your message.
+                        sign yor CryptoGift using <b-link href="https://metamask.io/" target="_blank">MetaMask</b-link>.<br>
+                        Copy and share CryptoGift link and encryption key with your receiver. Only who hold the key can decrypt your message.
                     </p>
                     <p class="card-text">
                         Make your Gift unique on the Blockchain!

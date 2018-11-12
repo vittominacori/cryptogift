@@ -9,7 +9,7 @@
 
             <b-navbar-nav>
                 <b-nav-item to="/about.html">About</b-nav-item>
-                <b-nav-item to="/send.html">Send a Gift</b-nav-item>
+                <b-nav-item to="/send.html">Send a CryptoGift</b-nav-item>
             </b-navbar-nav>
 
             <b-navbar-nav class="ml-auto">
