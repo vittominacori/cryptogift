@@ -1,6 +1,7 @@
 <template>
     <b-row>
         <b-col lg="8" offset-lg="2">
+            <ui--loader></ui--loader>
             <b-jumbotron>
                 <template slot="header">
                     <b-img slot="aside" :src="$withBase('/assets/images/logo-color.png')" width="100" :alt="$site.title"></b-img> {{ $site.title }}

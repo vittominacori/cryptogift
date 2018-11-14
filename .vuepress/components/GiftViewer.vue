@@ -1,7 +1,11 @@
 <template>
-    <div v-if="!loading">
-        <b-row>
-            <b-col lg="8" offset-lg="2">
+    <b-row>
+        <b-col lg="8" offset-lg="2">
+            <b-alert v-if="loading" show variant="light">
+                <h4 class="alert-heading">Retrieving CryptoGift. Do not refresh the page.</h4>
+                <ui--loader :loading="true"></ui--loader>
+            </b-alert>
+            <div v-else>
                 <template v-if="gift.visible">
                     <template v-if="!gift.loaded">
                         <b-card no-body class="shadow-lg border-0 rounded-0">
@@ -36,13 +40,13 @@
                         </b-card-body>
                     </b-card>
                 </template>
-            </b-col>
-        </b-row>
-    </div>
+            </div>
+        </b-col>
+    </b-row>
 </template>
 
 <script>
-  import GiftBox from './ui-components/GiftBox.vue';
+  import GiftBox from './ui/GiftBox.vue';
 
   import browser from '../mixins/browser';
   import encryption from '../mixins/encryption';
@@ -87,7 +91,6 @@
         try {
           await this.initWeb3(this.currentNetwork, true);
           this.initContracts();
-          this.loading = false;
         } catch (e) {
           alert(e);
           document.location.href = this.$withBase('/');
@@ -127,6 +130,7 @@
                 this.formatStructure(result);
               });
             } catch (e) {
+              this.loading = false;
               alert("Some error occurred. Check your Encryption Key");
             }
           }

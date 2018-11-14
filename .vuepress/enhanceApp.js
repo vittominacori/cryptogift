@@ -2,6 +2,7 @@
 
 import BootstrapVue from 'bootstrap-vue';
 import VeeValidate from 'vee-validate';
+import { VueSpinners } from '@saeris/vue-spinners';
 
 export default ({ Vue, router }) => {
   if (typeof window !== 'undefined' && __GOOGLE_ANALYTICS_ID__) {
@@ -30,4 +31,5 @@ export default ({ Vue, router }) => {
 
   Vue.use(BootstrapVue);
   Vue.use(VeeValidate);
+  Vue.use(VueSpinners);
 };

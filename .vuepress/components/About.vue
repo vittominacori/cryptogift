@@ -27,7 +27,7 @@
 </template>
 
 <script>
-  import GiftBox from './ui-components/GiftBox.vue';
+  import GiftBox from './ui/GiftBox.vue';
 
   export default {
     name: 'About',

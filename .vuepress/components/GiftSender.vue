@@ -216,7 +216,7 @@
                             </b-col>
                             <b-col md="3" class="mb-2">
                                 <b-img v-if="qrcode" :src="qrcode" fluid-grow></b-img>
-                                <b-button v-on:click="print" variant="link" class="d-print-none mt-3">Print your CryptoGift</b-button>
+                                <b-button v-on:click="print" variant="link" class="d-print-none mt-3">Print your Gift</b-button>
                             </b-col>
                         </b-row>
                     </b-card>
@@ -226,16 +226,22 @@
                         <b>Do not lose it!</b> It cannot be recovered if you lose it. It allows receiver to decrypt your message. You <b>must</b> copy and share it with receiver.
                     </b-alert>
 
-                    <b-alert v-if="trxHash" show variant="success" class="d-print-none">
-                        <div class="text-truncate">
-                            <b>Well! Transaction done!</b><br>
-                            TxHash <b-link :href="trxLink" target="_blank">{{ trxHash }}</b-link>
-                        </div>
-                        <div v-if="!tokenLink">
-                            Retrieving CryptoGift. Please wait...
-                        </div>
+                    <template v-if="trxHash">
+                        <b-alert show variant="success" class="d-print-none">
+                            <h4 class="alert-heading">Well! Transaction done!</h4>
+                            <div class="text-truncate">
+                                TxHash <b-link :href="trxLink" target="_blank">{{ trxHash }}</b-link>
+                            </div>
+                        </b-alert>
+                        <b-alert v-if="!tokenLink" show variant="light">
+                            <h4 class="alert-heading">Retrieving CryptoGift. Do not refresh the page.</h4>
+                            <ui--loader :loading="true"></ui--loader>
+                        </b-alert>
+                    </template>
+                    <b-alert v-else show variant="light">
+                        <h4 class="alert-heading">Making transaction. Do not refresh the page.</h4>
+                        <ui--loader :loading="true"></ui--loader>
                     </b-alert>
-                    <b-alert v-else show variant="light">Making transaction. Do not refresh the page. Please wait...</b-alert>
                 </b-col>
             </b-row>
         </template>
@@ -297,7 +303,6 @@
         try {
           await this.initWeb3(this.currentNetwork, true);
           this.initContracts();
-          this.loading = false;
         } catch (e) {
           alert(e);
           document.location.href = this.$withBase('/');
@@ -308,6 +313,8 @@
           getMessage: field => 'Insert a valid Ethereum wallet address.',
           validate: value => this.web3.isAddress(value)
         });
+
+        this.loading = false;
       },
       createGift () {
         if (!this.metamask.installed) {
