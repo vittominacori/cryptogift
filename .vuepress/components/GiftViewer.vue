@@ -5,6 +5,21 @@
                 <h4 class="alert-heading">Retrieving CryptoGift. Do not refresh the page.</h4>
                 <ui--loader :loading="true"></ui--loader>
             </b-alert>
+            <div v-else-if="!gift.id">
+                <b-alert show variant="warning">
+                    No CryptoGift ID provided
+                </b-alert>
+
+                <b-jumbotron>
+                    <template slot="header">
+                        <b-img slot="aside" :src="$withBase('/assets/images/logo-color.png')" width="100" :alt="$site.title"></b-img> {{ $site.title }}
+                    </template>
+                    <template slot="lead">
+                        {{ $site.description }}
+                    </template>
+                    <b-button variant="outline-success" to="/send.html" size="lg">Create your CryptoGift</b-button>
+                </b-jumbotron>
+            </div>
             <div v-else>
                 <template v-if="gift.visible">
                     <template v-if="!gift.loaded">
@@ -82,8 +97,13 @@
       }
     },
     async mounted() {
-      this.currentNetwork = this.getParam('network') || this.network.default;
-      await this.initDapp();
+      this.gift.id = this.getParam('id');
+      if (this.gift.id) {
+        this.currentNetwork = this.getParam('network') || this.network.default;
+        await this.initDapp();
+      } else {
+        this.loading = false;
+      }
     },
     methods: {
       async initDapp () {
@@ -97,7 +117,6 @@
         }
       },
       ready () {
-        this.gift.id = this.getParam('id');
         this.getTokenVisibility();
       },
       getTokenVisibility () {
