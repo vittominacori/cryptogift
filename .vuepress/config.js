@@ -9,7 +9,7 @@ module.exports = {
     ['meta', { property: 'og:image', content: 'https://vittominacori.github.io/cryptogift/assets/images/cryptogift-og.jpg' }], // eslint-disable-line max-len
     ['meta', { property: 'twitter:card', content: 'summary_large_image' }],
     ['meta', { property: 'twitter:image', content: 'https://vittominacori.github.io/cryptogift/assets/images/cryptogift-og.jpg' }], // eslint-disable-line max-len
-    ['meta', { property: 'twitter:title', content: 'CryptoGift' }],
+    ['meta', { property: 'twitter:title', content: 'Make your Gift unique on the Blockchain | CryptoGift' }],
     ['script', { src: '/assets/js/web3.min.js' }],
   ],
   chainWebpack: (config) => {
