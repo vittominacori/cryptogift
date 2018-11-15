@@ -130,7 +130,7 @@
                                                   step="any"
                                                   type="number"
                                                   min="0"
-                                                  v-model="gift.value"
+                                                  v-model="gift.amount"
                                                   v-validate="{ required: true, decimal: 4 }"
                                                   data-vv-as="Value"
                                                   :class="{'is-invalid': errors.has('gift-value')}"
@@ -178,7 +178,7 @@
 
                                 <b-list-group class="mb-4">
                                     <b-list-group-item variant="light" class="d-flex justify-content-between align-items-center">
-                                        CryptoGift Value <b-badge variant="light" pill>{{ gift.value || 0 }} ETH</b-badge>
+                                        CryptoGift Value <b-badge variant="light" pill>{{ gift.amount || 0 }} ETH</b-badge>
                                     </b-list-group-item>
                                     <b-list-group-item variant="light" class="d-flex justify-content-between align-items-center">
                                         CryptoGift Cost <b-badge variant="light" pill>{{ price }} ETH</b-badge>
@@ -189,6 +189,7 @@
                                 </b-list-group>
 
                                 <b-button type="submit" variant="outline-success" size="lg">Send your CryptoGift</b-button>
+                                <b-button variant="outline-info" size="lg" v-on:click="preview">Preview</b-button>
                             </b-card>
                         </b-col>
                     </b-row>
@@ -245,6 +246,14 @@
                 </b-col>
             </b-row>
         </template>
+
+        <b-modal ref="giftPreview"
+                 hide-footer
+                 body-bg-variant="warning"
+                 size="lg"
+                 title="CryptoGift Preview">
+            <gift-box :gift="gift" :network="network.current"></gift-box>
+        </b-modal>
     </div>
 </template>
 
@@ -254,6 +263,8 @@
   import dapp from '../mixins/dapp';
   import QRCode from 'qrcode';
 
+  import GiftBox from './ui/GiftBox.vue';
+
   export default {
     name: 'GiftSender',
     mixins: [
@@ -261,6 +272,9 @@
       encryption,
       dapp,
     ],
+    components: {
+      GiftBox,
+    },
     data () {
       return {
         loading: true,
@@ -281,7 +295,7 @@
           },
           date: '',
           style: 0,
-          value: '',
+          amount: '',
           privacyAndTerms: false,
         }
       }
@@ -289,7 +303,7 @@
     computed: {
       totalPrice () {
         const price = new this.web3.BigNumber(this.price);
-        const value = new this.web3.BigNumber(this.gift.value || 0);
+        const value = new this.web3.BigNumber(this.gift.amount || 0);
         return (price.add(value)).valueOf();
       },
     },
@@ -382,6 +396,13 @@
               this.makingTransaction = false;
               alert("Some error occurred. Maybe you rejected the transaction or you have MetaMask locked!");
             }
+          }
+        });
+      },
+      preview () {
+        this.$validator.validateAll().then(async (result) => {
+          if (result) {
+            this.$refs.giftPreview.show()
           }
         });
       },

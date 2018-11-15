@@ -4,7 +4,13 @@
             <b-alert show variant="info">👇 below is how a CryptoGift looks like.</b-alert>
         </b-col>
         <b-col lg="8" offset-lg="2" class="mb-3">
-            <gift-box :gift="gift"></gift-box>
+            <b-alert v-if="loading" show variant="light">
+                <h4 class="alert-heading">Retrieving CryptoGift. Do not refresh the page.</h4>
+                <ui--loader :loading="true"></ui--loader>
+            </b-alert>
+            <template v-else>
+                <gift-box :gift="gift" :network="network.current"></gift-box>
+            </template>
         </b-col>
         <b-col lg="8" offset-lg="2">
             <b-card no-body class="shadow-lg">
@@ -27,32 +33,82 @@
 </template>
 
 <script>
+  import encryption from '../mixins/encryption';
+  import dapp from '../mixins/dapp';
+
   import GiftBox from './ui/GiftBox.vue';
 
   export default {
     name: 'About',
+    mixins: [
+      encryption,
+      dapp,
+    ],
     components: {
       GiftBox,
     },
     data () {
       return {
+        loading: true,
+        encryptionKey: 'thebros',
         gift: {
-          loaded: true,
-          visible: true,
-          id: 0,
-          amount: 3,
+          loaded: false,
+          visible: false,
+          id: 48,
+          amount: 0,
           content: {
-            sender: 'Luigi',
-            receiver: 'Mario',
-            message: 'You may be getting older but at least I still look great! Happy birthday best friend!',
+            sender: '',
+            receiver: '',
+            message: '',
           },
-          formattedDate: new Date().toLocaleString(),
-          purchaser: '0x0000000000000000000000000000000000000000',
-          beneficiary: '0x8888888888888888888888888888888888888888',
-          beneficiaryLink: 'https://etherscan.io/address/0x8888888888888888888888888888888888888888#internaltx',
-          style: 1,
-        }
+          date: '',
+          style: '',
+        },
       }
+    },
+    async mounted() {
+      await this.initDapp();
+    },
+    methods: {
+      async initDapp () {
+        this.network.current = this.network.list[this.network.default];
+        try {
+          await this.initWeb3(this.network.default, true);
+          this.initContracts();
+        } catch (e) {
+          alert(e);
+        }
+      },
+      ready () {
+        this.getToken();
+      },
+      getToken () {
+        try {
+          this.instances.token.getGift(this.gift.id, (err, result) => {
+            if (err) {
+              alert('Some error');
+              this.loading = false;
+              return;
+            }
+            this.formatStructure(result);
+          });
+        } catch (e) {
+          this.loading = false;
+          alert("Some error occurred. Check your Encryption Key");
+        }
+      },
+      formatStructure (structure) {
+        this.gift.amount = parseFloat(this.web3.fromWei(structure[0]));
+        this.gift.purchaser = structure[1];
+        this.gift.beneficiary = structure[2];
+        this.gift.content = JSON.parse(JSON.parse(this.web3.toAscii(this.decrypt(structure[3], this.encryptionKey))));
+        this.gift.date = (structure[4]).valueOf() * 1000;
+        this.gift.style = structure[5];
+        this.gift.visible = true;
+        this.gift.loaded = true;
+
+        this.loading = false;
+      },
     },
   };
 </script>

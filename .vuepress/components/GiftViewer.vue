@@ -44,13 +44,13 @@
                         </b-card>
                     </template>
                     <template v-else>
-                        <gift-box :gift="gift"></gift-box>
+                        <gift-box :gift="gift" :network="network.current"></gift-box>
                     </template>
                 </template>
                 <template v-else>
                     <b-card no-body class="shadow-lg border-0 rounded-0">
                         <b-card-body>
-                            <p class="card-text" v-if="gift.date">CryptoGift will be visible on {{ gift.formattedDate }}</p>
+                            <p class="card-text" v-if="gift.date">CryptoGift will be visible on {{ formattedDate }}</p>
                             <p class="card-text" v-else>Gift doesn't exist</p>
                         </b-card-body>
                     </b-card>
@@ -93,8 +93,13 @@
           },
           date: '',
           style: '',
-        }
+        },
       }
+    },
+    computed: {
+      formattedDate () {
+        return new Date(this.gift.date).toLocaleString();
+      },
     },
     async mounted() {
       this.gift.id = this.getParam('id');
@@ -131,14 +136,16 @@
 
           if (!this.gift.visible) {
             this.gift.date = (result[1]).valueOf() * 1000;
-            this.gift.formattedDate = new Date(this.gift.date).toLocaleString();
           }
+
           this.loading = false;
         });
       },
       getToken () {
         this.$validator.validateAll().then(async (result) => {
           if (result) {
+            this.loading = true;
+
             try {
               this.instances.token.getGift(this.gift.id, (err, result) => {
                 if (err) {
@@ -161,11 +168,11 @@
         this.gift.beneficiary = structure[2];
         this.gift.content = JSON.parse(JSON.parse(this.web3.toAscii(this.decrypt(structure[3], this.encryptionKey))));
         this.gift.date = (structure[4]).valueOf() * 1000;
-        this.gift.formattedDate = new Date(this.gift.date).toLocaleString();
         this.gift.style = structure[5];
         this.gift.visible = true;
         this.gift.loaded = true;
-        this.gift.beneficiaryLink = this.network.current.etherscanLink + "/address/" + this.gift.beneficiary + '#internaltx';
+
+        this.loading = false;
       },
     },
   };
