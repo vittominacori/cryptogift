@@ -49,18 +49,6 @@ contract CryptoGiftMarketplace is TokenRecover {
     _token = CryptoGiftToken(token);
   }
 
-  function token() public view returns (CryptoGiftToken) {
-    return _token;
-  }
-
-  function wallet() public view returns (address) {
-    return _wallet;
-  }
-
-  function price() public view returns (uint256) {
-    return _price;
-  }
-
   /**
    * @dev low level token purchase ***DO NOT OVERRIDE***
    * @param beneficiary Address performing the token purchase
@@ -71,7 +59,7 @@ contract CryptoGiftMarketplace is TokenRecover {
     uint256 date,
     uint256 style
   )
-    public
+    external
     payable
   {
     uint256 weiAmount = msg.value;
@@ -97,11 +85,23 @@ contract CryptoGiftMarketplace is TokenRecover {
     _forwardFunds(giftValue, beneficiary);
   }
 
+  function token() external view returns (CryptoGiftToken) {
+    return _token;
+  }
+
+  function wallet() external view returns (address) {
+    return _wallet;
+  }
+
+  function price() external view returns (uint256) {
+    return _price;
+  }
+
   /**
    * @dev Set the price of a gift
    * @param newPrice Value of the gift
    */
-  function setPrice(uint256 newPrice) public onlyOwner {
+  function setPrice(uint256 newPrice) external onlyOwner {
     _price = newPrice;
   }
 
@@ -109,7 +109,7 @@ contract CryptoGiftMarketplace is TokenRecover {
    * @dev Change the destination wallet
    * @param newWallet Address of the wallet
    */
-  function setWallet(address newWallet) public onlyOwner {
+  function setWallet(address newWallet) external onlyOwner {
     require(
       newWallet != address(0),
       "Wallet can't be the zero address"
@@ -153,7 +153,7 @@ contract CryptoGiftMarketplace is TokenRecover {
     internal
     returns (uint256)
   {
-    return _token.newToken(
+    return _token.newGift(
       amount,
       msg.sender,
       beneficiary,

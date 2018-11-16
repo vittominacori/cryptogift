@@ -1075,6 +1075,7 @@ contract TokenRecover is Ownable {
 // File: contracts/token/CryptoGiftToken.sol
 
 contract CryptoGiftToken is ERC721Full, MinterRole, TokenRecover {
+
   struct GiftStructure {
     uint256 amount;
     address purchaser;
@@ -1109,19 +1110,19 @@ contract CryptoGiftToken is ERC721Full, MinterRole, TokenRecover {
     _maxSupply = maxSupply;
   }
 
-  function styles() public view returns (uint256) {
+  function styles() external view returns (uint256) {
     return _styles;
   }
 
-  function progressiveId() public view returns (uint256) {
+  function progressiveId() external view returns (uint256) {
     return _progressiveId;
   }
 
-  function maxSupply() public view returns (uint256) {
+  function maxSupply() external view returns (uint256) {
     return _maxSupply;
   }
 
-  function newToken(
+  function newGift(
     uint256 amount,
     address purchaser,
     address beneficiary,
@@ -1129,7 +1130,7 @@ contract CryptoGiftToken is ERC721Full, MinterRole, TokenRecover {
     uint256 date,
     uint256 style
   )
-    public
+    external
     canGenerate
     onlyMinter
     returns (uint256)
@@ -1158,7 +1159,7 @@ contract CryptoGiftToken is ERC721Full, MinterRole, TokenRecover {
   function isVisible (
     uint256 tokenId
   )
-    public
+    external
     view
     returns (bool visible, uint256 date)
   {
@@ -1175,7 +1176,7 @@ contract CryptoGiftToken is ERC721Full, MinterRole, TokenRecover {
   }
 
   function getGift (uint256 tokenId)
-    public
+    external
     view
     returns (
       uint256 amount,
@@ -1209,7 +1210,7 @@ contract CryptoGiftToken is ERC721Full, MinterRole, TokenRecover {
   /**
    * @dev Only contract owner or token owner can burn
    */
-  function burn(uint256 tokenId) public {
+  function burn(uint256 tokenId) external {
     address tokenOwner = isOwner() ? ownerOf(tokenId) : msg.sender;
     super._burn(tokenOwner, tokenId);
     delete _structureIndex[tokenId];
@@ -1218,7 +1219,7 @@ contract CryptoGiftToken is ERC721Full, MinterRole, TokenRecover {
   /**
    * @dev Set the max amount of styles available
    */
-  function setStyles(uint256 newStyles) public onlyMinter {
+  function setStyles(uint256 newStyles) external onlyMinter {
     require(
       newStyles > _styles,
       "Styles cannot be decreased"

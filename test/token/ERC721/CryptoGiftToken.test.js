@@ -29,9 +29,8 @@ contract('CryptoGiftToken', function (
     ...accounts
   ]
 ) {
-  const name = 'CryptoGiftToken';
-  const symbol = 'CGT';
-
+  const name = 'TokenName';
+  const symbol = 'SYM';
   const maxSupply = new BigNumber(3);
 
   let tokenId;
@@ -107,7 +106,7 @@ contract('CryptoGiftToken', function (
   context('creating new token', function () {
     beforeEach(async function () {
       await this.token.addMinter(minter, { from: creator });
-      await this.token.newToken(
+      await this.token.newGift(
         this.structure.amount,
         minter,
         beneficiary,
@@ -197,7 +196,7 @@ contract('CryptoGiftToken', function (
         beforeEach(async function () {
           giftTime = (await time.latest()) + time.duration.weeks(1);
 
-          await this.token.newToken(
+          await this.token.newGift(
             this.structure.amount,
             minter,
             beneficiary,
@@ -248,7 +247,7 @@ contract('CryptoGiftToken', function (
       it('should increase', async function () {
         const oldProgressiveId = await this.token.progressiveId();
 
-        await this.token.newToken(
+        await this.token.newGift(
           this.structure.amount,
           minter,
           beneficiary,
@@ -266,7 +265,7 @@ contract('CryptoGiftToken', function (
     describe('date is equal to zero', function () {
       it('reverts', async function () {
         await shouldFail.reverting(
-          this.token.newToken(
+          this.token.newGift(
             this.structure.amount,
             minter,
             beneficiary,
@@ -282,7 +281,7 @@ contract('CryptoGiftToken', function (
     describe('style is not available', function () {
       it('reverts', async function () {
         await shouldFail.reverting(
-          this.token.newToken(
+          this.token.newGift(
             this.structure.amount,
             minter,
             beneficiary,
@@ -300,7 +299,7 @@ contract('CryptoGiftToken', function (
         const oldProgressiveId = await this.token.progressiveId();
         const tokenMaxSupply = await this.token.maxSupply();
         for (let i = oldProgressiveId; i < tokenMaxSupply.valueOf(); i++) {
-          await this.token.newToken(
+          await this.token.newGift(
             this.structure.amount,
             minter,
             beneficiary,
@@ -315,7 +314,7 @@ contract('CryptoGiftToken', function (
         newProgressiveId.should.be.bignumber.equal(tokenMaxSupply);
 
         await shouldFail.reverting(
-          this.token.newToken(
+          this.token.newGift(
             this.structure.amount,
             minter,
             beneficiary,
@@ -331,7 +330,7 @@ contract('CryptoGiftToken', function (
     describe('if beneficiary is the zero address', function () {
       it('reverts', async function () {
         await shouldFail.reverting(
-          this.token.newToken(
+          this.token.newGift(
             this.structure.amount,
             minter,
             ZERO_ADDRESS,
@@ -347,7 +346,7 @@ contract('CryptoGiftToken', function (
     describe('if caller has not minter permission', function () {
       it('reverts', async function () {
         await shouldFail.reverting(
-          this.token.newToken(
+          this.token.newGift(
             this.structure.amount,
             minter,
             beneficiary,

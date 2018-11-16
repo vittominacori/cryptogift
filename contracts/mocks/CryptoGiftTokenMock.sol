@@ -15,15 +15,15 @@ contract CryptoGiftTokenMock is CryptoGiftToken, ERC721Mintable, ERC721MetadataM
     CryptoGiftToken(name, symbol, maxSupply)
   {}
 
-  function exists(uint256 tokenId) public view returns (bool) {
+  function exists(uint256 tokenId) external view returns (bool) {
     return _exists(tokenId);
   }
 
-  function setTokenURI(uint256 tokenId, string uri) public {
+  function setTokenURI(uint256 tokenId, string uri) external {
     _setTokenURI(tokenId, uri);
   }
 
-  function removeTokenFrom(address from, uint256 tokenId) public {
+  function removeTokenFrom(address from, uint256 tokenId) external {
     _removeTokenFrom(from, tokenId);
   }
 }

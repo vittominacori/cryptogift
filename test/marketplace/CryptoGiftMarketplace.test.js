@@ -19,8 +19,8 @@ const CryptoGiftToken = artifacts.require('CryptoGiftToken');
 const ENCRYPTION_KEY = encryption.randomKey(16);
 
 contract('CryptoGiftMarketplace', function ([owner, wallet, purchaser, beneficiary, anotherAccount]) {
-  const name = 'CryptoGiftToken';
-  const symbol = 'CGT';
+  const name = 'TokenName';
+  const symbol = 'SYM';
   const maxSupply = new BigNumber(3);
 
   const tokenDetails = {
