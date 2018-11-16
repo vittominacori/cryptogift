@@ -54,7 +54,7 @@
         gift: {
           loaded: false,
           visible: false,
-          id: 48,
+          id: 1,
           amount: 0,
           content: {
             sender: '',
