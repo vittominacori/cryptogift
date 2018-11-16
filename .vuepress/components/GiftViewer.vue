@@ -92,7 +92,7 @@
             message: '',
           },
           date: '',
-          style: '',
+          style: 0,
         },
       }
     },

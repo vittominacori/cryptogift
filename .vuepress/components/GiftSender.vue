@@ -5,7 +5,7 @@
                 <fieldset :disabled="!metamask.installed">
                     <b-row>
                         <b-col lg="7" class="mb-4">
-                            <b-card class="shadow-lg" bg-variant="light">
+                            <b-card title="Start building your CryptoGift" class="shadow-lg" bg-variant="light">
                                 <b-form-group id="gift-sender-group"
                                               label="Sender Name:"
                                               label-for="gift-sender"
@@ -70,7 +70,7 @@
                                                      data-vv-as="Message"
                                                      :class="{'is-invalid': errors.has('gift-message')}"
                                                      placeholder="Enter your message"
-                                                     :rows="4"
+                                                     :rows="7"
                                                      :no-resize="true">
                                     </b-form-textarea>
                                     <small v-show="errors.has('gift-message')" class="text-danger">
@@ -161,15 +161,14 @@
                                 <b-form-group id="gift-style-group"
                                               label="Style:"
                                               label-for="gift-style"
-                                              description="The style of your gift"
-                                              class="d-none">
+                                              description="The style of your gift">
                                     <b-form-select id="gift-style"
                                                    name="gift-style"
                                                    v-model="gift.style"
+                                                   :options="styles"
                                                    v-validate="'required'"
                                                    data-vv-as="Style"
                                                    :class="{'is-invalid': errors.has('gift-style')}">
-                                        <option value="0">default ({{ price }} ETH)</option>
                                     </b-form-select>
                                     <small v-show="errors.has('gift-style')" class="text-danger">
                                         {{ errors.first('gift-style') }}
@@ -297,7 +296,12 @@
           style: 0,
           amount: '',
           privacyAndTerms: false,
-        }
+        },
+        styles: [
+          { value: 0, text: 'Default' },
+          { value: 1, text: 'Happy Birthday' },
+          { value: 2, text: 'Merry Christmas' },
+        ],
       }
     },
     computed: {

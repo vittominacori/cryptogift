@@ -1,5 +1,5 @@
 <template>
-    <b-card no-body class="shadow-lg border-0 rounded-0">
+    <b-card no-body :img-src="$withBase(image)" class="shadow-lg border-0 rounded-0">
         <b-card-body>
             <h5>Dear {{ gift.content.receiver }},  <b-badge v-if="gift.id" :href="tokenExplorerLink" target="_blank" variant="secondary" class="float-right">#{{ gift.id }}</b-badge></h5>
             <p class="card-text pt-4 pb-3">{{ gift.content.message }}</p>
@@ -11,10 +11,6 @@
                 You received <strong>{{ gift.amount }} ETH</strong> at <b-link :href="beneficiaryLink" target="_blank">{{ gift.beneficiary }}</b-link>
             </small>
         </b-card-footer>
-        <b-card-img :src="$withBase('assets/images/cryptogift-header.jpg')"
-                    alt="CryptoGift"
-                    bottom
-                    class="rounded-0"></b-card-img>
     </b-card>
 </template>
 
@@ -32,6 +28,9 @@
       },
     },
     computed: {
+      image () {
+        return 'assets/images/' + (this.gift.style ? `styles/${this.gift.style}.jpg` : 'cryptogift-header.jpg');
+      },
       formattedDate () {
         return new Date(this.gift.date).toLocaleString();
       },
