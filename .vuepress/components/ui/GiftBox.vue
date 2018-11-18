@@ -6,7 +6,7 @@
             <h6>{{ gift.content.sender }}</h6>
             <small>{{ formattedDate }}</small>
         </b-card-body>
-        <b-card-footer v-if="gift.amount > 0 && gift.purchaser !== gift.beneficiary">
+        <b-card-footer v-if="gift.amount > 0">
             <small class="text-muted">
                 You received <strong>{{ gift.amount }} ETH</strong> at <b-link :href="beneficiaryLink" target="_blank">{{ gift.beneficiary }}</b-link>
             </small>

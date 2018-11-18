@@ -104,7 +104,7 @@
     async mounted() {
       this.gift.id = this.getParam('id');
       if (this.gift.id) {
-        this.currentNetwork = this.getParam('network') || this.network.default;
+        this.currentNetwork = this.network.default;
         await this.initDapp();
       } else {
         this.loading = false;

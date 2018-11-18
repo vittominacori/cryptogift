@@ -278,7 +278,7 @@
       return {
         loading: true,
         currentNetwork: null,
-        price: 0.0001, // fixed price
+        price: 0.01, // fixed price
         trxHash: '',
         trxLink: '',
         tokenLink: '',
@@ -312,7 +312,7 @@
       },
     },
     mounted () {
-      this.currentNetwork = this.getParam('network') || this.network.default;
+      this.currentNetwork = this.network.default;
       this.initDapp();
     },
     methods: {

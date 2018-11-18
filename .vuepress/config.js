@@ -18,9 +18,9 @@ module.exports = {
     config.plugin('injections').tap(pluginArgs => pluginArgs.map(definitions => ({
       ...definitions,
       '__GOOGLE_ANALYTICS_ID__': isProd ? JSON.stringify('UA-115756440-2') : false,
-      '__TOKEN_ADDRESS__': JSON.stringify(isProd ? '0x5fD14c015369BbFE101918d64944e59F38fC89Da' : '0x5fD14c015369BbFE101918d64944e59F38fC89Da'), // eslint-disable-line max-len
-      '__MARKET_ADDRESS__': JSON.stringify(isProd ? '0x9073A480DC66D4CAEa36A28A0e1713AF86bF14Bf' : '0x9073A480DC66D4CAEa36A28A0e1713AF86bF14Bf'), // eslint-disable-line max-len
-      '__DEFAULT_NETWORK__': JSON.stringify(isProd ? 'rinkeby' : 'rinkeby'),
+      '__TOKEN_ADDRESS__': JSON.stringify(isProd ? '0x970E90Db5bFd3E4dEa453fb061E1146eE3e23Df8' : '0x5fD14c015369BbFE101918d64944e59F38fC89Da'), // eslint-disable-line max-len
+      '__MARKET_ADDRESS__': JSON.stringify(isProd ? '0xC67C43D45df2947d498699f5ad6352c5d4E08779' : '0x9073A480DC66D4CAEa36A28A0e1713AF86bF14Bf'), // eslint-disable-line max-len
+      '__DEFAULT_NETWORK__': JSON.stringify(isProd ? 'mainnet' : 'rinkeby'),
     })));
   },
 };
