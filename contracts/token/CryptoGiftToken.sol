@@ -4,8 +4,14 @@ import "openzeppelin-solidity/contracts/token/ERC721/ERC721Full.sol";
 import "openzeppelin-solidity/contracts/access/roles/MinterRole.sol";
 import "eth-token-recover/contracts/TokenRecover.sol";
 
+/**
+ * @title CryptoGiftToken
+ * @author Vittorio Minacori (https://github.com/vittominacori)
+ * @dev It is an ERC721Full with minter role and a struct that identify the gift
+ */
 contract CryptoGiftToken is ERC721Full, MinterRole, TokenRecover {
 
+  // structure that defines a gift
   struct GiftStructure {
     uint256 amount;
     address purchaser;
@@ -14,13 +20,19 @@ contract CryptoGiftToken is ERC721Full, MinterRole, TokenRecover {
     uint256 style;
   }
 
+  // number of available gift styles
   uint256 private _styles;
+
+  // a progressive id
   uint256 private _progressiveId;
+
+  // max available number of gift
   uint256 private _maxSupply;
 
   // Mapping from token ID to the structures
   mapping(uint256 => GiftStructure) private _structureIndex;
 
+  // checks if we can generate tokens
   modifier canGenerate() {
     require(
       _progressiveId < _maxSupply,
@@ -52,6 +64,9 @@ contract CryptoGiftToken is ERC721Full, MinterRole, TokenRecover {
     return _maxSupply;
   }
 
+  /**
+   * @dev Generate a new gift and the gift structure.
+   */
   function newGift(
     uint256 amount,
     address purchaser,
@@ -86,6 +101,9 @@ contract CryptoGiftToken is ERC721Full, MinterRole, TokenRecover {
     return tokenId;
   }
 
+  /**
+   * @dev Checks if token is visible.
+   */
   function isVisible (
     uint256 tokenId
   )
@@ -105,6 +123,9 @@ contract CryptoGiftToken is ERC721Full, MinterRole, TokenRecover {
     }
   }
 
+  /**
+   * @dev Returns the gift structure.
+   */
   function getGift (uint256 tokenId)
     external
     view
