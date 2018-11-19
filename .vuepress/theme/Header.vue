@@ -13,7 +13,7 @@
             </b-navbar-nav>
 
             <b-navbar-nav class="ml-auto">
-                <b-nav-item disabled><b-badge variant="info" class="p-1">Main Ethereum Network</b-badge></b-nav-item>
+                <b-nav-item disabled><b-badge variant="info" class="p-1">{{ currentNetwork }}</b-badge></b-nav-item>
                 <b-nav-item-dropdown text="GitHub" right>
                     <b-dropdown-item target="_blank" href="https://github.com/vittominacori/cryptogift">Smart Contracts</b-dropdown-item>
                     <b-dropdown-item target="_blank" href="https://github.com/vittominacori/cryptogift/tree/dapp">DApp</b-dropdown-item>
@@ -25,7 +25,14 @@
 </template>
 
 <script>
+  /* global __DEFAULT_NETWORK_NAME__ */
+
   export default {
-    name: "Header"
+    name: "Header",
+    data () {
+      return {
+        currentNetwork: __DEFAULT_NETWORK_NAME__,
+      }
+    },
   }
 </script>

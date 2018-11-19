@@ -9,7 +9,7 @@
                                 <b-form-group id="gift-sender-group"
                                               label="Sender Name:"
                                               label-for="gift-sender"
-                                              description="The name of your gift sender">
+                                              description="The name of gift sender.">
                                     <b-form-input id="gift-sender"
                                                   name="gift-sender"
                                                   type="text"
@@ -27,7 +27,7 @@
                                 <b-form-group id="gift-receiver-group"
                                               label="Receiver Name:"
                                               label-for="gift-receiver"
-                                              description="The name of your gift receiver">
+                                              description="The name of gift receiver.">
                                     <b-form-input id="gift-receiver"
                                                   name="gift-receiver"
                                                   type="text"
@@ -45,7 +45,7 @@
                                 <b-form-group id="gift-date-group"
                                               label="Date:"
                                               label-for="gift-date"
-                                              description="The date of your gift">
+                                              description="The date of the gift. It will be visible only after this date.">
                                     <b-form-input id="gift-date"
                                                   name="gift-date"
                                                   type="datetime-local"
@@ -62,7 +62,7 @@
                                 <b-form-group id="gift-message-group"
                                               label="Message:"
                                               label-for="gift-message"
-                                              description="The message you want to send">
+                                              description="The awesome message you want to send.">
                                     <b-form-textarea id="gift-message"
                                                      name="gift-message"
                                                      v-model="gift.content.message"
@@ -106,7 +106,7 @@
                                 <b-form-group id="gift-beneficiary-group"
                                               label="Receiver Ethereum Address:"
                                               label-for="gift-beneficiary"
-                                              description="The Ethereum address of your receiver">
+                                              description="The receiver Ethereum address.">
                                     <b-form-input id="gift-beneficiary"
                                                   name="gift-beneficiary"
                                                   type="text"
@@ -124,18 +124,20 @@
                                 <b-form-group id="gift-value-group"
                                               label="Gift Value:"
                                               label-for="gift-value"
-                                              description="The value of your gift">
-                                    <b-form-input id="gift-value"
-                                                  name="gift-value"
-                                                  step="any"
-                                                  type="number"
-                                                  min="0"
-                                                  v-model="gift.amount"
-                                                  v-validate="{ required: true, decimal: 4 }"
-                                                  data-vv-as="Value"
-                                                  :class="{'is-invalid': errors.has('gift-value')}"
-                                                  placeholder="Enter gift value">
-                                    </b-form-input>
+                                              description="The value of your gift.">
+                                    <b-input-group append="ETH">
+                                        <b-form-input id="gift-value"
+                                                      name="gift-value"
+                                                      step="any"
+                                                      type="number"
+                                                      min="0"
+                                                      v-model="gift.amount"
+                                                      v-validate="{ required: true, decimal: 4 }"
+                                                      data-vv-as="Value"
+                                                      :class="{'is-invalid': errors.has('gift-value')}"
+                                                      placeholder="Enter gift value in Ethereum">
+                                        </b-form-input>
+                                    </b-input-group>
                                     <small v-show="errors.has('gift-value')" class="text-danger">
                                         {{ errors.first('gift-value') }}
                                     </small>
@@ -144,7 +146,7 @@
                                 <b-form-group id="gift-encryption-key-group"
                                               label="Encryption Key:"
                                               label-for="gift-encryption-key"
-                                              description="Insert the Encryption Key">
+                                              description="Insert your preferred Encryption Key or use this.">
                                     <b-form-input id="gift-encryption-key"
                                                   name="gift-encryption-key"
                                                   type="text"
@@ -161,7 +163,7 @@
                                 <b-form-group id="gift-style-group"
                                               label="Style:"
                                               label-for="gift-style"
-                                              description="The style of your gift">
+                                              description="The style of your gift.">
                                     <b-form-select id="gift-style"
                                                    name="gift-style"
                                                    v-model="gift.style"

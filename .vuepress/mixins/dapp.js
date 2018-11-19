@@ -1,3 +1,5 @@
+/* global __DEFAULT_NETWORK__, __TOKEN_ADDRESS__, __MARKET_ADDRESS__ */
+
 import TokenArtifact from '../abi/CryptoGiftToken';
 import MarketArtifact from '../abi/CryptoGiftMarketplace';
 
