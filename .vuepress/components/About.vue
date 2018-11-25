@@ -20,7 +20,8 @@
                         Send Ethereum to a friend for birthday, or send a love message. Crypt and make it eternal.<br><br>
                         Choose your and your receiver name, write an awesome message, decide how many ETH do you want to Gift (also zero) and
                         sign your CryptoGift using <b-link href="https://metamask.io/" target="_blank">MetaMask</b-link>.<br>
-                        Copy and share CryptoGift link and encryption key with your receiver. Only who hold the key can decrypt your message.
+                        Copy and share CryptoGift link and encryption key with your receiver. Only who hold the key can decrypt your message.<br>
+                        <b-link href="https://medium.com/@vittominacori/using-nfts-to-build-a-cryptogift-market-c0663e851301" target="_blank">Discover more</b-link>.
                     </p>
                     <p class="card-text">
                         Make your Gift unique on the Blockchain!
