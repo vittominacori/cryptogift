@@ -24,7 +24,7 @@ export default ({ Vue, router }) => {
     ga('send', 'pageview');
 
     router.afterEach(function (to) {
-      ga('set', 'page', to.fullPath);
+      ga('set', 'page', router.app.$withBase(to.fullPath));
       ga('send', 'pageview');
     });
   }
