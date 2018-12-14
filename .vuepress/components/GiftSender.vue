@@ -1,5 +1,9 @@
 <template>
     <div v-if="!loading">
+        <b-alert show variant="success">
+            <h4 class="alert-heading">Create your CryptoGift now and help the victims of war, landmines and poverty.</h4>
+            Until 06 Jan 2019 we will entirely donate our fees to <b-link href="https://en.emergency.it/" target="_blank">EMERGENCY Ong Onlus</b-link>.
+        </b-alert>
         <template v-if="!makingTransaction">
             <b-form @submit.prevent="createGift">
                 <fieldset :disabled="!metamask.installed">
@@ -303,6 +307,7 @@
           { value: 0, text: 'Default' },
           { value: 1, text: 'Happy Birthday' },
           { value: 2, text: 'Merry Christmas' },
+          { value: '', text: '...more will come', disabled: true }
         ],
       }
     },
