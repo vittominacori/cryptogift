@@ -6,7 +6,7 @@
                 <template slot="header">{{ $site.title }} 🦄🎁</template>
                 <template slot="lead">{{ $site.description }}</template>
                 <hr class="my-4">
-                <p>Make your Gift unique on the Blockchain!</p>
+                <p>Send Ethereum to a friend for birthday or Christmas, or send a love message. <br>Encrypt and make it eternal.</p>
                 <b-button variant="outline-success" to="/send.html" size="lg">Send a CryptoGift</b-button>
             </b-jumbotron>
         </b-col>
