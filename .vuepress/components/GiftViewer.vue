@@ -23,7 +23,7 @@
             <div v-else>
                 <template v-if="gift.visible">
                     <template v-if="!gift.loaded">
-                        <b-card no-body class="shadow-lg border-0 rounded-0">
+                        <b-card no-body class="shadow border-0 rounded-0">
                             <b-card-body>
                                 <b-form @submit.prevent="getToken">
                                     <b-form-group id="gift-encryption-key-group"
@@ -48,7 +48,7 @@
                     </template>
                 </template>
                 <template v-else>
-                    <b-card no-body class="shadow-lg border-0 rounded-0">
+                    <b-card no-body class="shadow border-0 rounded-0">
                         <b-card-body>
                             <p class="card-text" v-if="gift.date">CryptoGift will be visible on {{ formattedDate }}</p>
                             <p class="card-text" v-else>Gift doesn't exist</p>

@@ -10,8 +10,7 @@
                     <b-link class="text-light" target="_blank" to="/privacy-policy.html"><small>Privacy policy</small></b-link>
                 </li>
                 <li class="list-inline-item">|</li>
-                <li class="list-inline-item"><small><b-link class="text-light" href="https://github.com/vittominacori" target="_blank">@vittominacori</b-link> &copy; 2018</small>
-                </li>
+                <li class="list-inline-item"><small><b-link class="text-light" href="https://github.com/vittominacori" target="_blank">@vittominacori</b-link> &copy; 2018</small></li>
             </ul>
         </b-col>
     </b-row>

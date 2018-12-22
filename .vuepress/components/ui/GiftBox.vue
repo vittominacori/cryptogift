@@ -1,5 +1,5 @@
 <template>
-    <b-card no-body :img-src="$withBase(image)" class="shadow-lg border-0 rounded-0">
+    <b-card no-body :img-src="$withBase(image)" class="shadow border-0 rounded-0">
         <b-card-body>
             <h5>Dear {{ gift.content.receiver }},  <b-badge v-if="gift.id" :href="tokenExplorerLink" target="_blank" variant="secondary" class="float-right">#{{ gift.id }}</b-badge></h5>
             <p class="card-text pt-4 pb-3">{{ gift.content.message }}</p>

@@ -1,15 +1,14 @@
 <template>
     <div v-if="!loading">
-        <b-alert show variant="success">
-            <h4 class="alert-heading">Create your CryptoGift now and help the victims of war, landmines and poverty.</h4>
-            Until 06 Jan 2019 we will entirely donate our fees to <b-link href="https://en.emergency.it/" target="_blank">EMERGENCY Ong Onlus</b-link>.
-        </b-alert>
         <template v-if="!makingTransaction">
             <b-form @submit.prevent="createGift">
                 <fieldset :disabled="!metamask.installed">
                     <b-row>
                         <b-col lg="7" class="mb-4">
-                            <b-card title="Start building your CryptoGift" class="shadow-lg" bg-variant="light">
+                            <b-alert show variant="info">
+                                <h4 class="alert-heading">Start building your CryptoGift 🦄🎁</h4>
+                            </b-alert>
+                            <b-card class="shadow" bg-variant="light">
                                 <b-form-group id="gift-sender-group"
                                               label="Sender Name:"
                                               label-for="gift-sender"
@@ -17,6 +16,7 @@
                                     <b-form-input id="gift-sender"
                                                   name="gift-sender"
                                                   type="text"
+                                                  size="lg"
                                                   v-model="gift.content.sender"
                                                   v-validate="'required'"
                                                   data-vv-as="Sender"
@@ -35,6 +35,7 @@
                                     <b-form-input id="gift-receiver"
                                                   name="gift-receiver"
                                                   type="text"
+                                                  size="lg"
                                                   v-model="gift.content.receiver"
                                                   v-validate="'required'"
                                                   data-vv-as="Receiver"
@@ -53,6 +54,7 @@
                                     <b-form-input id="gift-date"
                                                   name="gift-date"
                                                   type="datetime-local"
+                                                  size="lg"
                                                   v-model="gift.date"
                                                   v-validate="'required'"
                                                   data-vv-as="Date"
@@ -99,7 +101,7 @@
                             </b-card>
                         </b-col>
                         <b-col lg="5" class="mb-4">
-                            <b-card class="shadow-lg" bg-variant="light">
+                            <b-card class="shadow" bg-variant="light">
                                 <b-alert show variant="warning" v-if="!metamask.installed">
                                     You need <b-link href="https://metamask.io/" target="_blank">MetaMask</b-link> extension.
                                 </b-alert>
@@ -114,6 +116,7 @@
                                     <b-form-input id="gift-beneficiary"
                                                   name="gift-beneficiary"
                                                   type="text"
+                                                  size="lg"
                                                   v-model="gift.beneficiary"
                                                   v-validate="'required|eth_address'"
                                                   data-vv-as="Wallet Address"
@@ -135,6 +138,7 @@
                                                       step="any"
                                                       type="number"
                                                       min="0"
+                                                      size="lg"
                                                       v-model="gift.amount"
                                                       v-validate="{ required: true, decimal: 4 }"
                                                       data-vv-as="Value"
@@ -154,6 +158,7 @@
                                     <b-form-input id="gift-encryption-key"
                                                   name="gift-encryption-key"
                                                   type="text"
+                                                  size="lg"
                                                   v-model="encryptionKey"
                                                   v-validate="'required|alpha_dash'"
                                                   data-vv-as="Encryption Key"
@@ -170,6 +175,7 @@
                                               description="The style of your gift.">
                                     <b-form-select id="gift-style"
                                                    name="gift-style"
+                                                   size="lg"
                                                    v-model="gift.style"
                                                    :options="styles"
                                                    v-validate="'required'"
@@ -193,13 +199,19 @@
                                     </b-list-group-item>
                                 </b-list-group>
 
-                                <b-button type="submit" variant="outline-success" size="lg">Send your CryptoGift</b-button>
-                                <b-button variant="outline-info" size="lg" v-on:click="preview">Preview</b-button>
+                                <b-button type="submit" variant="outline-success" size="lg" class="mb-2">Send your CryptoGift</b-button>
+                                <b-button variant="outline-info" size="lg" class="mb-2" v-on:click="preview">Preview</b-button>
                             </b-card>
                         </b-col>
                     </b-row>
                 </fieldset>
             </b-form>
+
+            <b-alert show variant="info">
+                <h4 class="alert-heading">Create your CryptoGift now and help the victims of war, landmines and poverty.</h4>
+                <b-img :src="$withBase('assets/images/logo-emergency.png')" alt="EMERGENCY Ong Onlus" />
+                Until 06 Jan 2019 we will entirely donate our fees to <b-link href="https://en.emergency.it/" target="_blank">EMERGENCY Ong Onlus</b-link>.
+            </b-alert>
         </template>
         <template v-else>
             <b-row>
@@ -207,7 +219,7 @@
                     <b-card v-if="tokenLink"
                             :img-src="$withBase('assets/images/cryptogift-header.jpg')"
                             title="View your unique CryptoGift on the Blockchain."
-                            class="shadow-lg mb-3 border-0 rounded-0"
+                            class="shadow mb-3 border-0 rounded-0"
                             bg-variant="light">
                         <b-row>
                             <b-col md="9" class="mb-2">

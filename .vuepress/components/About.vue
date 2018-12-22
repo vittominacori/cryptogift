@@ -13,7 +13,7 @@
             </template>
         </b-col>
         <b-col lg="8" offset-lg="2">
-            <b-card no-body class="shadow-lg">
+            <b-card no-body class="shadow">
                 <b-card-body>
                     <p class="card-text">
                         A CryptoGift is an ERC721 Collectible or NFT Token to store a message into the Ethereum Blockchain.<br>
