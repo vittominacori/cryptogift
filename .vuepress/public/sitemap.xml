@@ -5,7 +5,7 @@
         xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
             http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
     <url>
-        <loc>https://vittominacori.github.io/cryptogift</loc>
+        <loc>https://vittominacori.github.io/cryptogift/</loc>
         <changefreq>weekly</changefreq>
         <priority>1.00</priority>
     </url>
