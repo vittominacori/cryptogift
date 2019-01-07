@@ -4,6 +4,8 @@
   "version": "1.0.0",
   "description": "An ERC721 NFT Token and Marketplace to buy and give away an Ethereum based Collectible Gift",
   "scripts": {
+    "lint:vue": "eslint .vuepress --ext .vue,.js",
+    "lint:vue:fix": "eslint .vuepress --ext .vue,.js --fix",
     "lint": "eslint .vuepress",
     "lint:fix": "eslint .vuepress --fix",
     "dev": "vuepress dev",
@@ -25,6 +27,7 @@
   },
   "devDependencies": {
     "@saeris/vue-spinners": "^1.0.8",
+    "babel-eslint": "^10.0.1",
     "bootstrap-vue": "^2.0.0-rc.11",
     "crypto-js": "^3.1.9-1",
     "eslint": "^5.12.0",
@@ -37,6 +40,7 @@
     "qrcode": "^1.3.2",
     "sass-loader": "^7.1.0",
     "vee-validate": "^2.1.5",
+    "vue-eslint-parser": "^5.0.0",
     "vuepress": "^0.14.8"
   }
 }

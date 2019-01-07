@@ -313,9 +313,9 @@
           { value: 0, text: 'Default' },
           { value: 1, text: 'Happy Birthday' },
           { value: 2, text: 'Merry Christmas' },
-          { value: '', text: '...more will come', disabled: true }
+          { value: '', text: '...more will come', disabled: true },
         ],
-      }
+      };
     },
     computed: {
       totalPrice () {
@@ -329,7 +329,7 @@
       this.initDapp();
     },
     methods: {
-      async initDapp() {
+      async initDapp () {
         this.network.current = this.network.list[this.currentNetwork];
         try {
           await this.initWeb3(this.currentNetwork, true);
@@ -342,14 +342,14 @@
       ready () {
         this.$validator.extend('eth_address', {
           getMessage: field => 'Insert a valid Ethereum wallet address.',
-          validate: value => this.web3.isAddress(value)
+          validate: value => this.web3.isAddress(value),
         });
 
         this.loading = false;
       },
       createGift () {
         if (!this.metamask.installed) {
-          alert("To create a CryptoGift please install MetaMask!");
+          alert('To create a CryptoGift please install MetaMask!');
           return;
         } else {
           if (this.metamask.netId !== this.network.current.id) {
@@ -382,12 +382,12 @@
                   this.gift.style,
                   {
                     value: this.web3.toWei(this.totalPrice, 'ether'),
-                    from: this.web3.eth.coinbase
+                    from: this.web3.eth.coinbase,
                   },
                   (err, trxHash) => {
                     if (!err) {
                       this.trxHash = trxHash;
-                      this.trxLink = this.network.current.etherscanLink + "/tx/" + this.trxHash;
+                      this.trxLink = this.network.current.etherscanLink + '/tx/' + this.trxHash;
                       this.instances.market.TokenPurchase(
                         {
                           purchaser: this.web3.eth.coinbase,
@@ -399,19 +399,19 @@
                             this.generateQRCode();
                           } else {
                             this.makingTransaction = false;
-                            alert("Some error occurred. Maybe transaction failed for some reasons. Check your transaction id.");
+                            alert('Some error occurred. Maybe transaction failed for some reasons. Check your transaction id.');
                           }
                         });
                     } else {
                       this.makingTransaction = false;
-                      alert("Some error occurred. Maybe you rejected the transaction or you have MetaMask locked!");
+                      alert('Some error occurred. Maybe you rejected the transaction or you have MetaMask locked!');
                     }
                   }
                 );
               }, 500);
             } catch (e) {
               this.makingTransaction = false;
-              alert("Some error occurred. Maybe you rejected the transaction or you have MetaMask locked!");
+              alert('Some error occurred. Maybe you rejected the transaction or you have MetaMask locked!');
             }
           }
         });
@@ -419,7 +419,7 @@
       preview () {
         this.$validator.validateAll().then(async (result) => {
           if (result) {
-            this.$refs.giftPreview.show()
+            this.$refs.giftPreview.show();
           }
         });
       },
@@ -430,7 +430,7 @@
               this.qrcode = url;
             })
             .catch(err => {
-              console.error(err)
+              console.error(err);
             });
         }
       },

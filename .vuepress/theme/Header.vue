@@ -28,11 +28,11 @@
   /* global __DEFAULT_NETWORK_NAME__ */
 
   export default {
-    name: "Header",
+    name: 'Header',
     data () {
       return {
         currentNetwork: __DEFAULT_NETWORK_NAME__,
-      }
+      };
     },
-  }
+  };
 </script>

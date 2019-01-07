@@ -65,9 +65,9 @@
           date: '',
           style: 0,
         },
-      }
+      };
     },
-    async mounted() {
+    async mounted () {
       await this.initDapp();
     },
     methods: {
@@ -95,7 +95,7 @@
           });
         } catch (e) {
           this.loading = false;
-          alert("Some error occurred. Check your Encryption Key");
+          alert('Some error occurred. Check your Encryption Key');
         }
       },
       formatStructure (structure) {

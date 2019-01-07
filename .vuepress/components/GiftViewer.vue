@@ -94,14 +94,14 @@
           date: '',
           style: 0,
         },
-      }
+      };
     },
     computed: {
       formattedDate () {
         return new Date(this.gift.date).toLocaleString();
       },
     },
-    async mounted() {
+    async mounted () {
       this.gift.id = this.getParam('id');
       if (this.gift.id) {
         this.currentNetwork = this.network.default;
@@ -157,7 +157,7 @@
               });
             } catch (e) {
               this.loading = false;
-              alert("Some error occurred. Check your Encryption Key");
+              alert('Some error occurred. Check your Encryption Key');
             }
           }
         });
@@ -176,7 +176,7 @@
           this.loading = false;
         } catch (e) {
           this.loading = false;
-          alert("Some error occurred. Check your Encryption Key");
+          alert('Some error occurred. Check your Encryption Key');
         }
       },
     },

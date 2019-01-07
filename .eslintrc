@@ -3,6 +3,10 @@
     "standard",
     "plugin:promise/recommended"
   ],
+  "parser": "vue-eslint-parser",
+  "parserOptions": {
+    "parser": "babel-eslint"
+  },
   "plugins": [
     "promise"
   ],

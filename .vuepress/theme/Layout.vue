@@ -19,7 +19,7 @@
       SiteFooter,
     },
     computed: {
-      page() {
+      page () {
         return this.$page.frontmatter.component || null;
       },
     },
