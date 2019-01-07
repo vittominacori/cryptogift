@@ -163,16 +163,21 @@
         });
       },
       formatStructure (structure) {
-        this.gift.amount = parseFloat(this.web3.fromWei(structure[0]));
-        this.gift.purchaser = structure[1];
-        this.gift.beneficiary = structure[2];
-        this.gift.content = JSON.parse(JSON.parse(this.web3.toAscii(this.decrypt(structure[3], this.encryptionKey))));
-        this.gift.date = (structure[4]).valueOf() * 1000;
-        this.gift.style = structure[5];
-        this.gift.visible = true;
-        this.gift.loaded = true;
+        try {
+          this.gift.amount = parseFloat(this.web3.fromWei(structure[0]));
+          this.gift.purchaser = structure[1];
+          this.gift.beneficiary = structure[2];
+          this.gift.content = JSON.parse(JSON.parse(this.web3.toAscii(this.decrypt(structure[3], this.encryptionKey))));
+          this.gift.date = (structure[4]).valueOf() * 1000;
+          this.gift.style = structure[5];
+          this.gift.visible = true;
 
-        this.loading = false;
+          this.gift.loaded = true;
+          this.loading = false;
+        } catch (e) {
+          this.loading = false;
+          alert("Some error occurred. Check your Encryption Key");
+        }
       },
     },
   };

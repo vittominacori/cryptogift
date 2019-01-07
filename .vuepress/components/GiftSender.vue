@@ -206,12 +206,6 @@
                     </b-row>
                 </fieldset>
             </b-form>
-
-            <b-alert show variant="info">
-                <h4 class="alert-heading">Create your CryptoGift now and help the victims of war, landmines and poverty.</h4>
-                <b-img :src="$withBase('assets/images/logo-emergency.png')" alt="EMERGENCY Ong Onlus" />
-                Until 06 Jan 2019 we will entirely donate our fees to <b-link href="https://en.emergency.it/" target="_blank">EMERGENCY Ong Onlus</b-link>.
-            </b-alert>
         </template>
         <template v-else>
             <b-row>
