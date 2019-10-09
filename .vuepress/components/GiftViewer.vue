@@ -124,13 +124,9 @@
       ready () {
         this.getTokenVisibility();
       },
-      getTokenVisibility () {
-        this.instances.token.isVisible(this.gift.id, (err, result) => {
-          if (err) {
-            alert('Some error');
-            this.loading = false;
-            return;
-          }
+      async getTokenVisibility () {
+        try {
+          const result = await this.promisify(this.instances.token.isVisible, this.gift.id);
 
           this.gift.visible = result[0];
 
@@ -139,7 +135,10 @@
           }
 
           this.loading = false;
-        });
+        } catch (e) {
+          this.loading = false;
+          alert('Some error occurred.');
+        }
       },
       getToken () {
         this.$validator.validateAll().then(async (result) => {
@@ -147,14 +146,8 @@
             this.loading = true;
 
             try {
-              this.instances.token.getGift(this.gift.id, (err, result) => {
-                if (err) {
-                  alert('Some error');
-                  this.loading = false;
-                  return;
-                }
-                this.formatStructure(result);
-              });
+              const gift = await this.promisify(this.instances.token.getGift, this.gift.id);
+              this.formatStructure(gift);
             } catch (e) {
               this.loading = false;
               alert('Some error occurred. Check your Encryption Key');

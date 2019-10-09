@@ -1,5 +1,3 @@
-/* global __DEFAULT_NETWORK__, __TOKEN_ADDRESS__, __MARKET_ADDRESS__ */
-
 import TokenArtifact from '../abi/CryptoGiftToken';
 import MarketArtifact from '../abi/CryptoGiftMarketplace';
 
@@ -61,7 +59,7 @@ export default {
   },
   methods: {
     initWeb3 (network, checkWeb3) {
-      if (!this.network.list.hasOwnProperty(network)) {
+      if (!Object.prototype.hasOwnProperty.call(this.network.list, network)) {
         throw new Error(`Failed initializing network ${network}. Allowed values are mainnet, ropsten and rinkeby.`);
       }
 

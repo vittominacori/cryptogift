@@ -34,6 +34,7 @@
 </template>
 
 <script>
+  import browser from '../mixins/browser';
   import encryption from '../mixins/encryption';
   import dapp from '../mixins/dapp';
 
@@ -42,6 +43,7 @@
   export default {
     name: 'About',
     mixins: [
+      browser,
       encryption,
       dapp,
     ],
@@ -83,16 +85,10 @@
       ready () {
         this.getToken();
       },
-      getToken () {
+      async getToken () {
         try {
-          this.instances.token.getGift(this.gift.id, (err, result) => {
-            if (err) {
-              alert('Some error');
-              this.loading = false;
-              return;
-            }
-            this.formatStructure(result);
-          });
+          const gift = await this.promisify(this.instances.token.getGift, this.gift.id);
+          this.formatStructure(gift);
         } catch (e) {
           this.loading = false;
           alert('Some error occurred. Check your Encryption Key');
