@@ -1,6 +1,22 @@
 ---
 title: Make your Gift unique on the Blockchain
+description: CryptoGift is an ERC721 NFT Token and Marketplace to buy and give away an Ethereum based Collectible Gift. Make your Gift unique on the Blockchain!
 component: Home
+meta: 
+    - property: og:url
+      content: https://vittominacori.github.io/cryptogift/
+    - property: og:image
+      content: https://vittominacori.github.io/cryptogift/assets/images/cryptogift-og.jpg
+    - property: og:title
+      content: Make your Gift unique on the Blockchain
+    - property: og:description
+      content: CryptoGift is an ERC721 NFT Token and Marketplace to buy and give away an Ethereum based Collectible Gift. Make your Gift unique on the Blockchain! 
+    - property: twitter:title
+      content: Make your Gift unique on the Blockchain
+    - property: twitter:description
+      content: CryptoGift is an ERC721 NFT Token and Marketplace to buy and give away an Ethereum based Collectible Gift. Make your Gift unique on the Blockchain!
+    - property: twitter:image
+      content: https://vittominacori.github.io/cryptogift/assets/images/cryptogift-og.jpg
 ---
 
 # CryptoGift - DAPP

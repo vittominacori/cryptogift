@@ -5,11 +5,7 @@ module.exports = {
   head: [
     ['link', { rel: 'icon', href: '/favicon.ico' }],
     ['meta', { property: 'og:type', content: 'website' }],
-    ['meta', { property: 'og:url', content: 'https://vittominacori.github.io/cryptogift' }],
-    ['meta', { property: 'og:image', content: 'https://vittominacori.github.io/cryptogift/assets/images/cryptogift-og.jpg' }], // eslint-disable-line max-len
     ['meta', { property: 'twitter:card', content: 'summary_large_image' }],
-    ['meta', { property: 'twitter:image', content: 'https://vittominacori.github.io/cryptogift/assets/images/cryptogift-og.jpg' }], // eslint-disable-line max-len
-    ['meta', { property: 'twitter:title', content: 'Make your Gift unique on the Blockchain | CryptoGift' }],
     ['script', { src: '/assets/js/web3.min.js' }],
   ],
   chainWebpack: (config) => {
