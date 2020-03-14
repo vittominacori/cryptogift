@@ -3,6 +3,8 @@ component: Coronavirus
 title: Crypto Against Coronavirus
 description: Help Italy against Coronavirus (COVID-19). Send Ethereum for a good cause. Encrypt and make it eternal. 
 meta: 
+    - property: og:url
+      content: https://vittominacori.github.io/cryptogift/against-coronavirus.html
     - property: og:image
       content: https://vittominacori.github.io/cryptogift/assets/images/social/against-coronavirus.jpg
     - property: og:title
