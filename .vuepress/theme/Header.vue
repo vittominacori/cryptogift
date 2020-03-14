@@ -8,6 +8,7 @@
         <b-collapse is-nav id="nav_collapse">
 
             <b-navbar-nav>
+                <b-nav-item to="/against-coronavirus.html"><b-badge variant="danger">Against Coronavirus</b-badge></b-nav-item>
                 <b-nav-item to="/about.html">About</b-nav-item>
                 <b-nav-item to="/send.html">Send a CryptoGift</b-nav-item>
             </b-navbar-nav>
