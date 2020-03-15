@@ -290,7 +290,7 @@
       return {
         loading: true,
         currentNetwork: null,
-        price: 0.01, // fixed price
+        price: 0, // fixed price
         trxHash: '',
         trxLink: '',
         tokenLink: '',
