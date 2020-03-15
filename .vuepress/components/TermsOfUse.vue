@@ -24,8 +24,13 @@
                     We will have no insight into or control over these payments or transactions, nor do we have the ability to reverse any transactions.<br>
                     With that in mind, we will have no liability to you or to any third party for any claims or damages that may arise as a result of any transactions that you engage in via the App, or using the Smart Contracts, or any other transactions that you conduct via the Ethereum network or MetaMask.<br>
                     Ethereum requires the payment of a transaction fee (a “Gas Fee”) for every transaction that occurs on the Ethereum network. The Gas Fee funds the network of computers that run the decentralized Ethereum network. This means that you will need to pay a Gas Fee for each transaction that occurs via the App.<br>
-                    In addition to the Gas Fee, each time you utilize a Smart Contract to conduct a transaction with another user via the App, you authorize us to collect a commission of 0.01 ETH of the total value of that transaction (each, a “Commission”).<br>
-                    You acknowledge and agree that the Commission will be transferred directly to us through the Ethereum network as part of your payment.<br>
+                    <s>
+                        In addition to the Gas Fee, each time you utilize a Smart Contract to conduct a transaction with another user via the App, you authorize us to collect a commission of 0.01 ETH of the total value of that transaction (each, a “Commission”).<br>
+                        You acknowledge and agree that the Commission will be transferred directly to us through the Ethereum network as part of your payment.
+                    </s>
+                    <br>
+                    <b>The above is not valid since March 14, 2020 due we reset our fee to encourage the #againstcoronavirus campaign, so we won't take any fee on your transactions.</b>
+                    <br>
                     We will not collect a Commission for interactions that do not involve our App marketplace.
                 </p>
                 <h5>Risks</h5>

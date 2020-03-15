@@ -8,7 +8,7 @@
                     When you build a CryptoGift you are prompted to enter your and your receiver name.<br>
                     You will also insert a personal message to be shown to your CryptoGift receiver.<br>
                     The above information are encrypted using an encryption key you can choose during CryptoGift building or you can accepts our provided one-time encryption key.
-                    Your data live on the blockchain but only who hold the key will be able to decrypt your message. It is safe from prying eyes.<br>
+                    Your data lives on the blockchain but only who hold the key will be able to decrypt your message. It is safe from prying eyes.<br>
                     We do not collect your or your receiver address but we only use them to create the ERC721 Token representing your CryptoGift on the blockchain.
                     So, wallet addresses are visible on the blockchain using whatever explorer do you want so, if you understand the blockchain, you already know that we cannot hide these data.<br>
                     In the end the good news is that <u>we do not collect nothing of the above data</u>.<br>

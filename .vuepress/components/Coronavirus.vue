@@ -4,14 +4,35 @@
             <b-alert show variant="warning">
                 <h4 class="alert-heading">Help Italy against Coronavirus (COVID-19)</h4>
                 <p>
-                    We are experiencing an unprecedented moment in history and the lives of every one of us has been affected.<br>
-                    Many of us are taking action to cope with an event that has so suddently struck the lives of the Italian people and many others across the globe.
+                    We are experiencing an unprecedented moment in history and the lives of every one of us has been affected.
+                    Many of us are taking action to cope with an event that has so suddently struck the lives of the Italian people and many others across the globe.<br>
+                    Be present by entering the below <b-badge variant="danger">#againstcoronavirus</b-badge> campaign.<br>
                 </p>
                 <hr>
                 <p>
-                    I will receive no commission on donations made to this fundraising initiative.<br>
-                    Each donation will be converted to FIAT about on April, 3 and donated to support Italian population to fight against Coronavirus.
+                    <b-link v-b-toggle="'how-it-works'">How it works?</b-link>
                 </p>
+                <b-collapse id="how-it-works">
+                    <p>
+                        By entering this campaign you will create a <b-link to="/about.html" target="_blank">CryptoGift</b-link> donating
+                        an amount of Ether to this <b-link :href="`${network.current.etherscanLink}/address/${gift.beneficiary}`" target="_blank">ETH address</b-link>.<br>
+                        No commission will be collected on donations made during this fundraising initiative.<br>
+                        100% of each donation will be converted about on April 1, 2020 and donated to
+                        <b-link href="https://www.charitystars.com/collection/wewin" target="_blank">CharityStars</b-link>'
+                        <b>#WeWin</b> campaign to support the Luigi Sacco Hospital in Milan,
+                        the San Matteo Hospital in Pavia, the Spallanzani Hospital in Rome and the Italian Red Cross.<br>
+                        You will find this donation as made from <b>CryptoGift</b> on CharityStars' campaign page.
+                    </p>
+                    <hr>
+                    <small>
+                        NOTE: CryptoGift encrypt your message using Advanced Encryption Standard (AES) and, usually,
+                        allows you to choose an encryption key during CryptoGift building.
+                        Your data lives on the blockchain but only who hold the key will be able to decrypt your message
+                        (as explained in our <b-link target="_blank" to="/privacy-policy.html">Privacy policy</b-link>).
+                        For donations made using this page, instead, encryption key will be force to be {{ encryptionKey }} in order
+                        to show latest donations below. So your message could be visible to people who use this key to decrypt your message.
+                    </small>
+                </b-collapse>
             </b-alert>
             <b-form @submit.prevent="createGift">
                 <fieldset :disabled="!metamask.installed">
@@ -124,7 +145,7 @@
 
             <b-row v-if="donationList.length > 0">
                 <b-col lg="12">
-                    <b-card no-body header="Latest donations" class="shadow border-0 rounded-0 my-2"></b-card>
+                    <b-card no-body header="Latest donations ❤️" class="shadow border-0 rounded-0 my-2"></b-card>
                     <b-alert variant="info" show>Note: use <b>{{ encryptionKey }}</b> to decrypt.</b-alert>
                     <b-row class="mt-1">
                         <b-col md="12" v-for="item in donationList" :key="item.id" v-if="item.visible" class=" mt-2 px-3">

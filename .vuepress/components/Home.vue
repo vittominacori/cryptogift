@@ -4,12 +4,12 @@
             <b-alert show variant="warning">
                 <h4 class="alert-heading">Help Italy against Coronavirus (COVID-19)</h4>
                 <p>
-                    We are experiencing an unprecedented moment in history and the lives of every one of us has been affected.<br>
+                    We are experiencing an unprecedented moment in history and the lives of every one of us has been affected.
                     Many of us are taking action to cope with an event that has so suddently struck the lives of the Italian people and many others across the globe.
                 </p>
                 <hr>
                 <p>
-                    <b-link to="/against-coronavirus.html">Discover more</b-link>
+                    <b-link to="/against-coronavirus.html">Be present</b-link>
                 </p>
             </b-alert>
             <ui--loader></ui--loader>
