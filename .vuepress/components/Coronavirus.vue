@@ -29,7 +29,7 @@
                         allows you to choose an encryption key during CryptoGift building.
                         Your data lives on the blockchain but only who hold the key will be able to decrypt your message
                         (as explained in our <b-link target="_blank" to="/privacy-policy.html">Privacy policy</b-link>).
-                        For donations made using this page, instead, encryption key will be force to be {{ encryptionKey }} in order
+                        For donations made using this page, instead, encryption key will be forced to be {{ encryptionKey }} in order
                         to show latest donations below. So your message could be visible to people who use this key to decrypt your message.
                     </small>
                 </b-collapse>
