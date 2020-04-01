@@ -35,7 +35,7 @@
                 </b-collapse>
             </b-alert>
             <b-form @submit.prevent="createGift">
-                <fieldset :disabled="!metamask.installed">
+                <fieldset :disabled="!metamask.installed || closed">
                     <b-row>
                         <b-col lg="7" class="mb-4">
                             <b-card class="shadow" bg-variant="light">
@@ -94,10 +94,17 @@
                         </b-col>
                         <b-col lg="5" class="mb-4">
                             <b-card class="shadow" bg-variant="light">
-                                <b-alert show variant="warning" v-if="!metamask.installed">
+                                <b-alert show variant="danger" v-if="closed">
+                                    <h4 class="alert-heading">Campaign closed</h4>
+                                    <p>
+                                        Thank you all for your participiation.<br>
+                                        View results on <b-link href="https://www.charitystars.com/project/vinciamonoi" target="_blank">CharityStars</b-link>'s page.
+                                    </p>
+                                </b-alert>
+                                <b-alert show variant="warning" v-if="!metamask.installed && !closed">
                                     You need <b-link href="https://metamask.io/" target="_blank">MetaMask</b-link> extension.
                                 </b-alert>
-                                <b-alert show variant="warning" v-else-if="metamask.netId !== network.current.id">
+                                <b-alert show variant="warning" v-else-if="metamask.netId !== network.current.id && !closed">
                                     You are on the wrong Network.<br>Please switch your MetaMask on <b>{{ network.current.name }}</b>.
                                 </b-alert>
 
@@ -247,6 +254,7 @@
     },
     data () {
       return {
+        closed: true,
         loading: true,
         currentNetwork: null,
         price: 0, // fixed price
