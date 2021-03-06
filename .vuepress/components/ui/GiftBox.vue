@@ -8,7 +8,7 @@
         </b-card-body>
         <b-card-footer v-if="gift.amount > 0">
             <small class="text-muted">
-                You received <strong>{{ gift.amount }} ETH</strong> at <b-link :href="beneficiaryLink" target="_blank">{{ gift.beneficiary }}</b-link>
+                You received <strong>{{ gift.amount }} ETH</strong>
             </small>
         </b-card-footer>
     </b-card>
@@ -36,9 +36,6 @@
       },
       tokenExplorerLink () {
         return this.network.etherscanLink + '/token/' + __TOKEN_ADDRESS__ + '?a=' + this.gift.id;
-      },
-      beneficiaryLink () {
-        return this.network.etherscanLink + '/address/' + this.gift.beneficiary + '#internaltx';
       },
     },
   };

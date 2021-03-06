@@ -15,11 +15,8 @@
 
             <b-navbar-nav class="ml-auto">
                 <b-nav-item disabled><b-badge variant="info" class="p-1">{{ currentNetwork }}</b-badge></b-nav-item>
-                <b-nav-item target="_blank" href="https://vittominacori.github.io/ethereum-badge/detail.html?address=0x158D6727B17aaBa726D7318ac7dcA5edf8fAf6f8">Donate</b-nav-item>
-                <b-nav-item-dropdown text="GitHub" right>
-                    <b-dropdown-item target="_blank" href="https://github.com/vittominacori/cryptogift">Smart Contracts</b-dropdown-item>
-                    <b-dropdown-item target="_blank" href="https://github.com/vittominacori/cryptogift/tree/dapp">DApp</b-dropdown-item>
-                </b-nav-item-dropdown>
+                <b-nav-item target="_blank" href="https://vittominacori.github.io/erc20-generator/">Create ERC20</b-nav-item>
+                <b-nav-item target="_blank" href="https://vittominacori.github.io/bep20-generator/">Create BEP20</b-nav-item>
             </b-navbar-nav>
 
         </b-collapse>
